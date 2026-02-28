@@ -14,6 +14,6 @@ helyezhet el az úthálózaton, közúti járműveket vásárolhat útvonalakat 
 - Útépítés
 - Megállók lehelyezése
 - Járművek vásárlása
-- Hidak vásárlása
+- Hidépítés
 - Terraformálás
 
