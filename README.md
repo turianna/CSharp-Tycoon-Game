@@ -17,3 +17,18 @@ helyezhet el az úthálózaton, közúti járműveket vásárolhat útvonalakat 
 - Hidépítés
 - Terraformálás
 
+## Plusz feladatok
+- Erdők [0.5 komplexitás] 
+- Perzisztencia [0.5 komplexitás]
+- Folyók és tavak [0.5 komplexitás]
+- Domborzat [1 komplexitás]
+- Többhozzávalós termékek (saját feladat) [0.5 komplexitás]
+
+### Többhozzávalós termékek [0.5 komplexitás]:
+Vezessük be a termeléshez több alapanyagot igénylő gyárakat. 
+A több alapanyagot igénylő gyárak csak minden alapanyag megléte után legyenek képesek a késztermékük gyártására. 
+A késztermékek igényelhessenek különböző mennyiséget adott alapanyagból (például 2 fa és 1 kő). 
+A már leszállított alapanyagokat a gyárak legyenek képesek eltárolni, majd minden szükséges alapanyag megérkezése után felhasználni azokat. 
+A többhozzávalós késztermékek érjenek többet az általános egyhozzávalós késztermékeknél. Legalább egy ilyen gyár legyen.
+
+
