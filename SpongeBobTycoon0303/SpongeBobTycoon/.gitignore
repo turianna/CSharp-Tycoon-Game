@@ -1,0 +1,12 @@
+# Visual Studio files
+.vs/
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Output files
+*.log
+kimenet-1.txt
