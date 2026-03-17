@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SpongeBobTycoon.Model.FieldTypes
 {
-    public class Lava //water
+    public class Lava :FieldType //water
     {
         public bool isRiver;
     }

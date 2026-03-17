@@ -8,6 +8,18 @@ namespace SpongeBobTycoonWPF.ViewModel
 {
     public class GameField : ViewModelBase
     {
+        private int color;
+        public int Color
+        {
+            get => color;
+            set
+            {
+                color = value;
+                OnPropertyChanged(nameof(Color));
+            }
+        }
+        public int x { get; set; }
+        public int y { get; set; }
         /* ez egyelőre csak ki lett másolva
         public int x { get; set; }
         public int y { get; set; }

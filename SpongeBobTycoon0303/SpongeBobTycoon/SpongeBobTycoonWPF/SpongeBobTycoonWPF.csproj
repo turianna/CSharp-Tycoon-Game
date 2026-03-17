@@ -9,11 +9,49 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="View\" />
+    <None Remove="Images\bridge.png" />
+    <None Remove="Images\bridge_small.png" />
+    <None Remove="Images\burger.png" />
+    <None Remove="Images\buy.png" />
+    <None Remove="Images\buy_vehicle.png" />
+    <None Remove="Images\citizen.png" />
+    <None Remove="Images\down-arrow.png" />
+    <None Remove="Images\net.png" />
+    <None Remove="Images\petfood.png" />
+    <None Remove="Images\road.png" />
+    <None Remove="Images\route.png" />
+    <None Remove="Images\stop.png" />
+    <None Remove="Images\stop2.png" />
+    <None Remove="Images\terraform.png" />
+    <None Remove="Images\truck.png" />
+    <None Remove="Images\up-arrow.png" />
+    <None Remove="Images\van.png" />
+    <None Remove="Images\wood.png" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SpongeBobTycoon\SpongeBobTycoon.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\bridge.png" />
+    <Resource Include="Images\bridge_small.png" />
+    <Resource Include="Images\burger.png" />
+    <Resource Include="Images\buy.png" />
+    <Resource Include="Images\buy_vehicle.png" />
+    <Resource Include="Images\citizen.png" />
+    <Resource Include="Images\down-arrow.png" />
+    <Resource Include="Images\net.png" />
+    <Resource Include="Images\petfood.png" />
+    <Resource Include="Images\road.png" />
+    <Resource Include="Images\route.png" />
+    <Resource Include="Images\stop.png" />
+    <Resource Include="Images\stop2.png" />
+    <Resource Include="Images\terraform.png" />
+    <Resource Include="Images\truck.png" />
+    <Resource Include="Images\up-arrow.png" />
+    <Resource Include="Images\van.png" />
+    <Resource Include="Images\wood.png" />
   </ItemGroup>
 
 </Project>

@@ -34,7 +34,6 @@ namespace SpongeBobTycoon.Model
 
 
         public Field[,] board;
-
         public GameModel(DataAccess dataAccess)
         {
             stops = new List<Stop>();
