@@ -29,8 +29,9 @@ namespace SpongeBobTycoon.Model
 
         public event EventHandler<int>? TimerTick;
         public ITimer timer;
-        public int fastGameTime;
         public int gameTime;
+        public TimeStatus timeStatus;
+        public int gameTimer;
 
 
         public Field[,] board;
@@ -48,8 +49,9 @@ namespace SpongeBobTycoon.Model
             timer = new GameTimer();
             timer.Interval = 250;
             timer.Elapsed += new EventHandler(Timer_Elapsed);
-            fastGameTime = 2;
             gameTime = 4;
+            gameTimer = 0;
+            timeStatus = TimeStatus.BASE;
 
             timer.Start();
         }
@@ -168,23 +170,52 @@ namespace SpongeBobTycoon.Model
             FieldChanged?.Invoke(this, new FieldChangedEventArgs(x,y,type));
         }
 
-        private void OnTimerTick(int gameTime)
+        private void OnTimerTick(int gameTimer)
         {
-            TimerTick?.Invoke(this, gameTime);
+            TimerTick?.Invoke(this, gameTimer);
         }
+
+        public void BaseTime()
+        {
+            gameTime = 4;
+            timeStatus = TimeStatus.BASE;
+        }
+        public void FastTime()
+        {
+            gameTime = 2;
+            timeStatus = TimeStatus.FAST;
+
+        }
+
+        public void FastestTime()
+        {
+            gameTime = 1;
+            timeStatus = TimeStatus.FASTEST;
+        }
+
 
         private void Timer_Elapsed(Object? sender, EventArgs e)
         {
-            
 
-            /*foreach (Vehicle car in vehicles) {
-                car.stepsUntilBroken--;
-                if (car.stepsUntilBroken == 0)
+            gameTime--;
+            if(gameTime == 0)
+            {
+                gameTimer++;
+                OnTimerTick(gameTimer);
+                switch (timeStatus)
                 {
-                    money -= 100;
-                    car.stepsUntilBroken = 50000;
+                    case TimeStatus.BASE:
+                        gameTime = 4;
+                        break;
+                    case TimeStatus.FAST:
+                        gameTime = 2;
+                        break;
+                    case TimeStatus.FASTEST:
+                        gameTime = 1;
+                        break;
                 }
-            } ez majd a vehicle step-jébe kerül*/
+            }
+            
 
         }
 

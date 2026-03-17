@@ -40,6 +40,16 @@ namespace SpongeBobTycoon.Model
                     }
                 }
             }
+
+
+            /*foreach (Vehicle car in vehicles) {
+                car.stepsUntilBroken--;
+                if (car.stepsUntilBroken == 0)
+                {
+                    money -= 100;
+                    car.stepsUntilBroken = 50000;
+                }
+            } ez majd a vehicle step-jébe kerül*/
         }
 
         public void Transaction(Stop currentStop)
