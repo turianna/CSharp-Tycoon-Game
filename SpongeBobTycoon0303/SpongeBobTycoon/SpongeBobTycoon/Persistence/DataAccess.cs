@@ -1,4 +1,6 @@
 ﻿using SpongeBobTycoon.Model;
+using SpongeBobTycoon.Model.Industries;
+using SpongeBobTycoon.Model.FieldTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,116 +13,119 @@ namespace SpongeBobTycoon.Persistence
     public class DataAccess
     {
 
-        public async Task<GameData> Load(String path) { }
+        public async Task<GameData> Load(String path) { return new GameData(); }
         public async Task Save(String path, GameModel model) { }
 
         public Field[,] LoadMap()
         {
-            try
+
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory; //map.txt is always copied to this directory on building the project. this is to avoid using absolute paths, because they only work on one computer
+
+            Field[,] fields = new Field[50, 100];
+
+            using (StreamReader sr = new StreamReader(Path.Combine(baseDirectory, "Data" , "map.txt")))
             {
-                string baseDirectory = AppDomain.CurrentDomain.BaseDirectory; //map.txt is always copied to this directory on building the project. this is to avoid using absolute paths, because they only work on one computer
+                string? line;
+                string[] line_seperated; //this variable will store the data of fields seperately
 
-                Field[,] fields = new Field[50, 100];
+                int i = 0; //indexes to know where to put a new field into the field matrix
+                int j = 0;
 
-                using (StreamReader sr = new StreamReader(Path.Combine(baseDirectory, "map.txt")))
+                while ((line = sr.ReadLine()) != null)
                 {
-                    string? line;
-                    string[] line_seperated; //this variable will store the data of fields seperately
 
-                    int i = 0; //indexes to know where to put a new field into the field matrix
-                    int j = 0;
+                    //line = line.Trim();
+                    line_seperated = line.Split(" ");
 
-                    while ((line = sr.ReadLine()) != null) 
+                    j = 0;
+                    foreach (string field_data in line_seperated)
                     {
+                        //data needed to create a field
+                        int x = j;
+                        int y = i;
+                        int z;
+                        FieldType fieldType;
+                        Industry? industry;
+                        bool isVehicle = false;
+                        bool isStop = false;
 
-                        line = line.Trim();
-                        line_seperated = line.Split(" ");
+                        char height = field_data[0];
+                        z = height - '0'; //converting char to int by exploiting unicode values
 
-                        j = 0;
-                        foreach (string field_data in line_seperated) 
+                        char fieldType_char;
+                        char factoryType_char = ' ';
+
+                        fieldType_char = field_data[1];
+                        if (fieldType_char == 'F')
                         {
-                            //data needed to create a field
-                            int x = j;
-                            int y = i;
-                            int z;
-                            FieldType fieldType;
-                            bool isVehicle = false;
-
-                            char height = field_data[0];
-                            z = height - '0'; //converting char to int by exploiting unicode values
-
-                            char fieldType_char;
-                            char factoryType_char = ' ';
-                            
-                            fieldType_char = field_data[1];
-                            if (fieldType_char == 'F')
+                            if (field_data.Length == 3) factoryType_char = field_data[2];
+                            else 
                             {
-                                if (field_data.Length == 3) factoryType_char = field_data[2];
-                                else throw new InvalidMapDataException();
-                            }
+                                System.Diagnostics.Debug.WriteLine($"Factory with not enough data found at line {i + 1}, column {j + 1}");
+                                throw new InvalidMapDataException();
+                            } 
+                        }
 
-                            fieldType = DecideFieldType(fieldType_char, factoryType_char);
+                        (fieldType, industry) = DecideFieldTypeAndIndustry(fieldType_char, factoryType_char);
 
-                            if (i < 50 && j < 100)
-                            {
-                                fields[i, j] = new Field(x, y, z, fieldType, isVehicle);
-                            }
-                            else {
-                                throw new InvalidMapDataException(); //if there are more than 50 rows or 100 columns, the map data is invalid
-                            }
+                        if (i < 50 && j < 100)
+                        {
+                            fields[i, j] = new Field(x, y, z, industry, fieldType, isVehicle, isStop);
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Invalid map data at line {i + 1}, column {j + 1}"); //this is to help find the error in the map data, if there is one
+                            throw new InvalidMapDataException(); //if there are more than 50 rows or 100 columns, the map data is invalid
+                        }
 
-                            j++;
-                        } 
-
-                        i++;
+                        j++;
                     }
 
-
-                    return fields;
+                    i++;
                 }
 
+
+                return fields;
             }
-            catch (Exception e) 
-            {
-                Console.WriteLine("Error on loading file");
-                return null;
-            }
-        
+
+
+
+
         }
 
-        private FieldType DecideFieldType(char fieldType, char factoryType) //helper method to keep clean code
+        private (FieldType, Industry?) DecideFieldTypeAndIndustry(char fieldType, char factoryType) //helper method to keep clean code
         {
             switch (fieldType)
             {
                 case 'E':
-                    return FieldType.EMPTY;
+                    return (new Grass(), null);
                 case 'R':
-                    return FieldType.LAVA;
+                    return (new Lava(), null);
                 case 'L':
-                    return FieldType.LAVA;
+                    return (new Lava(), null);
                 case 'C':
-                    return FieldType.CITY;
+                    return (new Grass(), new City()); //nem volt jobb megoldasom, mivel a citynek nincs sajat fieldypeja
                 case 'D':
-                    return FieldType.ROAD;
+                    return (new Road(), null);
                 case 'T':
-                    return FieldType.TREE;
+                    return (new Forest(), null);
                 case 'F':
                     switch (factoryType)
                     {
                         case 'H':
-                            return FieldType.BURGERFACTORY;
+                            return (new Grass(), new BurgerFactory()); //a factoryknek sincsen mostmar fieldtypeja
                         case 'S':
-                            return FieldType.SPATULAFARM;
+                            return (new Grass(), new SpatulaFarm());
                         case 'N':
-                            return FieldType.NETFACTORY;
+                            return (new Grass(), new NetFactory());
                         case 'M':
-                            return FieldType.MEATFARM;
+                            return (new Grass(), new MeatFarm());
                         case 'K':
-                            return FieldType.PETFOODFACTORY;
+                            return (new Grass(), new PetfoodFactory());
                         case 'F':
-                            return FieldType.WOODFACTORY;
+                            return (new Grass(), new WoodFactory());
                         case 'A':
-                            return FieldType.ALGAEFARM;
+                            return (new Grass(), new AlgaeFarm());
                         default:
                             throw new InvalidCastException ();
                     }

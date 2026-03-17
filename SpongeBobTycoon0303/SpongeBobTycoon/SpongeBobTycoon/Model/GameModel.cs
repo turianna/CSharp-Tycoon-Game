@@ -38,13 +38,15 @@ namespace SpongeBobTycoon.Model
         public GameModel(DataAccess dataAccess)
         {
             stops = new List<Stop>();
-            board = new Field[100, 100];
+            board = new Field[50, 100];
             vehicles = new List<Vehicle>();
             movingVehicles = new List<Vehicle>();
             forests = new List<Forest>();
 
             GameData = new GameData();
             DataAccess = dataAccess;
+
+            board = DataAccess.LoadMap();
 
             timer = new GameTimer();
             timer.Interval = 250;

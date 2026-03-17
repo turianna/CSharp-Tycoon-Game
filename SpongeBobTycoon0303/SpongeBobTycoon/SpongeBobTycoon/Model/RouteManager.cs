@@ -19,6 +19,7 @@ namespace SpongeBobTycoon.Model
 
         public bool ValidRoute()
         {
+            return false;
             //min 2 és muszáj érintenie azt a megállót amit szállít az autó és körút-e és jó irányba megy-e az útvonal
         }
 
