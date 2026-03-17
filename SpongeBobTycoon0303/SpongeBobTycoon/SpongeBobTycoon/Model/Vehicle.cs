@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpongeBobTycoon.Model.FieldTypes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -18,13 +19,18 @@ namespace SpongeBobTycoon.Model
         public int stepsUntilBroken;
         public int repairCost;
         public int capacity;
+        public int cost;
 
 
         //public (int,int) startPoint = path[0]
+        public Vehicle(Product product)
+        {
+            this.product = product;
+        }
         public void Step(GameModel model, int x, int y)
         {
             
-            if (model.board[x,y].fieldType == FieldType.STOP)
+            if (model.board[x,y].fieldType is Stop)
             {
                 foreach(Stop s in model.stops)
                 {

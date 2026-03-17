@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpongeBobTycoon.Model
+namespace SpongeBobTycoon.Model.FieldTypes
 {
-    public class Forest
+    public class Forest : FieldType
     {
-        public int X; public int Y;
         public int treeCount;
         public int timeUntilNewTree;
         

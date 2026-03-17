@@ -8,8 +8,9 @@ namespace SpongeBobTycoon.Model
 {
     public class FastCar : Vehicle
     {
-        public FastCar()
+        public FastCar(Product product) : base(product)
         {
+            this.product = product;
             time = 3;
         }
     }

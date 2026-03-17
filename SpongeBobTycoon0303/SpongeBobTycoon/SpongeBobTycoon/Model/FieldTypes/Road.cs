@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SpongeBobTycoon.Model
+namespace SpongeBobTycoon.Model.FieldTypes
 {
-    public class Bridge
+    public class Road : FieldType
     {
-        public int cost { get; set; }
-        public int speed { get; set; }
-
+        public Direction direction;
     }
 }
