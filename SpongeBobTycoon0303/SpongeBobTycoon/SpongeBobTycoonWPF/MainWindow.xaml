@@ -269,7 +269,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Margin="0.5" BorderThickness="1" BorderBrush="Black" Command="{Binding FieldChangeCommand}" CommandParameter="{Binding}">
+                    <Button Margin="0.5" BorderThickness="1" BorderBrush="Black">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Style.Triggers>
@@ -292,7 +292,7 @@
                                         <Setter Property="Background" Value="LightBlue" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="6">
-                                        <Setter Property="Background" Value="LawnGreen" />
+                                        <Setter Property="Background" Value="PaleGreen" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
