@@ -212,6 +212,81 @@
                                 </Image.ToolTip>
                             </Image>
                         </MenuItem.Icon>
+                        <Menu Margin="-55,0,-70,0" HorizontalAlignment="Center">
+                            <Menu.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </Menu.ItemsPanel>
+                            <MenuItem>
+                                <MenuItem.Icon>
+                                    <Image Source="Images/lake.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
+                                        <Image.ToolTip>
+                                            Bridges for lake
+                                        </Image.ToolTip>
+                                    </Image>
+                                </MenuItem.Icon>
+                                <Menu Margin="-55,0,-70,0" HorizontalAlignment="Center">
+                                    <Menu.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </Menu.ItemsPanel>
+                                    <MenuItem Command="{Binding BuyLakeWoodBridgeCommand}">
+                                        <MenuItem.Icon>
+                                            <Image Source="Images/woodbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
+                                                <Image.ToolTip>
+                                                    Wood bridge for lake
+                                                </Image.ToolTip>
+                                            </Image>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Command="{Binding BuyLakeModernBridgeCommand}">
+                                        <MenuItem.Icon>
+                                            <Image Source="Images/modernbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
+                                                <Image.ToolTip>
+                                                    Modern bridge for lake
+                                                </Image.ToolTip>
+                                            </Image>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </Menu>
+                            </MenuItem>
+                            <MenuItem >
+                                <MenuItem.Icon>
+                                    <Image Source="Images/river.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
+                                        <Image.ToolTip>
+                                            Bridges for lake
+                                        </Image.ToolTip>
+                                    </Image>
+                                </MenuItem.Icon>
+                                <Menu Margin="-55,0,-70,0" HorizontalAlignment="Center">
+                                    <Menu.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </Menu.ItemsPanel>
+                                    <MenuItem Command="{Binding BuyRiverWoodBridgeCommand}">
+                                        <MenuItem.Icon>
+                                            <Image Source="Images/woodbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
+                                                <Image.ToolTip>
+                                                    Wood bridge for river
+                                                </Image.ToolTip>
+                                            </Image>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Command="{Binding BuyRiverModernBridgeCommand}">
+                                        <MenuItem.Icon>
+                                            <Image Source="Images/modernbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
+                                                <Image.ToolTip>
+                                                    Modern bridge for river
+                                                </Image.ToolTip>
+                                            </Image>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </Menu>
+                            </MenuItem>
+                        </Menu>
                     </MenuItem>
                 </Menu>
             </MenuItem>
@@ -258,6 +333,31 @@
                         </Image.ToolTip>
                     </Image>
                 </MenuItem.Icon>
+                <Menu Margin="-55,0,-70,0" HorizontalAlignment="Center">
+                    <Menu.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </Menu.ItemsPanel>
+                    <MenuItem>
+                        <MenuItem.Icon>
+                            <Image Source="Images/movingcar.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
+                                <Image.ToolTip>
+                                    Cars on the map
+                                </Image.ToolTip>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem>
+                        <MenuItem.Icon>
+                            <Image Source="Images/parkingcar.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
+                                <Image.ToolTip>
+                                    Cars in the garage
+                                </Image.ToolTip>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </Menu>
             </MenuItem>
         </Menu>
 
@@ -269,30 +369,37 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Margin="0.5" BorderThickness="1" BorderBrush="Black">
+                    <Button>
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Color}" Value="0">
                                         <Setter Property="Background" Value="Blue" />
+                                        <Setter Property="BorderBrush" Value="Blue" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="1">
                                         <Setter Property="Background" Value="Green" />
+                                        <Setter Property="BorderBrush" Value="Green" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="2">
                                         <Setter Property="Background" Value="Red" />
+                                        <Setter Property="BorderBrush" Value="Red" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="3">
                                         <Setter Property="Background" Value="Yellow" />
+                                        <Setter Property="BorderBrush" Value="Yellow" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="4">
                                         <Setter Property="Background" Value="Gray" />
+                                        <Setter Property="BorderBrush" Value="Gray" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="5">
                                         <Setter Property="Background" Value="LightBlue" />
+                                        <Setter Property="BorderBrush" Value="LightBlue" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="6">
                                         <Setter Property="Background" Value="PaleGreen" />
+                                        <Setter Property="BorderBrush" Value="PaleGreen" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
