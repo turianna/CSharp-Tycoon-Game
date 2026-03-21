@@ -14,9 +14,16 @@ namespace SpongeBobTycoonWPF.ViewModel
     public class MainViewModel : ViewModelBase
     {
         public GameModel model;
-        public int color_int;
-
+        public int color_int; 
+        
         private int time=0;
+
+        private int money;
+        public int Money
+        {
+            get => money;
+            set { money = value; OnPropertyChanged(); }
+        }
 
         public DelegateCommand NewGameCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
@@ -33,7 +40,7 @@ namespace SpongeBobTycoonWPF.ViewModel
         public DelegateCommand TerraformDownCommand { get; private set; }
         public DelegateCommand CreateRouteCommand { get; private set; }
 
-
+        public BuildMode structure;
 
         public ObservableCollection<GameField> Board { get; private set; }
         public int GameTime { 
@@ -52,6 +59,11 @@ namespace SpongeBobTycoonWPF.ViewModel
             this.model = model;
             this.model.FieldChanged += Model_FieldChanged;
             this.model.TimerTick += Model_TimerTick;
+            this.model.MoneyChanged += Model_MoneyChanged;
+            Money = model.money;
+            structure = BuildMode.NONE;
+
+            BuyRoadCommand = new DelegateCommand(_ => { structure = BuildMode.ROAD; Console.WriteLine("BuildMode.Road"); });
 
             Board = new ObservableCollection<GameField>();
             for (int i = 0; i < 50; i++)
@@ -60,7 +72,17 @@ namespace SpongeBobTycoonWPF.ViewModel
                 {
                     int color_int = DecideColor_int(model.Board(i, j).fieldType, model.Board(i, j).industry);
 
-                    Board.Add(new GameField { x = i, y = j, Color = color_int, Content = "" });
+                    Board.Add(new GameField 
+                    { 
+                        x = i, 
+                        y = j, 
+                        Color = color_int, 
+                        ClickCommand = new DelegateCommand(param =>
+                        {
+                            if (param is Tuple<int, int> pos)
+                                HandleClick(pos.Item1, pos.Item2);
+                        }),
+                        Content = "" });
                     if(color_int == 1) Board[i * 100 + j].Content = ((Forest)model.Board(i, j).fieldType!).treeCount.ToString();
                 }
 
@@ -74,18 +96,60 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         private void Model_FieldChanged(object? sender, FieldChangedEventArgs e)
         {
+
+            switch (e.fieldType)
+            {
+                case Forest:
+                    ViewModelForest(e);
+                    break;
+                case Road:
+                    Board[e.y * 100 + e.x].Color = 4;
+                    break;
+
+            }
+                       
+        }
+
+        private void Model_MoneyChanged(object? sender, int e)
+        {
+            Money = model.money;
+        }
+
+        public void UpdateField(FieldChangedEventArgs e)
+        {
+            int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry);
+
+            Board[e.x * 100 + e.y].Color = color_int;
+        }
+
+        public void ViewModelForest(FieldChangedEventArgs e)
+        {
             int color_int = DecideColor_int(model.Board(e.y, e.x).fieldType, model.Board(e.y, e.x).industry);
 
-            Board[e.y*100 + e.x].Color = color_int;
+            Board[e.y * 100 + e.x].Color = color_int;
 
             if (model.Board(e.y, e.x).fieldType is Forest)
             {
                 Forest forest = (Forest)model.Board(e.y, e.x).fieldType!;
                 Board[e.y * 100 + e.x].Content = forest.treeCount.ToString();
             }
-            else 
+            else
             {
                 Board[e.y * 100 + e.x].Content = "";
+            }
+        }
+
+        public void HandleClick(int x, int y)
+        {
+            Console.WriteLine("HandleClick");
+            switch (structure)
+            {
+                case BuildMode.ROAD:
+                    model.BuyRoad(x, y);
+                    break;
+
+                case BuildMode.NONE:
+                    break;
             }
         }
 

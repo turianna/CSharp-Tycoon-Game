@@ -29,6 +29,8 @@ namespace SpongeBobTycoonWPF.ViewModel
             set { content = value; OnPropertyChanged(nameof(Content)); }
 
         }
+
+        public DelegateCommand? ClickCommand { get; set; }
         /* ez egyelőre csak ki lett másolva
         public int x { get; set; }
         public int y { get; set; }
@@ -57,7 +59,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             set { status = value; OnPropertyChanged(); }
         }
 
-        public DelegateCommand? ClickCommand { get; set; }
+        
         */
     }
 }
