@@ -124,21 +124,21 @@ namespace SpongeBobTycoon.Persistence
                             ingredients.Clear();
                             ingredients.Add(new Spatula());
                             ingredients.Add(new Meat());
-                            return (new Grass(), new Factory(ingredients, new Burger())); //a factoryknek sincsen mostmar fieldtypeja
+                            return (new FieldType(), new Factory(ingredients, new Burger())); //a factoryknek sincsen mostmar fieldtypeja
                         case 'S':
-                            return (new Grass(), new Farm(new Spatula()));
+                            return (new FieldType(), new Farm(new Spatula()));
                         case 'N':
-                            return (new Grass(), new Farm(new Net()));
+                            return (new FieldType(), new Farm(new Net()));
                         case 'M':
-                            return (new Grass(), new Farm(new Meat()));
+                            return (new FieldType(), new Farm(new Meat()));
                         case 'K':
                             ingredients.Clear();
                             ingredients.Add(new Algae());
-                            return (new Grass(), new Factory(ingredients, new Petfood()));
+                            return (new FieldType(), new Factory(ingredients, new Petfood()));
                         case 'F':
-                            return (new Grass(), new Farm(new Wood()));
+                            return (new FieldType(), new Farm(new Wood()));
                         case 'A':
-                            return (new Grass(), new Farm(new Algae()));
+                            return (new FieldType(), new Farm(new Algae()));
                         default:
                             throw new InvalidCastException();
                     }

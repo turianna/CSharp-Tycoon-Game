@@ -60,6 +60,7 @@ namespace SpongeBobTycoon.Model
             gameTime = 4;
             gameTimer = 0;
             timeStatus = TimeStatus.BASE;
+            money = 10000;
             
             timer.Start();
         }
@@ -86,9 +87,10 @@ namespace SpongeBobTycoon.Model
             {
                 board[x, y].fieldType = new Road();
                 money -= 20;
-                CheckBalance();
-                OnFieldChanged(x, y, board[x,y].fieldType);
                 OnMoneyChanged(money);
+                //CheckBalance();
+                OnFieldChanged(x, y, board[x, y].fieldType);
+                
             }
 
         }
@@ -186,7 +188,7 @@ namespace SpongeBobTycoon.Model
 
         public void OnFieldChanged(int x, int y, FieldType type)
         {
-            board[y, x].fieldType = type;
+            //board[y, x].fieldType = type;
             FieldChanged?.Invoke(this, new FieldChangedEventArgs(x,y,type));
         }
 
