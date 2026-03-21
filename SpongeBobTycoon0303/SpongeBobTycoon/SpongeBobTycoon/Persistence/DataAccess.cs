@@ -7,12 +7,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
 
 namespace SpongeBobTycoon.Persistence
 {
     public class InvalidMapDataException : Exception { };
     public class DataAccess
     {
+        private List<Field> forests = new List<Field>();
+
 
         public async Task<GameData> Load(String path) { return new GameData(); }
         public async Task Save(String path, GameModel model) { }
@@ -69,9 +72,13 @@ namespace SpongeBobTycoon.Persistence
 
                         (fieldType, industry) = DecideFieldTypeAndIndustry(fieldType_char, factoryType_char);
 
+
                         if (i < 50 && j < 100)
                         {
-                            fields[i, j] = new Field(x, y, z, industry, fieldType, isVehicle, isStop);
+                            Field newField = new Field(x, y, z, industry, fieldType, isVehicle, isStop);
+                            fields[i, j] = newField;
+
+                            if (fieldType is Forest) forests.Add(newField);
                         }
                         else
                         {
@@ -88,9 +95,6 @@ namespace SpongeBobTycoon.Persistence
 
                 return fields;
             }
-
-
-
 
         }
 
@@ -136,12 +140,13 @@ namespace SpongeBobTycoon.Persistence
                         case 'A':
                             return (new Grass(), new Farm(new Algae()));
                         default:
-                            throw new InvalidCastException ();
+                            throw new InvalidCastException();
                     }
 
                 default:
                     throw new InvalidMapDataException();
             }
+        }
 
             /*
                 E - empty
@@ -159,7 +164,11 @@ namespace SpongeBobTycoon.Persistence
                     F - wood
                     A - algae
             */
+        public List<Field> GetForests()
+        {
+            return forests;
         }
 
     }
+
 }

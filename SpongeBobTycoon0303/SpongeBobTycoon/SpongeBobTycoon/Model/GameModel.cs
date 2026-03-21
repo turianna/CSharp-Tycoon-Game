@@ -17,7 +17,7 @@ namespace SpongeBobTycoon.Model
         public List<Vehicle> vehicles { get; set; } 
 
         public List<Vehicle> movingVehicles { get; set; }
-        public List<Forest> forests { get; set; }
+        public List<Field> forests { get; set; }
         public int money { get; set; }
 
         private GameData GameData { get; set; }
@@ -42,12 +42,12 @@ namespace SpongeBobTycoon.Model
             board = new Field[50, 100];
             vehicles = new List<Vehicle>();
             movingVehicles = new List<Vehicle>();
-            forests = new List<Forest>();
 
             GameData = new GameData();
             DataAccess = dataAccess;
             InitializeBoard();
             board = DataAccess.LoadMap();
+            forests = DataAccess.GetForests();
 
             timer = new GameTimer();
             timer.Interval = 250;
@@ -181,6 +181,7 @@ namespace SpongeBobTycoon.Model
 
         public void OnFieldChanged(int x, int y, FieldType type)
         {
+            board[y, x].fieldType = type;
             FieldChanged?.Invoke(this, new FieldChangedEventArgs(x,y,type));
         }
 
@@ -216,6 +217,7 @@ namespace SpongeBobTycoon.Model
             {
                 gameTimer++;
                 OnTimerTick(gameTimer);
+                GameModelTick();
                 switch (timeStatus)
                 {
                     case TimeStatus.BASE:
@@ -230,7 +232,66 @@ namespace SpongeBobTycoon.Model
                 }
             }
             
+        }
 
+        private void GameModelTick() 
+        {
+            //forest growth
+            List<Field> newForests = new List<Field>(); //ez a lista azért kell, hogy ne módosítsuk a forests listát miközben iterálunk rajta, mert az hibához vezetne
+
+            foreach (Field f in forests)
+            {
+                if (f.fieldType is not Forest) throw new Exception();
+                Forest forest = (Forest)f.fieldType;
+                
+                if (forest.GrowthTick()) 
+                {
+                    OnFieldChanged(f.X, f.Y, forest);
+                }
+
+                if (forest.readyToSpread) 
+                {
+                    Direction? dir = forest.Spread(this, f.Y, f.X);
+
+                    newForests = ForestSpread(dir, f, newForests);
+                    forest.readyToSpread = false;
+
+                }
+            }
+
+            forests = forests.Concat(newForests).ToList();
+        }
+
+        private List<Field> ForestSpread(Direction? dir, Field f, List<Field> forests) 
+        {
+            if (dir is not null)
+            {
+                switch (dir)
+                {
+                    case Direction.UP:
+                        OnFieldChanged(f.X, f.Y-1, new Forest());
+                        forests.Add(board[f.Y-1, f.X]);
+                        break;
+
+                    case Direction.DOWN:
+                        OnFieldChanged(f.X, f.Y+1, new Forest());
+                        forests.Add(board[f.Y+1, f.X]);
+                        break;
+
+                    case Direction.LEFT:
+                        OnFieldChanged(f.X-1, f.Y, new Forest());
+                        forests.Add(board[f.Y, f.X-1]);
+                        break;
+
+                    case Direction.RIGHT:
+                        OnFieldChanged(f.X+1, f.Y, new Forest());
+                        forests.Add(board[f.Y, f.X+1]);
+                        break;
+
+                }
+            }
+
+            return forests;
         }
 
     }

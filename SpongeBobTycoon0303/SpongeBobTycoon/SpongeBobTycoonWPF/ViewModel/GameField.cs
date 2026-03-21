@@ -9,6 +9,8 @@ namespace SpongeBobTycoonWPF.ViewModel
     public class GameField : ViewModelBase
     {
         private int color;
+        private string content = "";
+
         public int Color
         {
             get => color;
@@ -20,6 +22,13 @@ namespace SpongeBobTycoonWPF.ViewModel
         }
         public int x { get; set; }
         public int y { get; set; }
+
+        public string Content 
+        {
+            get { return content; }
+            set { content = value; OnPropertyChanged(nameof(Content)); }
+
+        }
         /* ez egyelőre csak ki lett másolva
         public int x { get; set; }
         public int y { get; set; }
