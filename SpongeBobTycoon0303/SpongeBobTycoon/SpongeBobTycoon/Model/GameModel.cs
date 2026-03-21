@@ -1,5 +1,6 @@
 ﻿using SpongeBobTycoon.Model.FieldTypes;
 using SpongeBobTycoon.Model.Industries;
+using SpongeBobTycoon.Model.Products;
 using SpongeBobTycoon.Persistence;
 using System;
 using System.Collections.Generic;
@@ -45,7 +46,7 @@ namespace SpongeBobTycoon.Model
 
             GameData = new GameData();
             DataAccess = dataAccess;
-
+            InitializeBoard();
             board = DataAccess.LoadMap();
 
             timer = new GameTimer();
@@ -54,13 +55,24 @@ namespace SpongeBobTycoon.Model
             gameTime = 4;
             gameTimer = 0;
             timeStatus = TimeStatus.BASE;
-
+            
             timer.Start();
         }
 
         public Field Board(int i, int j) 
         {
             return board[i, j];
+        }
+
+        public void InitializeBoard()
+        {
+            for(int i = 0; i < 50; i++)
+            {
+                for(int j = 0; j < 100; j++)
+                {
+                    board[i, j] = new Field(i, j, 0, new Industry(), new FieldType(), false, false);
+                }
+            }
         }
 
         public void BuyRoad(int x, int y) {

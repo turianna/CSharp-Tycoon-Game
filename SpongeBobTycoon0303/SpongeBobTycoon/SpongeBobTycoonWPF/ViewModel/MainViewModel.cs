@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using SpongeBobTycoon.Model;
 using SpongeBobTycoon.Model.FieldTypes;
 using SpongeBobTycoon.Model.Industries;
+using SpongeBobTycoon.Model.Products;
 
 namespace SpongeBobTycoonWPF.ViewModel
 {
@@ -61,37 +62,37 @@ namespace SpongeBobTycoonWPF.ViewModel
                             color_int = 6;
                             break;
                     }
-                    switch (model.Board(i, j).industry)
+                    switch (model.Board(i, j).industry.product)
                     {
-                        case PetfoodFactory:
+                        case Petfood: //PetfoodFactory
                             color_int = 2;
                             break;
 
-                        case BurgerFactory:
+                        case Burger:
                             color_int = 2;
                             break;
 
-                        case WoodFactory:
+                        case Wood:
                             color_int = 2;
                             break;
 
-                        case AlgaeFarm:
+                        case Algae:
                             color_int = 2;
                             break;
 
-                        case NetFactory:
+                        case Net:
                             color_int = 2;
                             break;
 
-                        case SpatulaFarm:
+                        case Spatula:
                             color_int = 2;
                             break;
 
-                        case MeatFarm:
+                        case Meat:
                             color_int = 2;
                             break;
 
-                        case City:
+                        case Citizen:
                             color_int = 3;
                             break;
                     }

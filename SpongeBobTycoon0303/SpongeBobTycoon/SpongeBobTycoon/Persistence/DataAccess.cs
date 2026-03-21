@@ -1,6 +1,7 @@
 ﻿using SpongeBobTycoon.Model;
 using SpongeBobTycoon.Model.Industries;
 using SpongeBobTycoon.Model.FieldTypes;
+using SpongeBobTycoon.Model.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +46,7 @@ namespace SpongeBobTycoon.Persistence
                         int y = i;
                         int z;
                         FieldType fieldType;
-                        Industry? industry;
+                        Industry industry;
                         bool isVehicle = false;
                         bool isStop = false;
 
@@ -95,37 +96,45 @@ namespace SpongeBobTycoon.Persistence
 
         private (FieldType, Industry?) DecideFieldTypeAndIndustry(char fieldType, char factoryType) //helper method to keep clean code
         {
+            List<Product> ingredients = new List<Product>();
             switch (fieldType)
             {
                 case 'E':
-                    return (new Grass(), null);
+                    return (new Grass(), new Industry());
                 case 'R':
-                    return (new Lava(), null);
+                    return (new Lava(), new Industry());
                 case 'L':
-                    return (new Lava(), null);
+                    return (new Lava(), new Industry());
                 case 'C':
-                    return (new Grass(), new City()); //nem volt jobb megoldasom, mivel a citynek nincs sajat fieldypeja
+                    ingredients.Clear();
+                    ingredients.Add(new Citizen());
+                    return (new Grass(), new Factory(ingredients, new Citizen())); //nem volt jobb megoldasom, mivel a citynek nincs sajat fieldypeja
                 case 'D':
-                    return (new Road(), null);
+                    return (new Road(), new Industry());
                 case 'T':
-                    return (new Forest(), null);
+                    return (new Forest(), new Industry());
                 case 'F':
                     switch (factoryType)
                     {
                         case 'H':
-                            return (new Grass(), new BurgerFactory()); //a factoryknek sincsen mostmar fieldtypeja
+                            ingredients.Clear();
+                            ingredients.Add(new Spatula());
+                            ingredients.Add(new Meat());
+                            return (new Grass(), new Factory(ingredients, new Burger())); //a factoryknek sincsen mostmar fieldtypeja
                         case 'S':
-                            return (new Grass(), new SpatulaFarm());
+                            return (new Grass(), new Farm(new Spatula()));
                         case 'N':
-                            return (new Grass(), new NetFactory());
+                            return (new Grass(), new Farm(new Net()));
                         case 'M':
-                            return (new Grass(), new MeatFarm());
+                            return (new Grass(), new Farm(new Meat()));
                         case 'K':
-                            return (new Grass(), new PetfoodFactory());
+                            ingredients.Clear();
+                            ingredients.Add(new Algae());
+                            return (new Grass(), new Factory(ingredients, new Petfood()));
                         case 'F':
-                            return (new Grass(), new WoodFactory());
+                            return (new Grass(), new Farm(new Wood()));
                         case 'A':
-                            return (new Grass(), new AlgaeFarm());
+                            return (new Grass(), new Farm(new Algae()));
                         default:
                             throw new InvalidCastException ();
                     }

@@ -19,7 +19,7 @@ namespace SpongeBobTycoon.Model
         public bool isStop;
         //public bool isCrossRoad --> ez még lehet enum lesz
 
-        public Field(int x, int y,int z, Industry? industry, FieldType ft, bool isVehicle, bool isStop)
+        public Field(int x, int y,int z, Industry industry, FieldType ft, bool isVehicle, bool isStop)
         {
             this.X = x;
             this.Y = y;

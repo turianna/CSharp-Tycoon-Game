@@ -1,4 +1,5 @@
 ﻿using SpongeBobTycoon.Model.FieldTypes;
+using SpongeBobTycoon.Model.Products;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
