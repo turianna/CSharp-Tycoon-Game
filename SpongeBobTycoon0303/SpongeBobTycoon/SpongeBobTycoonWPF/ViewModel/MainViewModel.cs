@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using SpongeBobTycoon.Model;
 using SpongeBobTycoon.Model.FieldTypes;
 using SpongeBobTycoon.Model.Industries;
@@ -15,6 +16,9 @@ namespace SpongeBobTycoonWPF.ViewModel
     {
         public GameModel model;
         public int color_int;
+        public int MovingVehicleListSize;
+        public int ParkingVehicleListSize;
+
 
         private int time=0;
 
@@ -36,6 +40,8 @@ namespace SpongeBobTycoonWPF.ViewModel
 
 
         public ObservableCollection<GameField> Board { get; private set; }
+        public ObservableCollection<Vehicle> MovingVehicleList { get; private set; }
+        public ObservableCollection<Vehicle> ParkingVehicleList { get; private set; }
         public int GameTime { 
             get { 
                 return time; 
@@ -52,7 +58,20 @@ namespace SpongeBobTycoonWPF.ViewModel
             this.model = model;
             this.model.FieldChanged += Model_FieldChanged;
             this.model.TimerTick += Model_TimerTick;
+            this.model.VehicleBought += Model_VehicleBought;
+            MovingVehicleList = new ObservableCollection<Vehicle>();
+            ParkingVehicleList = new ObservableCollection<Vehicle>();
+            MovingVehicleListSize = model.movingVehicles.Count;
+            ParkingVehicleListSize = model.parkingVehicles.Count;
 
+            foreach (Vehicle vehicle in model.movingVehicles)
+            {
+                MovingVehicleList.Add(new Vehicle(vehicle.product));
+            }
+            foreach (Vehicle vehicle in model.parkingVehicles)
+            {
+                ParkingVehicleList.Add(new Vehicle(vehicle.product));
+            }
             Board = new ObservableCollection<GameField>();
             for (int i = 0; i < 50; i++)
             {
@@ -64,6 +83,14 @@ namespace SpongeBobTycoonWPF.ViewModel
                     if(color_int == 1) Board[i * 100 + j].Content = ((Forest)model.Board(i, j).fieldType!).treeCount.ToString();
                 }
 
+            }
+        }
+
+        private void Model_VehicleBought(object? sender, Vehicle e)
+        {
+            foreach (Vehicle vehicle in model.parkingVehicles)
+            {
+                ParkingVehicleList.Add(new Vehicle(vehicle.product));
             }
         }
 

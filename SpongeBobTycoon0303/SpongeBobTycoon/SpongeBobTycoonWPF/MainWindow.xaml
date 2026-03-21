@@ -347,6 +347,18 @@
                                 </Image.ToolTip>
                             </Image>
                         </MenuItem.Icon>
+                        <ItemsControl ItemsSource="{Binding MovingVehicleList}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Rows="{Binding MovingVehicleListSize}" Columns="1"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Content="Moving Car"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </MenuItem>
                     <MenuItem>
                         <MenuItem.Icon>
@@ -356,6 +368,18 @@
                                 </Image.ToolTip>
                             </Image>
                         </MenuItem.Icon>
+                        <ItemsControl ItemsSource="{Binding ParkingVehicleList}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Rows="{Binding ParkingCarVehicleSize}" Columns="1"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Content="Parking Car"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </MenuItem>
                 </Menu>
             </MenuItem>

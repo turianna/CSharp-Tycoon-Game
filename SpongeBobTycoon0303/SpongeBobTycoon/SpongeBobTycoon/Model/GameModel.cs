@@ -14,7 +14,7 @@ namespace SpongeBobTycoon.Model
     {
         public List<Stop> stops { get; set; }
 
-        public List<Vehicle> vehicles { get; set; } 
+        public List<Vehicle> parkingVehicles { get; set; } 
 
         public List<Vehicle> movingVehicles { get; set; }
         public List<Field> forests { get; set; }
@@ -40,8 +40,12 @@ namespace SpongeBobTycoon.Model
         {
             stops = new List<Stop>();
             board = new Field[50, 100];
-            vehicles = new List<Vehicle>();
+            parkingVehicles = new List<Vehicle>();
             movingVehicles = new List<Vehicle>();
+
+            parkingVehicles.Add(new FastCar(new Wood()));
+            parkingVehicles.Add(new FastCar(new Net()));
+            parkingVehicles.Add(new FastCar(new Meat()));
 
             GameData = new GameData();
             DataAccess = dataAccess;
@@ -52,6 +56,7 @@ namespace SpongeBobTycoon.Model
             timer = new GameTimer();
             timer.Interval = 250;
             timer.Elapsed += new EventHandler(Timer_Elapsed);
+
             gameTime = 4;
             gameTimer = 0;
             timeStatus = TimeStatus.BASE;
@@ -107,7 +112,7 @@ namespace SpongeBobTycoon.Model
             money -= vehicle.cost;
             CheckBalance();
             OnMoneyChanged(money);
-            vehicles.Add(vehicle);
+            parkingVehicles.Add(vehicle);
             OnVehicleBought(vehicle);
 
         }
