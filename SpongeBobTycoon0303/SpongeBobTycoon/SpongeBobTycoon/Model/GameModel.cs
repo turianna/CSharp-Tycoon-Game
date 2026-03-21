@@ -215,6 +215,15 @@ namespace SpongeBobTycoon.Model
             timeStatus = TimeStatus.FASTEST;
         }
 
+        public void StopTimer()
+        {
+            timer.Stop();
+        }
+        public void StartTimer()
+        {
+            timer.Start();
+        }
+
 
         private void Timer_Elapsed(Object? sender, EventArgs e)
         {

@@ -31,17 +31,40 @@ namespace SpongeBobTycoonWPF.ViewModel
         public DelegateCommand NewGameCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
         public DelegateCommand LoadCommand { get; private set; }
+        public DelegateCommand QuitCommand { get; private set; }
         public DelegateCommand StopTimeCommand { get; private set; }
         public DelegateCommand StartTimeCommand { get; private set; }
         public DelegateCommand SpeedUpTimeCommand { get; private set; }
 
-        public DelegateCommand BuyVehicleCommand { get; private set; } //commandParameter-rel adjuk át a productot
-        public DelegateCommand BuyBridgeCommand { get; private set; }
+        public DelegateCommand TerraformUpCommand { get; private set; }
+        public DelegateCommand TerraformDownCommand { get; private set; }
+
+        public DelegateCommand CreateRouteCommand { get; private set; }
+
         public DelegateCommand BuyRoadCommand { get; private set; }
         public DelegateCommand PutStopCommand { get; private set; }
-        public DelegateCommand TerraformUPCommand { get; private set; }
-        public DelegateCommand TerraformDownCommand { get; private set; }
-        public DelegateCommand CreateRouteCommand { get; private set; }
+
+        public DelegateCommand BuyTruckCommand { get; private set; }
+        public DelegateCommand BuyVanCommand { get; private set; }
+        public DelegateCommand BuyBridgeCommand { get; private set; }
+        /*
+        public DelegateCommand BuyWoodTruckCommand { get; private set; }
+        public DelegateCommand BuyPetfoodTruckCommand { get; private set; }
+        public DelegateCommand BuyBurgerTruckCommand { get; private set; }
+        public DelegateCommand BuyNetTruckCommand { get; private set; }
+        public DelegateCommand BuyCitizenTruckCommand { get; private set; }
+
+        public DelegateCommand BuyWoodVanCommand { get; private set; }
+        public DelegateCommand BuyPetfoodVanCommand { get; private set; }
+        public DelegateCommand BuyBurgerVanCommand { get; private set; }
+        public DelegateCommand BuyNetVanCommand { get; private set; }
+        public DelegateCommand BuyCitizenVanCommand { get; private set; }
+
+        public DelegateCommand BuyLakeWoodBridgeCommand { get; private set; }
+        public DelegateCommand BuyLakeModernBridgeCommand { get; private set; }
+        public DelegateCommand BuyRiverWoodBridgeCommand { get; private set; }
+        public DelegateCommand BuyRiverModernBridgeCommand { get; private set; }
+        */
 
         public BuildMode structure;
 
@@ -62,27 +85,37 @@ namespace SpongeBobTycoonWPF.ViewModel
         public MainViewModel(GameModel model)
         {
             this.model = model;
+            Money = model.money;
+
             this.model.FieldChanged += Model_FieldChanged;
             this.model.TimerTick += Model_TimerTick;
             this.model.MoneyChanged += Model_MoneyChanged;
-            Money = model.money;
             this.model.VehicleBought += Model_VehicleBought;
+
+            StopTimeCommand = new DelegateCommand(_ => StopTime());
+            StartTimeCommand = new DelegateCommand(_ => StartTime());
+            SpeedUpTimeCommand = new DelegateCommand(_ => SpeedUpTime());
+            QuitCommand = new DelegateCommand(_ => QuitGame());
+            BuyVanCommand = new DelegateCommand(param => BuyVan(param));
+            BuyTruckCommand = new DelegateCommand(param => BuyTruck(param));
+
             MovingVehicleList = new ObservableCollection<Vehicle>();
             ParkingVehicleList = new ObservableCollection<Vehicle>();
             MovingVehicleListSize = model.movingVehicles.Count;
             ParkingVehicleListSize = model.parkingVehicles.Count;
             structure = BuildMode.NONE;
 
-            BuyRoadCommand = new DelegateCommand(_ => { structure = BuildMode.ROAD; Console.WriteLine("BuildMode.Road"); });
 
             foreach (Vehicle vehicle in model.movingVehicles)
             {
                 MovingVehicleList.Add(new Vehicle(vehicle.product));
             }
+
             foreach (Vehicle vehicle in model.parkingVehicles)
             {
                 ParkingVehicleList.Add(new Vehicle(vehicle.product));
             }
+
             Board = new ObservableCollection<GameField>();
             for (int i = 0; i < 50; i++)
             {
@@ -97,8 +130,10 @@ namespace SpongeBobTycoonWPF.ViewModel
                         Color = color_int, 
                         ClickCommand = new DelegateCommand(param =>
                         {
-                            if (param is Tuple<int, int> pos)
-                                HandleClick(pos.Item1, pos.Item2);
+                            if (param is GameField field)
+                            {
+                                HandleClick(field.x, field.y);
+                            }
                         }),
                         Content = "" });
                     if(color_int == 1) Board[i * 100 + j].Content = ((Forest)model.Board(i, j).fieldType!).treeCount.ToString();
@@ -107,12 +142,81 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
         }
 
+        private void StopTime()
+        {
+            model.StopTimer();
+        }
+        private void StartTime()
+        {
+            model.StartTimer();
+        }
+        private void SpeedUpTime()
+        {
+            model.StartTimer();
+            if (model.gameTime == 4)
+            {
+                model.FastTime();
+            }
+            else if(model.gameTime == 2)
+            {
+                model.FastestTime();
+            }
+            else
+            {
+                model.BaseTime();
+            }
+        }
+        private void QuitGame()
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+        private void BuyVan(object param)
+        {
+            switch (param)
+            {
+                case "Wood":
+                    model.BuyVehicle(VehicleType.SlowCar, new Wood());
+                    break;
+                case "Burger":
+                    model.BuyVehicle(VehicleType.SlowCar, new Burger());
+                    break;
+                case "Petfood":
+                    model.BuyVehicle(VehicleType.SlowCar, new Petfood());
+                    break;
+                case "Net":
+                    model.BuyVehicle(VehicleType.SlowCar, new Net());
+                    break;
+                case "Citizen":
+                    model.BuyVehicle(VehicleType.SlowCar, new Citizen());
+                    break;
+            }
+        }
+
+        private void BuyTruck(object param)
+        {
+            switch (param)
+            {
+                case "Wood":
+                    model.BuyVehicle(VehicleType.FastCar, new Wood());
+                    break;
+                case "Burger":
+                    model.BuyVehicle(VehicleType.FastCar, new Burger());
+                    break;
+                case "Petfood":
+                    model.BuyVehicle(VehicleType.FastCar, new Petfood());
+                    break;
+                case "Net":
+                    model.BuyVehicle(VehicleType.FastCar, new Net());
+                    break;
+                case "Citizen":
+                    model.BuyVehicle(VehicleType.FastCar, new Citizen());
+                    break;
+            }
+        }
         private void Model_VehicleBought(object? sender, Vehicle e)
         {
-            foreach (Vehicle vehicle in model.parkingVehicles)
-            {
-                ParkingVehicleList.Add(new Vehicle(vehicle.product));
-            }
+            ParkingVehicleList.Add(new Vehicle(e.product));
+            
         }
 
         private void Model_TimerTick(object? sender, int e)
@@ -122,7 +226,9 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         private void Model_FieldChanged(object? sender, FieldChangedEventArgs e)
         {
+            int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry);
 
+            Board[e.x * 100 + e.y].Color = color_int;
             switch (e.fieldType)
             {
                 case Forest:

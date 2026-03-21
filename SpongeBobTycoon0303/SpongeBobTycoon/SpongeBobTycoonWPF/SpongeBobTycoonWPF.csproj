@@ -16,11 +16,13 @@
     <None Remove="Images\buy_vehicle.png" />
     <None Remove="Images\citizen.png" />
     <None Remove="Images\down-arrow.png" />
+    <None Remove="Images\fast-forward.png" />
     <None Remove="Images\lake.png" />
     <None Remove="Images\modernbridge.png" />
     <None Remove="Images\movingcar.png" />
     <None Remove="Images\net.png" />
     <None Remove="Images\parkingcar.png" />
+    <None Remove="Images\pause.png" />
     <None Remove="Images\petfood.png" />
     <None Remove="Images\river.png" />
     <None Remove="Images\road.png" />
@@ -46,6 +48,7 @@
     <Resource Include="Images\buy_vehicle.png" />
     <Resource Include="Images\citizen.png" />
     <Resource Include="Images\down-arrow.png" />
+    <Resource Include="Images\fast-forward.png" />
     <Resource Include="Images\lake.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
@@ -53,7 +56,9 @@
     <Resource Include="Images\movingcar.png" />
     <Resource Include="Images\net.png" />
     <Resource Include="Images\parkingcar.png" />
+    <Resource Include="Images\pause.png" />
     <Resource Include="Images\petfood.png" />
+    <Resource Include="Images\play.png" />
     <Resource Include="Images\river.png" />
     <Resource Include="Images\road.png" />
     <Resource Include="Images\route.png" />

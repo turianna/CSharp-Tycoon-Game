@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="SpongeBob_Tycoon" Height="450" Width="800"
         WindowState="Maximized"
-       ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        WindowStyle="None">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -93,7 +94,7 @@
                                             <StackPanel Orientation="Horizontal"/>
                                         </ItemsPanelTemplate>
                                     </Menu.ItemsPanel>
-                                    <MenuItem Command="{Binding BuyWoodTruckCommand}" Margin="0,2,2,2">
+                                    <MenuItem Command="{Binding BuyTruckCommand}" CommandParameter="Wood" Margin="0,2,2,2">
                                         <MenuItem.Icon>
                                             <Image Source="Images/wood.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
@@ -102,7 +103,7 @@
                                             </Image>
                                         </MenuItem.Icon>
                                     </MenuItem>
-                                    <MenuItem Command="{Binding BuyPetfoodTruckCommand}" Margin="2,2,2,2">
+                                    <MenuItem Command="{Binding BuyTruckCommand}" CommandParameter="Petfood" Margin="2,2,2,2">
                                         <MenuItem.Icon>
                                             <Image Source="Images/petfood.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
@@ -111,7 +112,7 @@
                                             </Image>
                                         </MenuItem.Icon>
                                     </MenuItem>
-                                    <MenuItem Command="{Binding BuyBurgerTruckCommand}" Margin="2,2,2,2">
+                                    <MenuItem Command="{Binding BuyTruckCommand}"  CommandParameter="Burger" Margin="2,2,2,2">
                                         <MenuItem.Icon>
                                             <Image Source="Images/burger.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
@@ -120,7 +121,7 @@
                                             </Image>
                                         </MenuItem.Icon>
                                     </MenuItem>
-                                    <MenuItem Command="{Binding BuyNetTruckCommand}" Margin="2,2,2,2">
+                                    <MenuItem Command="{Binding BuyTruckCommand}"  CommandParameter="Net" Margin="2,2,2,2">
                                         <MenuItem.Icon>
                                             <Image Source="Images/net.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
@@ -129,7 +130,7 @@
                                             </Image>
                                         </MenuItem.Icon>
                                     </MenuItem>
-                                    <MenuItem Command="{Binding BuyCitizenTruckCommand}" Margin="2,2,0,2">
+                                    <MenuItem Command="{Binding BuyTruckCommand}"  CommandParameter="Citizen" Margin="2,2,0,2">
                                         <MenuItem.Icon>
                                             <Image Source="Images/citizen.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
@@ -155,7 +156,7 @@
                                             <StackPanel Orientation="Horizontal"/>
                                         </ItemsPanelTemplate>
                                     </Menu.ItemsPanel>
-                                    <MenuItem Command="{Binding BuyWoodVanCommand}" Margin="0,2,2,2">
+                                    <MenuItem Command="{Binding BuyVanCommand}" CommandParameter="Wood" Margin="0,2,2,2">
                                         <MenuItem.Icon>
                                             <Image Source="Images/wood.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
@@ -164,7 +165,7 @@
                                             </Image>
                                         </MenuItem.Icon>
                                     </MenuItem>
-                                    <MenuItem Command="{Binding BuyPetfoodVanCommand}" Margin="2,2,2,2">
+                                    <MenuItem Command="{Binding BuyVanCommand}"  CommandParameter="Petfood" Margin="2,2,2,2">
                                         <MenuItem.Icon>
                                             <Image Source="Images/petfood.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
@@ -173,7 +174,7 @@
                                             </Image>
                                         </MenuItem.Icon>
                                     </MenuItem>
-                                    <MenuItem  Command="{Binding BuyBurgerVanCommand}" Margin="2,2,2,2">
+                                    <MenuItem  Command="{Binding BuyVanCommand}"  CommandParameter="Burger" Margin="2,2,2,2">
                                         <MenuItem.Icon>
                                             <Image Source="Images/burger.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
@@ -182,7 +183,7 @@
                                             </Image>
                                         </MenuItem.Icon>
                                     </MenuItem>
-                                    <MenuItem  Command="{Binding BuyNetVanCommand}" Margin="2,2,2,2">
+                                    <MenuItem  Command="{Binding BuyVanCommand}"  CommandParameter="Net" Margin="2,2,2,2">
                                         <MenuItem.Icon>
                                             <Image Source="Images/net.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
@@ -191,7 +192,7 @@
                                             </Image>
                                         </MenuItem.Icon>
                                     </MenuItem>
-                                    <MenuItem Command="{Binding BuyCitizenVanCommand}" Margin="2,2,0,2">
+                                    <MenuItem Command="{Binding BuyVanCommand}"  CommandParameter="Citizen" Margin="2,2,0,2">
                                         <MenuItem.Icon>
                                             <Image Source="Images/citizen.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
@@ -204,7 +205,7 @@
                             </MenuItem>
                         </Menu>
                     </MenuItem>
-                    <MenuItem Command="{Binding BuyBridgeCommand}" Margin="2,2,0,2">
+                    <MenuItem Margin="2,2,0,2">
                         <MenuItem.Icon>
                             <Image Source="Images/bridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                 <Image.ToolTip>
@@ -232,7 +233,7 @@
                                             <StackPanel Orientation="Horizontal"/>
                                         </ItemsPanelTemplate>
                                     </Menu.ItemsPanel>
-                                    <MenuItem Command="{Binding BuyLakeWoodBridgeCommand}">
+                                    <MenuItem Command="{Binding BuyBridgeCommand}"  CommandParameter="LakeWood">
                                         <MenuItem.Icon>
                                             <Image Source="Images/woodbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
@@ -241,7 +242,7 @@
                                             </Image>
                                         </MenuItem.Icon>
                                     </MenuItem>
-                                    <MenuItem Command="{Binding BuyLakeModernBridgeCommand}">
+                                    <MenuItem Command="{Binding BuyBridgeCommand}"  CommandParameter="LakeModern">
                                         <MenuItem.Icon>
                                             <Image Source="Images/modernbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
@@ -266,7 +267,7 @@
                                             <StackPanel Orientation="Horizontal"/>
                                         </ItemsPanelTemplate>
                                     </Menu.ItemsPanel>
-                                    <MenuItem Command="{Binding BuyRiverWoodBridgeCommand}">
+                                    <MenuItem Command="{Binding BuyBridgeCommand}"  CommandParameter="RiverWood">
                                         <MenuItem.Icon>
                                             <Image Source="Images/woodbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
@@ -275,7 +276,7 @@
                                             </Image>
                                         </MenuItem.Icon>
                                     </MenuItem>
-                                    <MenuItem Command="{Binding BuyRiverModernBridgeCommand}">
+                                    <MenuItem Command="{Binding BuyBridgeCommand}"  CommandParameter="RiverModern">
                                         <MenuItem.Icon>
                                             <Image Source="Images/modernbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
@@ -435,24 +436,30 @@
 
         <StatusBar Grid.Row="2" HorizontalAlignment="Left">
             <StatusBarItem>
-                <Button Width="60" Command="{Binding StopTimeCommand}">
-                    <Viewbox>
-                        <TextBlock Text="Stop time" />
-                    </Viewbox>
+                <Button Height="25" Command="{Binding StopTimeCommand}">
+                    <Image Source="Images/pause.png" Width="40" Height="20"  HorizontalAlignment="Center">
+                        <Image.ToolTip>
+                            Pause game
+                        </Image.ToolTip>
+                    </Image>
                 </Button>
             </StatusBarItem>
             <StatusBarItem>
-                <Button Height="20" Command="{Binding StartTimeCommand}">
-                    <Viewbox>
-                        <TextBlock Text="Start time" />
-                    </Viewbox>
+                <Button Height="25" Command="{Binding StartTimeCommand}">
+                    <Image Source="Images/play.png" Width="40" Height="20"  HorizontalAlignment="Center">
+                        <Image.ToolTip>
+                            Start game
+                        </Image.ToolTip>
+                    </Image>
                 </Button>
             </StatusBarItem>
             <StatusBarItem>
-                <Button Height="20" Command="{Binding SpeedUpTimeCommand}">
-                    <Viewbox>
-                        <TextBlock Text="Speed up time" />
-                    </Viewbox>
+                <Button Height="25" Command="{Binding SpeedUpTimeCommand}">
+                    <Image Source="Images/fast-forward.png" Width="40" Height="20" HorizontalAlignment="Center">
+                        <Image.ToolTip>
+                            Speed up
+                        </Image.ToolTip>
+                    </Image>
                 </Button>
             </StatusBarItem>
         </StatusBar>
