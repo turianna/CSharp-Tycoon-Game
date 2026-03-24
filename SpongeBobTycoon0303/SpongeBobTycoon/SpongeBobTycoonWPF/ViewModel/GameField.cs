@@ -23,6 +23,12 @@ namespace SpongeBobTycoonWPF.ViewModel
         public int x { get; set; }
         public int y { get; set; }
 
+        public Tuple<int, int> XY
+        {
+            get { return new(x, y); }
+            
+        }
+
         public string Content 
         {
             get { return content; }

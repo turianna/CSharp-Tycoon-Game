@@ -394,7 +394,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding Content}" Command="{Binding ClickCommand}" CommandParameter="{Binding}">
+                    <Button Content="{Binding Content}" Command="{Binding ClickCommand}" CommandParameter="{Binding XY}">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Style.Triggers>

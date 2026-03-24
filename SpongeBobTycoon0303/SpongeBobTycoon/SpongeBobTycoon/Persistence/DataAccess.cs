@@ -114,7 +114,8 @@ namespace SpongeBobTycoon.Persistence
                     ingredients.Add(new Citizen());
                     return (new Grass(), new Factory(ingredients, new Citizen())); //nem volt jobb megoldasom, mivel a citynek nincs sajat fieldypeja
                 case 'D':
-                    return (new Road(), new Industry());
+                    ingredients.Clear();
+                    return (new Road(), new Factory(ingredients, new Citizen()));
                 case 'T':
                     return (new Forest(), new Industry());
                 case 'F':

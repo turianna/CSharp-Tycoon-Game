@@ -1,14 +1,15 @@
-﻿using System;
+﻿using SpongeBobTycoon.Model;
+using SpongeBobTycoon.Model.FieldTypes;
+using SpongeBobTycoon.Model.Industries;
+using SpongeBobTycoon.Model.Products;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+//using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using SpongeBobTycoon.Model;
-using SpongeBobTycoon.Model.FieldTypes;
-using SpongeBobTycoon.Model.Industries;
-using SpongeBobTycoon.Model.Products;
 
 namespace SpongeBobTycoonWPF.ViewModel
 {
@@ -43,6 +44,7 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         public DelegateCommand BuyRoadCommand { get; private set; }
         public DelegateCommand PutStopCommand { get; private set; }
+        public DelegateCommand ExitBuildCommand { get; private set; } //ehhez még kell gomb
 
         public DelegateCommand BuyTruckCommand { get; private set; }
         public DelegateCommand BuyVanCommand { get; private set; }
@@ -98,6 +100,9 @@ namespace SpongeBobTycoonWPF.ViewModel
             QuitCommand = new DelegateCommand(_ => QuitGame());
             BuyVanCommand = new DelegateCommand(param => BuyVan(param));
             BuyTruckCommand = new DelegateCommand(param => BuyTruck(param));
+            BuyRoadCommand = new DelegateCommand(param => structure = BuildMode.ROAD);
+            PutStopCommand = new DelegateCommand(param => structure = BuildMode.STOP);
+            //ExitBuildCommand = new DelegateCommand(param => structure = BuildMode.NONE);
 
             MovingVehicleList = new ObservableCollection<Vehicle>();
             ParkingVehicleList = new ObservableCollection<Vehicle>();
@@ -117,22 +122,22 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
 
             Board = new ObservableCollection<GameField>();
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 50; i++) //i = y
             {
-                for (int j = 0; j < 100; j++)
+                for (int j = 0; j < 100; j++) //j = x
                 {
                     int color_int = DecideColor_int(model.Board(i, j).fieldType, model.Board(i, j).industry);
 
                     Board.Add(new GameField 
                     { 
-                        x = i, 
-                        y = j, 
+                        x = j, 
+                        y = i, 
                         Color = color_int, 
                         ClickCommand = new DelegateCommand(param =>
                         {
-                            if (param is GameField field)
+                            if (param is Tuple<int, int> pos)
                             {
-                                HandleClick(field.x, field.y);
+                                HandleClick(pos.Item1, pos.Item2);
                             }
                         }),
                         Content = "" });
@@ -226,16 +231,12 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         private void Model_FieldChanged(object? sender, FieldChangedEventArgs e)
         {
-            int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry);
+            UpdateField(e);
 
-            Board[e.x * 100 + e.y].Color = color_int;
             switch (e.fieldType)
             {
                 case Forest:
                     ViewModelForest(e);
-                    break;
-                case Road:
-                    Board[e.y * 100 + e.x].Color = 4;
                     break;
 
             }
@@ -249,17 +250,13 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         public void UpdateField(FieldChangedEventArgs e)
         {
-            int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry);
+            int color_int = DecideColor_int(model.Board(e.y, e.x).fieldType, model.Board(e.y, e.x).industry);
 
-            Board[e.x * 100 + e.y].Color = color_int;
+            Board[e.y* 100 + e.x].Color = color_int;
         }
 
         public void ViewModelForest(FieldChangedEventArgs e)
         {
-            int color_int = DecideColor_int(model.Board(e.y, e.x).fieldType, model.Board(e.y, e.x).industry);
-
-            Board[e.y * 100 + e.x].Color = color_int;
-
             if (model.Board(e.y, e.x).fieldType is Forest)
             {
                 Forest forest = (Forest)model.Board(e.y, e.x).fieldType!;
@@ -273,16 +270,27 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         public void HandleClick(int x, int y)
         {
-            Console.WriteLine("HandleClick");
             switch (structure)
             {
                 case BuildMode.ROAD:
                     model.BuyRoad(x, y);
                     break;
-
+                case BuildMode.STOP:
+                    model.PutStop(x, y);
+                    ViewModel_PutStop(x,y);
+                    break;
                 case BuildMode.NONE:
                     break;
             }
+        }
+
+        public void ViewModel_PutStop(int x, int y)
+        {
+            if (model.board[y,x].isStop== true)
+            {
+                Board[y * 100 + x].Content = "S";
+            }
+            
         }
 
         private int DecideColor_int(FieldType? ft, Industry? ind) 
@@ -300,8 +308,7 @@ namespace SpongeBobTycoonWPF.ViewModel
                     break;
 
                 case Road:
-                    color_int = 4;
-                    break;
+                    return 4;
 
                 case Grass:
                      color_int = 6;

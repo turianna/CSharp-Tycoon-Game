@@ -15,10 +15,10 @@ namespace SpongeBobTycoon.Model.FieldTypes
         private Random random = new Random();
 
         //CHANGE THESE TO MAKE FORESTS SPREAD FASTER/SLOWER
-        private const int newTreeTimeMin = 30;
-        private const int newTreeTimeMax = 70;
-        private const int spreadTimeMin = 30;
-        private const int spreadTimeMax = 70;
+        private const int newTreeTimeMin = 120;
+        private const int newTreeTimeMax = 180;
+        private const int spreadTimeMin = 120;
+        private const int spreadTimeMax = 180;
 
         public Forest()
         {

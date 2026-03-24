@@ -43,10 +43,6 @@ namespace SpongeBobTycoon.Model
             parkingVehicles = new List<Vehicle>();
             movingVehicles = new List<Vehicle>();
 
-            parkingVehicles.Add(new FastCar(new Wood()));
-            parkingVehicles.Add(new FastCar(new Net()));
-            parkingVehicles.Add(new FastCar(new Meat()));
-
             GameData = new GameData();
             DataAccess = dataAccess;
             InitializeBoard();
@@ -83,13 +79,13 @@ namespace SpongeBobTycoon.Model
 
         public void BuyRoad(int x, int y) {
 
-            if (board[x,y].fieldType is Grass)
+            if (board[y,x].fieldType is Grass)
             {
-                board[x, y].fieldType = new Road();
+                board[y, x].fieldType = new Road();
                 money -= 20;
                 OnMoneyChanged(money);
                 //CheckBalance();
-                OnFieldChanged(x, y, board[x, y].fieldType);
+                OnFieldChanged(x, y, board[y, x].fieldType);
                 
             }
 
@@ -127,12 +123,13 @@ namespace SpongeBobTycoon.Model
         //public void BuyBridge(int x, int y) { } kell több bridge
         public void PutStop(int x, int y) {
 
-            if (board[x,y].fieldType is Road && IsStopValid(x,y))
+            if (board[y, x].fieldType is Road && IsStopValid(x,y) && board[y, x].industry.product is not Citizen)
             {
-                board[x,y].isStop = true;
+                board[y, x].isStop = true;
                 Stop stop = new Stop();
                 stops.Add(stop);
             }
+            
         }
 
         public bool IsStopValid(int x, int y)
@@ -146,13 +143,13 @@ namespace SpongeBobTycoon.Model
 
             foreach (var (dx, dy) in directions)
             {
-                int nx = x + dx;
-                int ny = y + dy;
+                int nx = y + dy;
+                int ny = x + dx;
 
                 if (nx >= 0 && nx < board.GetLength(0) &&
                     ny >= 0 && ny < board.GetLength(1))
                 {
-                    if (board[nx,ny].industry is not null)
+                    if (board[nx,ny].industry.product is not null)
                     {
                         return true;
                     }
@@ -188,7 +185,7 @@ namespace SpongeBobTycoon.Model
 
         public void OnFieldChanged(int x, int y, FieldType type)
         {
-            //board[y, x].fieldType = type;
+            board[y, x].fieldType = type;
             FieldChanged?.Invoke(this, new FieldChangedEventArgs(x,y,type));
         }
 
