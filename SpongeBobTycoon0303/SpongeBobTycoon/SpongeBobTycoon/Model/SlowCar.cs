@@ -13,6 +13,7 @@ namespace SpongeBobTycoon.Model
         {
             this.product = product;
             time = 5;
+            cost = 100;
         }
 
     }

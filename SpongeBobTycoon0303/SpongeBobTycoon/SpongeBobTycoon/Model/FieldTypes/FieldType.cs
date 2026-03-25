@@ -11,23 +11,5 @@ namespace SpongeBobTycoon.Model.FieldTypes
         public int X;
         public int Y;
 
-        //CITY,
-        //TREE, már van forest osztály
-        
-        //WOODFACTORY,
-
-        //ALGAEFARM,
-        //PETFOODFACTORY,
-         
-        //MEATFARM,
-        //SPATULAFARM,
-        //BURGERFACTORY,
-
-        //NETFACTORY,
-
-        //LAVA,
-        //BRIDGE,
-        //ROAD,
-        //STOP,
     }
 }
