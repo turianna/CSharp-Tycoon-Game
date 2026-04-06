@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SpongeBobTycoon.Model.FieldTypes.Bridge">
+    <Position X="12" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAAAAQAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\FieldTypes\Bridge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.FieldTypes.FastBridge">
+    <Position X="11" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\FieldTypes\FastBridge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.FieldTypes.FieldType">
+    <Position X="17.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAA=</HashCode>
+      <FileName>Model\FieldTypes\FieldType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.FieldTypes.Forest">
+    <Position X="19.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAGAAAgIAAAQAAAAAAAAIAQCAQAAAAIAAA=</HashCode>
+      <FileName>Model\FieldTypes\Forest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.FieldTypes.Grass">
+    <Position X="22" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\FieldTypes\Grass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.FieldTypes.Lava">
+    <Position X="24.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Model\FieldTypes\Lava.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.FieldTypes.Road">
+    <Position X="15.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\FieldTypes\Road.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.FieldTypes.SlowBridge">
+    <Position X="13.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\FieldTypes\SlowBridge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.FieldTypes.Stop">
+    <Position X="17.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\FieldTypes\Stop.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.Industries.Factory">
+    <Position X="11.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Industries\Factory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.Industries.Farm">
+    <Position X="13.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Industries\Farm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.Industries.Industry">
+    <Position X="12.5" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Industries\Industry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.Products.Algae">
+    <Position X="10.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Products\Algae.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.Products.Burger">
+    <Position X="12.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Products\Burger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.Products.Citizen">
+    <Position X="17.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Products\Citizen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.Products.Meat">
+    <Position X="21.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Products\Meat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.Products.Net">
+    <Position X="24" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Products\Net.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.Products.Petfood">
+    <Position X="26.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Products\Petfood.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.Products.Product">
+    <Position X="18.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgCAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Products\Product.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.Products.Spatula">
+    <Position X="15" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Products\Spatula.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.Products.Wood">
+    <Position X="19.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Products\Wood.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.FastCar">
+    <Position X="7.5" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\FastCar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.Field">
+    <Position X="4.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EEAAAAAAAQAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAYAE=</HashCode>
+      <FileName>Model\Field.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.FieldChangedEventArgs">
+    <Position X="4.75" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Model\FieldChangedEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.GameModel">
+    <Position X="7.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAwRkFAIBSAUAlgAAAAOAAAIBAEIAAEFIIFBAiAIkAE=</HashCode>
+      <FileName>Model\GameModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.GameTimer" BaseTypeListCollapsed="true">
+    <Position X="1.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAgBIAAAIAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Model\GameTimer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.RouteManager">
+    <Position X="4" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAAAAAAACAgAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\RouteManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.SlowCar">
+    <Position X="10.5" Y="18.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\SlowCar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.TerraformingManager">
+    <Position X="4" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACEAAAAAAAAAAAAAAACAAAAAAAAAAYAA=</HashCode>
+      <FileName>Model\TerraformingManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Model.Vehicle">
+    <Position X="9" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACBAAAAAgQAIAAAAAIAAAJAAAAQAAAQIQAAAAAAAAA=</HashCode>
+      <FileName>Model\Vehicle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Persistence.InvalidMapDataException" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Persistence\DataAccess.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Persistence.DataAccess">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAABEAAAAgAAAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Persistence\DataAccess.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpongeBobTycoon.Persistence.GameData" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Persistence\GameData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="SpongeBobTycoon.Model.ITimer">
+    <Position X="2.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAABIAAAIAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Model\ITimer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="SpongeBobTycoon.Model.Direction">
+    <Position X="6.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAICAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Model\Direction.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SpongeBobTycoon.Model.TimeStatus">
+    <Position X="0.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAEAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Model\TimeStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="SpongeBobTycoon.Model.VehicleType">
+    <Position X="4.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\VehicleType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

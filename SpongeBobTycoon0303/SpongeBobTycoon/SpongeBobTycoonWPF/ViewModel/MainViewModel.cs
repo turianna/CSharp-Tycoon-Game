@@ -2,13 +2,16 @@
 using SpongeBobTycoon.Model.FieldTypes;
 using SpongeBobTycoon.Model.Industries;
 using SpongeBobTycoon.Model.Products;
+using SpongeBobTycoonWPF.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 //using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace SpongeBobTycoonWPF.ViewModel
@@ -29,6 +32,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             set { money = value; OnPropertyChanged(); }
         }
 
+        public DelegateCommand StartCommand { get; private set; }
         public DelegateCommand NewGameCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
         public DelegateCommand LoadCommand { get; private set; }
@@ -49,24 +53,6 @@ namespace SpongeBobTycoonWPF.ViewModel
         public DelegateCommand BuyTruckCommand { get; private set; }
         public DelegateCommand BuyVanCommand { get; private set; }
         public DelegateCommand BuyBridgeCommand { get; private set; }
-        /*
-        public DelegateCommand BuyWoodTruckCommand { get; private set; }
-        public DelegateCommand BuyPetfoodTruckCommand { get; private set; }
-        public DelegateCommand BuyBurgerTruckCommand { get; private set; }
-        public DelegateCommand BuyNetTruckCommand { get; private set; }
-        public DelegateCommand BuyCitizenTruckCommand { get; private set; }
-
-        public DelegateCommand BuyWoodVanCommand { get; private set; }
-        public DelegateCommand BuyPetfoodVanCommand { get; private set; }
-        public DelegateCommand BuyBurgerVanCommand { get; private set; }
-        public DelegateCommand BuyNetVanCommand { get; private set; }
-        public DelegateCommand BuyCitizenVanCommand { get; private set; }
-
-        public DelegateCommand BuyLakeWoodBridgeCommand { get; private set; }
-        public DelegateCommand BuyLakeModernBridgeCommand { get; private set; }
-        public DelegateCommand BuyRiverWoodBridgeCommand { get; private set; }
-        public DelegateCommand BuyRiverModernBridgeCommand { get; private set; }
-        */
 
         public BuildMode structure;
 
@@ -94,6 +80,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             this.model.MoneyChanged += Model_MoneyChanged;
             this.model.VehicleBought += Model_VehicleBought;
 
+            StartCommand = new DelegateCommand(param => StartGame(param));
             StopTimeCommand = new DelegateCommand(_ => StopTime());
             StartTimeCommand = new DelegateCommand(_ => StartTime());
             SpeedUpTimeCommand = new DelegateCommand(_ => SpeedUpTime());
@@ -147,6 +134,18 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
         }
 
+        private void StartGame(object param)
+        {
+            MainWindow gameWindow = new MainWindow();
+            gameWindow.DataContext = this;
+            System.Windows.Application.Current.MainWindow = gameWindow;
+            gameWindow.Show();
+            if (param is Window menuWindow)
+            {
+                menuWindow.Close();
+            }
+
+        }
         private void StopTime()
         {
             model.StopTimer();

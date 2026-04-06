@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\background.jpg" />
     <None Remove="Images\bridge.png" />
     <None Remove="Images\bridge_small.png" />
     <None Remove="Images\burger.png" />
@@ -42,6 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\background.jpg" />
     <Resource Include="Images\bridge.png" />
     <Resource Include="Images\burger.png" />
     <Resource Include="Images\buy.png" />
@@ -70,10 +72,6 @@
     <Resource Include="Images\van.png" />
     <Resource Include="Images\wood.png" />
     <Resource Include="Images\woodbridge.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="View\" />
   </ItemGroup>
 
 </Project>

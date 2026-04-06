@@ -4,6 +4,7 @@ using System.Windows;
 using SpongeBobTycoon.Model;
 using SpongeBobTycoon.Persistence;
 using SpongeBobTycoonWPF.ViewModel;
+using SpongeBobTycoonWPF.View;
 
 namespace SpongeBobTycoonWPF
 {
@@ -14,7 +15,8 @@ namespace SpongeBobTycoonWPF
     {
         private GameModel model = null!;
         private MainViewModel viewModel = null!;
-        private MainWindow view = null!;
+        private MenuWindow menuview = null!;
+        private MainWindow gameview = null!;
         DataAccess access = new DataAccess();
         public App()
         {
@@ -25,9 +27,11 @@ namespace SpongeBobTycoonWPF
         {
             model = new GameModel(access);
             viewModel = new MainViewModel(model);
-            view = new MainWindow();
-            view.DataContext = viewModel;
-            view.Show();
+            menuview = new MenuWindow();
+            gameview = new MainWindow();
+            menuview.DataContext = viewModel;
+            gameview.DataContext = viewModel;
+            menuview.Show();
 
         }
 
