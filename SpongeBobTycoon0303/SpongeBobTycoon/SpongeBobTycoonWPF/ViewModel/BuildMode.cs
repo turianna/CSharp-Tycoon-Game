@@ -10,7 +10,10 @@ namespace SpongeBobTycoonWPF.ViewModel
     {
         NONE,
         ROAD,
-        BRIDGE,
+        FASTRIVERBRIDGE,
+        SLOWRIVERBRIDGE,
+        FASTLAKEBRIDGE,
+        SLOWLAKEBRIDGE,
         STOP
     }
 }
