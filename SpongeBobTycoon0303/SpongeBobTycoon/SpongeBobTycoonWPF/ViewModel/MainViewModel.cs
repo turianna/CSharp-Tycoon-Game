@@ -137,8 +137,12 @@ namespace SpongeBobTycoonWPF.ViewModel
         private void StartGame(object param)
         {
             MainWindow gameWindow = new MainWindow();
-            gameWindow.DataContext = this;
             System.Windows.Application.Current.MainWindow = gameWindow;
+            gameWindow.Loaded += async (s, e) =>
+            {
+                await Task.Delay(50);
+                gameWindow.DataContext = this;
+            };
             gameWindow.Show();
             if (param is Window menuWindow)
             {
