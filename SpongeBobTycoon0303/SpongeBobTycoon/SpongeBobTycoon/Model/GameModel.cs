@@ -120,7 +120,28 @@ namespace SpongeBobTycoon.Model
             VehicleBought?.Invoke(this, vehicle); //ezzel kellene jelezni, hogy jelenjen meg a nem mozgó járművek listájában az autó
         }
 
-        //public void BuyBridge(int x, int y) { } kell több bridge
+        public void BuyBridge(int x, int y, bool isFast, bool isRiver) {
+
+            if (board[y, x].fieldType is Lava)
+            {
+                if (isFast) {
+                    board[y, x].fieldType = new FastBridge(isRiver);
+                    money -= 400;
+                    OnMoneyChanged(money);
+                }
+                else
+                {
+                    board[y, x].fieldType = new SlowBridge(isRiver);
+                    money -= 200;
+                    OnMoneyChanged(money);
+                }
+
+                OnFieldChanged(x, y, board[y, x].fieldType);
+
+            }
+
+
+        } 
         public void PutStop(int x, int y) {
 
             if (board[y, x].fieldType is Road && IsStopValid(x,y) && board[y, x].industry.product is not Citizen)

@@ -8,7 +8,7 @@ namespace SpongeBobTycoon.Model.FieldTypes
 {
     public class SlowBridge : Bridge
     {
-        public SlowBridge()
+        public SlowBridge(bool isRiver) : base(isRiver)
         {
             speed = 5;
             cost = 30;

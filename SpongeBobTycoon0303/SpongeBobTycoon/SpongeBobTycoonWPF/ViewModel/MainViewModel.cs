@@ -1,4 +1,4 @@
-﻿using SpongeBobTycoon.Model;
+using SpongeBobTycoon.Model;
 using SpongeBobTycoon.Model.FieldTypes;
 using SpongeBobTycoon.Model.Industries;
 using SpongeBobTycoon.Model.Products;
@@ -53,6 +53,30 @@ namespace SpongeBobTycoonWPF.ViewModel
         public DelegateCommand BuyTruckCommand { get; private set; }
         public DelegateCommand BuyVanCommand { get; private set; }
         public DelegateCommand BuyBridgeCommand { get; private set; }
+        
+        public DelegateCommand BuyRiverFastBridgeCommand { get; private set; }
+        public DelegateCommand BuyRiverSlowBridgeCommand { get; private set; }
+        public DelegateCommand BuyLakeFastBridgeCommand { get; private set; }
+        public DelegateCommand BuyLakeSlowBridgeCommand { get; private set; }
+        /*
+        public DelegateCommand BuyWoodTruckCommand { get; private set; }
+        public DelegateCommand BuyPetfoodTruckCommand { get; private set; }
+        public DelegateCommand BuyBurgerTruckCommand { get; private set; }
+        public DelegateCommand BuyNetTruckCommand { get; private set; }
+        public DelegateCommand BuyCitizenTruckCommand { get; private set; }
+
+        public DelegateCommand BuyWoodVanCommand { get; private set; }
+        public DelegateCommand BuyPetfoodVanCommand { get; private set; }
+        public DelegateCommand BuyBurgerVanCommand { get; private set; }
+        public DelegateCommand BuyNetVanCommand { get; private set; }
+        public DelegateCommand BuyCitizenVanCommand { get; private set; }
+
+        public DelegateCommand BuyLakeWoodBridgeCommand { get; private set; }
+        public DelegateCommand BuyLakeModernBridgeCommand { get; private set; }
+        public DelegateCommand BuyRiverWoodBridgeCommand { get; private set; }
+        public DelegateCommand BuyRiverModernBridgeCommand { get; private set; }
+        */
+
 
         public BuildMode structure;
 
@@ -89,6 +113,10 @@ namespace SpongeBobTycoonWPF.ViewModel
             BuyTruckCommand = new DelegateCommand(param => BuyTruck(param));
             BuyRoadCommand = new DelegateCommand(param => structure = BuildMode.ROAD);
             PutStopCommand = new DelegateCommand(param => structure = BuildMode.STOP);
+            BuyRiverFastBridgeCommand = new DelegateCommand(param => structure = BuildMode.FASTRIVERBRIDGE);
+            BuyRiverSlowBridgeCommand = new DelegateCommand(param => structure = BuildMode.SLOWRIVERBRIDGE);
+            BuyLakeFastBridgeCommand = new DelegateCommand(param => structure = BuildMode.FASTLAKEBRIDGE);
+            BuyLakeSlowBridgeCommand = new DelegateCommand(param => structure = BuildMode.SLOWLAKEBRIDGE);
             //ExitBuildCommand = new DelegateCommand(param => structure = BuildMode.NONE);
 
             MovingVehicleList = new ObservableCollection<Vehicle>();
@@ -134,21 +162,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
         }
 
-        private void StartGame(object param)
-        {
-            MainWindow gameWindow = new MainWindow();
-            System.Windows.Application.Current.MainWindow = gameWindow;
-            gameWindow.Loaded += async (s, e) =>
-            {
-                await Task.Delay(50);
-                gameWindow.DataContext = this;
-            };
-            gameWindow.Show();
-            if (param is Window menuWindow)
-            {
-                menuWindow.Close();
-            }
-
+       
         }
         private void StopTime()
         {
@@ -221,6 +235,8 @@ namespace SpongeBobTycoonWPF.ViewModel
                     break;
             }
         }
+
+
         private void Model_VehicleBought(object? sender, Vehicle e)
         {
             ParkingVehicleList.Add(new Vehicle(e.product));
@@ -281,6 +297,18 @@ namespace SpongeBobTycoonWPF.ViewModel
                 case BuildMode.STOP:
                     model.PutStop(x, y);
                     ViewModel_PutStop(x,y);
+                    break;
+                case BuildMode.FASTRIVERBRIDGE:
+                    model.BuyBridge(x, y, true, true);
+                    break;
+                case BuildMode.SLOWRIVERBRIDGE:
+                    model.BuyBridge(x, y, false, true);
+                    break;
+                case BuildMode.FASTLAKEBRIDGE:
+                    model.BuyBridge(x, y, true, false);
+                    break;
+                case BuildMode.SLOWLAKEBRIDGE:
+                    model.BuyBridge(x, y, false, false);
                     break;
                 case BuildMode.NONE:
                     break;
