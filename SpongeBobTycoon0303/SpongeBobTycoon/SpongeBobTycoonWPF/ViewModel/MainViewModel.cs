@@ -92,7 +92,21 @@ namespace SpongeBobTycoonWPF.ViewModel
                 OnPropertyChanged(nameof(GameTime));
             } 
         }
-
+        private void StartGame(object param)
+        {
+            MainWindow gameWindow = new MainWindow();
+            System.Windows.Application.Current.MainWindow = gameWindow;
+            gameWindow.Loaded += async (s, e) =>
+            {
+                await Task.Delay(50);
+                gameWindow.DataContext = this;
+            };
+            gameWindow.Show();
+            if (param is Window menuWindow)
+            {
+                menuWindow.Close();
+            }
+        }
 
         public MainViewModel(GameModel model)
         {
@@ -162,8 +176,6 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
         }
 
-       
-        }
         private void StopTime()
         {
             model.StopTimer();
