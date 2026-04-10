@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 //using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Reflection.Metadata;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -58,24 +59,6 @@ namespace SpongeBobTycoonWPF.ViewModel
         public DelegateCommand BuyRiverSlowBridgeCommand { get; private set; }
         public DelegateCommand BuyLakeFastBridgeCommand { get; private set; }
         public DelegateCommand BuyLakeSlowBridgeCommand { get; private set; }
-        /*
-        public DelegateCommand BuyWoodTruckCommand { get; private set; }
-        public DelegateCommand BuyPetfoodTruckCommand { get; private set; }
-        public DelegateCommand BuyBurgerTruckCommand { get; private set; }
-        public DelegateCommand BuyNetTruckCommand { get; private set; }
-        public DelegateCommand BuyCitizenTruckCommand { get; private set; }
-
-        public DelegateCommand BuyWoodVanCommand { get; private set; }
-        public DelegateCommand BuyPetfoodVanCommand { get; private set; }
-        public DelegateCommand BuyBurgerVanCommand { get; private set; }
-        public DelegateCommand BuyNetVanCommand { get; private set; }
-        public DelegateCommand BuyCitizenVanCommand { get; private set; }
-
-        public DelegateCommand BuyLakeWoodBridgeCommand { get; private set; }
-        public DelegateCommand BuyLakeModernBridgeCommand { get; private set; }
-        public DelegateCommand BuyRiverWoodBridgeCommand { get; private set; }
-        public DelegateCommand BuyRiverModernBridgeCommand { get; private set; }
-        */
 
 
         public BuildMode structure;
@@ -117,6 +100,8 @@ namespace SpongeBobTycoonWPF.ViewModel
             this.model.TimerTick += Model_TimerTick;
             this.model.MoneyChanged += Model_MoneyChanged;
             this.model.VehicleBought += Model_VehicleBought;
+            this.model.GameOver += Model_GameOver;
+            this.model.Refresh += Model_Refresh;
 
             StartCommand = new DelegateCommand(param => StartGame(param));
             StopTimeCommand = new DelegateCommand(_ => StopTime());
@@ -151,17 +136,22 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
 
             Board = new ObservableCollection<GameField>();
+            Create();
+        }
+           
+        private void Create()
+        {
             for (int i = 0; i < 50; i++) //i = y
             {
                 for (int j = 0; j < 100; j++) //j = x
                 {
                     int color_int = DecideColor_int(model.Board(i, j).fieldType, model.Board(i, j).industry);
 
-                    Board.Add(new GameField 
-                    { 
-                        x = j, 
-                        y = i, 
-                        Color = color_int, 
+                    Board.Add(new GameField
+                    {
+                        x = j,
+                        y = i,
+                        Color = color_int,
                         ClickCommand = new DelegateCommand(param =>
                         {
                             if (param is Tuple<int, int> pos)
@@ -169,13 +159,14 @@ namespace SpongeBobTycoonWPF.ViewModel
                                 HandleClick(pos.Item1, pos.Item2);
                             }
                         }),
-                        Content = "" });
-                    if(color_int == 1) Board[i * 100 + j].Content = ((Forest)model.Board(i, j).fieldType!).treeCount.ToString();
+                        Content = ""
+                    });
+                    if (color_int == 1) Board[i * 100 + j].Content = ((Forest)model.Board(i, j).fieldType!).treeCount.ToString();
                 }
 
             }
         }
-
+        
         private void StopTime()
         {
             model.StopTimer();
@@ -274,9 +265,21 @@ namespace SpongeBobTycoonWPF.ViewModel
                        
         }
 
+        private void Model_Refresh(object? sender, EventArgs e)
+        {
+            ParkingVehicleList.Clear();
+            MovingVehicleList.Clear();
+            Board.Clear();
+            Create();
+        }
         private void Model_MoneyChanged(object? sender, int e)
         {
             Money = model.money;
+        }
+
+        private void Model_GameOver(object? sender, EventArgs e)
+        {
+            model.StartNewGame();
         }
 
         public void UpdateField(FieldChangedEventArgs e)

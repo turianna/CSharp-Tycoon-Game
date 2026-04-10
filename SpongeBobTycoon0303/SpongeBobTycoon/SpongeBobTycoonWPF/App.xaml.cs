@@ -5,6 +5,7 @@ using SpongeBobTycoon.Model;
 using SpongeBobTycoon.Persistence;
 using SpongeBobTycoonWPF.ViewModel;
 using SpongeBobTycoonWPF.View;
+using System.Numerics;
 
 namespace SpongeBobTycoonWPF
 {
@@ -25,6 +26,7 @@ namespace SpongeBobTycoonWPF
 
         private void AppStartup(object sender, StartupEventArgs e)
         {
+            
             model = new GameModel(access);
             viewModel = new MainViewModel(model);
             menuview = new MenuWindow();
@@ -32,9 +34,15 @@ namespace SpongeBobTycoonWPF
             menuview.DataContext = viewModel;
             gameview.DataContext = viewModel;
             menuview.Show();
+            model.GameOver += new EventHandler(MGameOver);
 
         }
 
+
+        private void MGameOver(object? sender, EventArgs e)
+        {
+            MessageBox.Show("Sajnálom, vesztettél!", "Játék vége!", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 
 }
