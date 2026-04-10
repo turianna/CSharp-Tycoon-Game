@@ -20,11 +20,14 @@ namespace SpongeBobTycoon.Model
         public List<Field> forests { get; set; }
         public int money { get; set; }
 
+        private TerraformingManager TerraformManager = new TerraformingManager();
+
         private GameData GameData { get; set; }
         private DataAccess DataAccess;
 
         public event EventHandler<bool>? GameOver;
         public event EventHandler<int>? MoneyChanged;
+        public event EventHandler? InsufficientFunds;
         public event EventHandler<FieldChangedEventArgs>? FieldChanged;
         public event EventHandler<Vehicle>? VehicleBought; //updatelni kell a parkoló autók listáját
 
@@ -82,9 +85,9 @@ namespace SpongeBobTycoon.Model
             if (board[y,x].fieldType is Grass)
             {
                 board[y, x].fieldType = new Road();
-                money -= 20;
+                ChangeBalance(-20);
                 OnMoneyChanged(money);
-                //CheckBalance();
+                
                 OnFieldChanged(x, y, board[y, x].fieldType);
                 
             }
@@ -107,8 +110,9 @@ namespace SpongeBobTycoon.Model
                 default:
                     throw new ArgumentException("Invalid vehicle purchase");
             }
-            money -= vehicle.cost;
-            CheckBalance();
+
+            ChangeBalance(-vehicle.cost);
+
             OnMoneyChanged(money);
             parkingVehicles.Add(vehicle);
             OnVehicleBought(vehicle);
@@ -126,13 +130,13 @@ namespace SpongeBobTycoon.Model
             {
                 if (isFast) {
                     board[y, x].fieldType = new FastBridge(isRiver);
-                    money -= 400;
+                    ChangeBalance(-400);
                     OnMoneyChanged(money);
                 }
                 else
                 {
                     board[y, x].fieldType = new SlowBridge(isRiver);
-                    money -= 200;
+                    ChangeBalance(-200);
                     OnMoneyChanged(money);
                 }
 
@@ -144,13 +148,27 @@ namespace SpongeBobTycoon.Model
         } 
         public void PutStop(int x, int y) {
 
-            if (board[y, x].fieldType is Road && IsStopValid(x,y) && board[y, x].industry.product is not Citizen)
+            if (board[y, x].fieldType is Road && IsStopValid(x,y) && board[y, x].industry!.product is not Citizen)
             {
                 board[y, x].isStop = true;
                 Stop stop = new Stop();
                 stops.Add(stop);
             }
             
+        }
+
+        public void Terraform(int x, int y, bool isUp)
+        {
+            bool successfulTerraform = TerraformManager.Terraform(board, x, y, isUp);
+
+            if (!successfulTerraform) {
+                System.Diagnostics.Debug.WriteLine($"Failed to terraform at ({x}, {y}), isUp: {isUp}");
+                return;
+            }
+
+            System.Diagnostics.Debug.WriteLine($"Successful terraform at ({x}, {y}), isUp: {isUp}, new Z: {board[y, x].Z}");
+            ChangeBalance(-250);
+            OnFieldChanged(x, y, board[y, x].fieldType!);
         }
 
         public bool IsStopValid(int x, int y)
@@ -169,7 +187,7 @@ namespace SpongeBobTycoon.Model
 
                 if (nx >= 0 && nx < board.GetLength(0) &&
                     ny >= 0 && ny < board.GetLength(1))
-                {
+                { 
                     if (board[nx,ny].industry.product is not null)
                     {
                         return true;
@@ -178,6 +196,19 @@ namespace SpongeBobTycoon.Model
                 }
             }
             return false;
+        }
+
+
+        private void ChangeBalance(int amount)
+        {
+            if (money + amount < 0)
+            {
+                OnInsufficientFunds();
+                return;
+            }
+            money += amount;
+            OnMoneyChanged(money);
+            
         }
 
         public void CheckBalance() 
@@ -202,6 +233,11 @@ namespace SpongeBobTycoon.Model
         public void OnMoneyChanged(int m)
         {
             MoneyChanged?.Invoke(this, m);
+        }
+
+        public void OnInsufficientFunds()
+        {
+            InsufficientFunds?.Invoke(this, EventArgs.Empty);
         }
 
         public void OnFieldChanged(int x, int y, FieldType type)
