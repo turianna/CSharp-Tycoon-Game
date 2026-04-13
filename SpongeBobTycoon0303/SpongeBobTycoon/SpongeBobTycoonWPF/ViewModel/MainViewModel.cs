@@ -132,8 +132,8 @@ namespace SpongeBobTycoonWPF.ViewModel
             BuyRiverSlowBridgeCommand = new DelegateCommand(param => structure = BuildMode.SLOWRIVERBRIDGE);
             BuyLakeFastBridgeCommand = new DelegateCommand(param => structure = BuildMode.FASTLAKEBRIDGE);
             BuyLakeSlowBridgeCommand = new DelegateCommand(param => structure = BuildMode.SLOWLAKEBRIDGE);
-            TerraformUpCommand = new DelegateCommand(param => {structure = BuildMode.TERRAFORM_UP; showZCoordinates(); });
-            TerraformDownCommand = new DelegateCommand(param => {structure = BuildMode.TERRAFORM_DOWN; showZCoordinates(); });
+            TerraformUpCommand = new DelegateCommand(param => structure = BuildMode.TERRAFORM_UP);
+            TerraformDownCommand = new DelegateCommand(param => structure = BuildMode.TERRAFORM_DOWN);
             //ExitBuildCommand = new DelegateCommand(param => structure = BuildMode.NONE);
 
             MovingVehicleList = new ObservableCollection<Vehicle>();
@@ -177,11 +177,6 @@ namespace SpongeBobTycoonWPF.ViewModel
                 }
 
             }
-        }
-
-        private void Model_InsufficientFunds1(object? sender, EventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         private void StopTime()
@@ -326,6 +321,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
         }
 
+        /* this was only used to test terraforming, but it can be useful later to check the z coordinates, so I left it in
         private void showZCoordinates()
         {
             for (int i = 0; i < 50; i++) //i = y
@@ -336,6 +332,7 @@ namespace SpongeBobTycoonWPF.ViewModel
                     }
             }
         }
+        */
 
         public void ViewModel_PutStop(int x, int y)
         {
