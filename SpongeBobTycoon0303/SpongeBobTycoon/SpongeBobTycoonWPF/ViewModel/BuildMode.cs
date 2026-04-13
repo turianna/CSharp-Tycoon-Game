@@ -14,6 +14,8 @@ namespace SpongeBobTycoonWPF.ViewModel
         SLOWRIVERBRIDGE,
         FASTLAKEBRIDGE,
         SLOWLAKEBRIDGE,
-        STOP
+        STOP,
+        TERRAFORM_UP,
+        TERRAFORM_DOWN
     }
 }

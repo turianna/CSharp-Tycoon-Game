@@ -116,6 +116,8 @@ namespace SpongeBobTycoonWPF.ViewModel
             BuyRiverSlowBridgeCommand = new DelegateCommand(param => structure = BuildMode.SLOWRIVERBRIDGE);
             BuyLakeFastBridgeCommand = new DelegateCommand(param => structure = BuildMode.FASTLAKEBRIDGE);
             BuyLakeSlowBridgeCommand = new DelegateCommand(param => structure = BuildMode.SLOWLAKEBRIDGE);
+            TerraformUpCommand = new DelegateCommand(param => structure = BuildMode.TERRAFORM_UP);
+            TerraformDownCommand = new DelegateCommand(param => structure = BuildMode.TERRAFORM_DOWN);
             //ExitBuildCommand = new DelegateCommand(param => structure = BuildMode.NONE);
 
             MovingVehicleList = new ObservableCollection<Vehicle>();
@@ -166,7 +168,11 @@ namespace SpongeBobTycoonWPF.ViewModel
 
             }
         }
+<<<<<<< HEAD
+
+=======
         
+>>>>>>> 83f444ddc98b60619b1b2ded4195940a9a93b793
         private void StopTime()
         {
             model.StopTimer();
@@ -246,6 +252,11 @@ namespace SpongeBobTycoonWPF.ViewModel
             
         }
 
+        private void Model_InsufficientFunds(object? sender, EventArgs e)
+        {
+            MessageBox.Show("Nincs elég pénzed!");
+        }
+
         private void Model_TimerTick(object? sender, int e)
         {
             GameTime = model.gameTimer;
@@ -253,16 +264,14 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         private void Model_FieldChanged(object? sender, FieldChangedEventArgs e)
         {
-            UpdateField(e);
+            UpdateField(e);           
+        }
 
-            switch (e.fieldType)
-            {
-                case Forest:
-                    ViewModelForest(e);
-                    break;
+        private void UpdateField(FieldChangedEventArgs e)
+        {
+            int color_int = DecideColor_int(model.Board(e.y, e.x).fieldType, model.Board(e.y, e.x).industry);
 
-            }
-                       
+            Board[e.y * 100 + e.x].Color = color_int;
         }
 
         private void Model_Refresh(object? sender, EventArgs e)
@@ -325,10 +334,29 @@ namespace SpongeBobTycoonWPF.ViewModel
                 case BuildMode.SLOWLAKEBRIDGE:
                     model.BuyBridge(x, y, false, false);
                     break;
+                case BuildMode.TERRAFORM_UP:
+                    model.Terraform(x, y, true);
+                    break;
+                case BuildMode.TERRAFORM_DOWN:
+                    model.Terraform(x, y, false);
+                    break;
                 case BuildMode.NONE:
                     break;
             }
         }
+
+        /* this was only used to test terraforming, but it can be useful later to check the z coordinates, so I left it in
+        private void showZCoordinates()
+        {
+            for (int i = 0; i < 50; i++) //i = y
+                {
+                    for (int j = 0; j < 100; j++) //j = x
+                    {
+                        Board[i * 100 + j].Content = model.Board(i, j).Z.ToString();
+                    }
+            }
+        }
+        */
 
         public void ViewModel_PutStop(int x, int y)
         {
