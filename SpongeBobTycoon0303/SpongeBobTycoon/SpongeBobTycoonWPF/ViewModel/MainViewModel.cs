@@ -151,8 +151,8 @@ namespace SpongeBobTycoonWPF.ViewModel
 
                     Board.Add(new GameField
                     {
-                        x = j,
-                        y = i,
+                        x = i,
+                        y = j,
                         Color = color_int,
                         ClickCommand = new DelegateCommand(param =>
                         {
@@ -168,11 +168,7 @@ namespace SpongeBobTycoonWPF.ViewModel
 
             }
         }
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> 83f444ddc98b60619b1b2ded4195940a9a93b793
         private void StopTime()
         {
             model.StopTimer();
@@ -269,9 +265,9 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         private void UpdateField(FieldChangedEventArgs e)
         {
-            int color_int = DecideColor_int(model.Board(e.y, e.x).fieldType, model.Board(e.y, e.x).industry);
+            int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry);
 
-            Board[e.y * 100 + e.x].Color = color_int;
+            Board[e.x * 100 + e.y].Color = color_int;
         }
 
         private void Model_Refresh(object? sender, EventArgs e)
@@ -291,23 +287,17 @@ namespace SpongeBobTycoonWPF.ViewModel
             model.StartNewGame();
         }
 
-        public void UpdateField(FieldChangedEventArgs e)
-        {
-            int color_int = DecideColor_int(model.Board(e.y, e.x).fieldType, model.Board(e.y, e.x).industry);
-
-            Board[e.y* 100 + e.x].Color = color_int;
-        }
 
         public void ViewModelForest(FieldChangedEventArgs e)
         {
-            if (model.Board(e.y, e.x).fieldType is Forest)
+            if (model.Board(e.x, e.y).fieldType is Forest)
             {
-                Forest forest = (Forest)model.Board(e.y, e.x).fieldType!;
-                Board[e.y * 100 + e.x].Content = forest.treeCount.ToString();
+                Forest forest = (Forest)model.Board(e.x, e.y).fieldType!;
+                Board[e.x * 100 + e.y].Content = forest.treeCount.ToString();
             }
             else
             {
-                Board[e.y * 100 + e.x].Content = "";
+                Board[e.x * 100 + e.y].Content = "";
             }
         }
 
@@ -360,9 +350,9 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         public void ViewModel_PutStop(int x, int y)
         {
-            if (model.board[y,x].isStop== true)
+            if (model.board[x,y].isStop== true)
             {
-                Board[y * 100 + x].Content = "S";
+                Board[x * 100 + y].Content = "S";
             }
             
         }

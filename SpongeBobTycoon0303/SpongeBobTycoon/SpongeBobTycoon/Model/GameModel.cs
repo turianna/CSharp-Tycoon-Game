@@ -79,7 +79,7 @@ namespace SpongeBobTycoon.Model
             {
                 for (int j = 0; j < 100; j++)
                 {
-                    OnFieldChanged(j, i, board[i, j].fieldType);
+                    OnFieldChanged(i, j, board[i, j].fieldType);
                 }
             }
             
@@ -110,13 +110,13 @@ namespace SpongeBobTycoon.Model
 
         public void BuyRoad(int x, int y) {
 
-            if (board[y,x].fieldType is Grass)
+            if (board[x,y].fieldType is Grass)
             {
-                board[y, x].fieldType = new Road();
+                board[x, y].fieldType = new Road();
                 ChangeBalance(-20);
                 OnMoneyChanged(money);
                 
-                OnFieldChanged(x, y, board[y, x].fieldType);
+                OnFieldChanged(x, y, board[x, y].fieldType);
                 CheckBalance();
             }
 
@@ -154,21 +154,21 @@ namespace SpongeBobTycoon.Model
 
         public void BuyBridge(int x, int y, bool isFast, bool isRiver) {
 
-            if (board[y, x].fieldType is Lava)
+            if (board[x, y].fieldType is Lava)
             {
                 if (isFast) {
-                    board[y, x].fieldType = new FastBridge(isRiver);
+                    board[x, y].fieldType = new FastBridge(isRiver);
                     ChangeBalance(-400);
                     OnMoneyChanged(money);
                 }
                 else
                 {
-                    board[y, x].fieldType = new SlowBridge(isRiver);
+                    board[x, y].fieldType = new SlowBridge(isRiver);
                     ChangeBalance(-200);
                     OnMoneyChanged(money);
                 }
 
-                OnFieldChanged(x, y, board[y, x].fieldType);
+                OnFieldChanged(x, y, board[x, y].fieldType);
                 CheckBalance();
             }
 
@@ -176,9 +176,9 @@ namespace SpongeBobTycoon.Model
         } 
         public void PutStop(int x, int y) {
 
-            if (board[y, x].fieldType is Road && IsStopValid(x,y) && board[y, x].industry!.product is not Citizen)
+            if (board[x, y].fieldType is Road && IsStopValid(x,y) && board[x, y].industry!.product is not Citizen)
             {
-                board[y, x].isStop = true;
+                board[x, y].isStop = true;
                 Stop stop = new Stop();
                 stops.Add(stop);
             }
@@ -194,9 +194,9 @@ namespace SpongeBobTycoon.Model
                 return;
             }
 
-            System.Diagnostics.Debug.WriteLine($"Successful terraform at ({x}, {y}), isUp: {isUp}, new Z: {board[y, x].Z}");
+            System.Diagnostics.Debug.WriteLine($"Successful terraform at ({x}, {y}), isUp: {isUp}, new Z: {board[x, y].Z}");
             ChangeBalance(-250);
-            OnFieldChanged(x, y, board[y, x].fieldType!);
+            OnFieldChanged(x, y, board[x, y].fieldType!);
         }
 
         public bool IsStopValid(int x, int y)
@@ -210,8 +210,8 @@ namespace SpongeBobTycoon.Model
 
             foreach (var (dx, dy) in directions)
             {
-                int nx = y + dy;
-                int ny = x + dx;
+                int nx = x + dx;
+                int ny = y + dy;
 
                 if (nx >= 0 && nx < board.GetLength(0) &&
                     ny >= 0 && ny < board.GetLength(1))
@@ -270,7 +270,7 @@ namespace SpongeBobTycoon.Model
 
         public void OnFieldChanged(int x, int y, FieldType type)
         {
-            board[y, x].fieldType = type;
+            board[x, y].fieldType = type;
             FieldChanged?.Invoke(this, new FieldChangedEventArgs(x,y,type));
         }
 
@@ -353,7 +353,7 @@ namespace SpongeBobTycoon.Model
 
                 if (forest.readyToSpread) 
                 {
-                    Direction? dir = forest.Spread(this, f.Y, f.X);
+                    Direction? dir = forest.Spread(this, f.X, f.Y);
 
                     newForests = ForestSpread(dir, f, newForests);
                     forest.readyToSpread = false;
@@ -372,22 +372,22 @@ namespace SpongeBobTycoon.Model
                 {
                     case Direction.UP:
                         OnFieldChanged(f.X, f.Y-1, new Forest());
-                        forests.Add(board[f.Y-1, f.X]);
+                        forests.Add(board[f.X, f.Y-1]);
                         break;
 
                     case Direction.DOWN:
                         OnFieldChanged(f.X, f.Y+1, new Forest());
-                        forests.Add(board[f.Y+1, f.X]);
+                        forests.Add(board[f.X, f.Y+1]);
                         break;
 
                     case Direction.LEFT:
                         OnFieldChanged(f.X-1, f.Y, new Forest());
-                        forests.Add(board[f.Y, f.X-1]);
+                        forests.Add(board[f.X-1, f.Y]);
                         break;
 
                     case Direction.RIGHT:
                         OnFieldChanged(f.X+1, f.Y, new Forest());
-                        forests.Add(board[f.Y, f.X+1]);
+                        forests.Add(board[f.X+1, f.Y]);
                         break;
 
                 }

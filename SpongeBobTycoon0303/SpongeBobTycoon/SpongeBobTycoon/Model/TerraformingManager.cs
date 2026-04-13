@@ -16,7 +16,7 @@ namespace SpongeBobTycoon.Model
         
         public bool Terraform(Field[,] board, int x, int y, bool isUp) 
         {
-            Field field = board[y, x];
+            Field field = board[x, y];
 
             System.Diagnostics.Debug.WriteLine($"Terraforming at ({x}, {y}), isUp: {isUp}, old Z: {field.Z}");
 
@@ -35,55 +35,55 @@ namespace SpongeBobTycoon.Model
         {
             if(isUp)
             {
-                if(board[y, x].Z >= maxHeight) return false;          //if terraforming up and current tile is already at max height, return false
+                if(board[x, y].Z >= maxHeight) return false;          //if terraforming up and current tile is already at max height, return false
                 try
                 {
-                    if ( (board[y, x].Z - board[y + 1, x].Z) > 1) return false;          //if terraforming up and current tile is more than 1 higher than any adjacent tile, return false
+                    if ( (board[x, y].Z - board[x + 1, y].Z) > 1) return false;          //if terraforming up and current tile is more than 1 higher than any adjacent tile, return false
                 }
                 catch (IndexOutOfRangeException) { }
 
                 try
                 {
-                    if ((board[y, x].Z - board[y - 1, x].Z) > 1) return false;
+                    if ((board[x, y].Z - board[x - 1, y].Z) > 1) return false;
                 }
                 catch (IndexOutOfRangeException) { }
 
                 try
                 {
-                    if ( (board[y, x].Z - board[y, x - 1].Z) > 1) return false;
+                    if ( (board[x, y].Z - board[x, y - 1].Z) > 1) return false;
                 }
                 catch (IndexOutOfRangeException) { }
 
                 try
                 {
-                    if ( (board[y, x].Z - board[y, x + 1].Z) > 1) return false;
+                    if ( (board[x, y].Z - board[x, y + 1].Z) > 1) return false;
                 }
                 catch (IndexOutOfRangeException) { }
             }
             else
             {
-                if(board[y, x].Z == 0) return false;          //if terraforming down and current tile is already at min height, return false
+                if(board[x, y].Z == 0) return false;          //if terraforming down and current tile is already at min height, return false
                 try
                 {
-                    if ((board[y+1, x].Z - board[y, x].Z) > 1) return false;          //if terraforming down and current tile is more than 1 lower than any adjacent tile, return false
+                    if ((board[x+1, y].Z - board[x, y].Z) > 1) return false;          //if terraforming down and current tile is more than 1 lower than any adjacent tile, return false
                 }
                 catch (IndexOutOfRangeException) { }
 
                 try
                 {
-                    if ((board[y-1, x].Z - board[y, x].Z) > 1) return false;
+                    if ((board[x-1, y].Z - board[x, y].Z) > 1) return false;
                 }
                 catch (IndexOutOfRangeException) { }
 
                 try
                 {
-                    if ((board[y, x+1].Z - board[y, x].Z) > 1) return false;
+                    if ((board[x, y+1].Z - board[x, y].Z) > 1) return false;
                 }
                 catch (IndexOutOfRangeException) { }
 
                 try
                 {
-                    if ((board[y, x-1].Z - board[y, x].Z) > 1) return false;
+                    if ((board[x, y-1].Z - board[x, y].Z) > 1) return false;
                 }
                 catch (IndexOutOfRangeException) { }
             }

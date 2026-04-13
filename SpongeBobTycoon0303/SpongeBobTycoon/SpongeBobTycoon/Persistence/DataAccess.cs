@@ -45,8 +45,8 @@ namespace SpongeBobTycoon.Persistence
                     foreach (string field_data in line_seperated)
                     {
                         //data needed to create a field
-                        int x = j;
-                        int y = i;
+                        int x = i;
+                        int y = j;
                         int z;
                         FieldType fieldType;
                         Industry industry;
