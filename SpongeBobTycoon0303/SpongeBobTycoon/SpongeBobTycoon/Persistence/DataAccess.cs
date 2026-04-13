@@ -22,7 +22,7 @@ namespace SpongeBobTycoon.Persistence
 
         public Field[,] LoadMap()
         {
-
+            forests.Clear();
             string baseDirectory = AppDomain.CurrentDomain.BaseDirectory; //map.txt is always copied to this directory on building the project. this is to avoid using absolute paths, because they only work on one computer
 
             Field[,] fields = new Field[50, 100];
