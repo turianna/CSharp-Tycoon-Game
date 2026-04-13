@@ -4,6 +4,7 @@ using SpongeBobTycoon.Model.Products;
 using SpongeBobTycoon.Persistence;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,11 +26,12 @@ namespace SpongeBobTycoon.Model
         private GameData GameData { get; set; }
         private DataAccess DataAccess;
 
-        public event EventHandler<bool>? GameOver;
+        public event EventHandler GameOver;
         public event EventHandler<int>? MoneyChanged;
         public event EventHandler? InsufficientFunds;
         public event EventHandler<FieldChangedEventArgs>? FieldChanged;
         public event EventHandler<Vehicle>? VehicleBought; //updatelni kell a parkoló autók listáját
+        public event EventHandler Refresh;
 
         public event EventHandler<int>? TimerTick;
         public ITimer timer;
@@ -64,6 +66,32 @@ namespace SpongeBobTycoon.Model
             timer.Start();
         }
 
+        public void StartNewGame()
+        {
+            stops.Clear();
+            parkingVehicles.Clear(); 
+            movingVehicles.Clear();
+            InitializeBoard();
+            board = DataAccess.LoadMap();
+            forests = DataAccess.GetForests();
+            OnRefresh();
+            for (int i = 0; i < 50; i++)
+            {
+                for (int j = 0; j < 100; j++)
+                {
+                    OnFieldChanged(j, i, board[i, j].fieldType);
+                }
+            }
+            
+            gameTime = 4;
+            gameTimer = 0;
+            timeStatus = TimeStatus.BASE;
+            money = 10000;
+            OnMoneyChanged(money);
+
+            timer.Start();
+        }
+
         public Field Board(int i, int j) 
         {
             return board[i, j];
@@ -89,7 +117,7 @@ namespace SpongeBobTycoon.Model
                 OnMoneyChanged(money);
                 
                 OnFieldChanged(x, y, board[y, x].fieldType);
-                
+                CheckBalance();
             }
 
         }
@@ -116,7 +144,7 @@ namespace SpongeBobTycoon.Model
             OnMoneyChanged(money);
             parkingVehicles.Add(vehicle);
             OnVehicleBought(vehicle);
-
+            CheckBalance();
         }
         
         public void OnVehicleBought(Vehicle vehicle)
@@ -141,7 +169,7 @@ namespace SpongeBobTycoon.Model
                 }
 
                 OnFieldChanged(x, y, board[y, x].fieldType);
-
+                CheckBalance();
             }
 
 
@@ -213,21 +241,21 @@ namespace SpongeBobTycoon.Model
 
         public void CheckBalance() 
         {
-            if (money == 0)
+            if (money < 0)
             {
-                OnGameOver(true);
+                timer.Stop();
+                OnGameOver();
             }
         
         } //ha lenullázódik a pénzünk akkor OnGameOver
-        public void NewGame() { }
         public async Task LoadGame(String path) { }
         public async Task SaveGame(String path) { }
 
         public void Produce() { }
        
-        public void OnGameOver(bool gameOver)
+        public void OnGameOver()
         {
-            GameOver?.Invoke(this, gameOver);
+            GameOver?.Invoke(this, EventArgs.Empty);
         }
 
         public void OnMoneyChanged(int m)
@@ -251,6 +279,10 @@ namespace SpongeBobTycoon.Model
             TimerTick?.Invoke(this, gameTimer);
         }
 
+        private void OnRefresh()
+        {
+            Refresh?.Invoke(this, EventArgs.Empty);
+        }
         public void BaseTime()
         {
             gameTime = 4;
