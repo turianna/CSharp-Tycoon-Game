@@ -14,6 +14,7 @@ namespace SpongeBobTycoon.Model
         public List<(int, int)>? route {  get; set; }
         public Product ingredient;
         public Product product;
+        public int ID;
         public Direction direction { get; set; }
         public int time;
         public int timeUntilMoves;

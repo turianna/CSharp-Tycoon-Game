@@ -38,6 +38,7 @@ namespace SpongeBobTycoon.Model
         public int gameTime;
         public TimeStatus timeStatus;
         public int gameTimer;
+        public int biggestVehicleID;
 
 
         public Field[,] board;
@@ -62,6 +63,8 @@ namespace SpongeBobTycoon.Model
             gameTimer = 0;
             timeStatus = TimeStatus.BASE;
             money = 10000;
+            biggestVehicleID = 0;
+
             
             timer.Start();
         }
@@ -87,6 +90,7 @@ namespace SpongeBobTycoon.Model
             gameTimer = 0;
             timeStatus = TimeStatus.BASE;
             money = 10000;
+            biggestVehicleID = 0;
             OnMoneyChanged(money);
 
             timer.Start();
@@ -110,13 +114,13 @@ namespace SpongeBobTycoon.Model
 
         public void BuyRoad(int x, int y) {
 
-            if (board[x,y].fieldType is Grass)
+            if (board[x,y].fieldType is Grass && board[x,y].industry.product is not Citizen)
             {           
                 board[x, y].fieldType = new Road();
                 ChangeBalance(-20);
                 OnFieldChanged(x, y, board[x, y].fieldType);
 
-            }else if (board[x, y].fieldType is Forest)
+            }else if (board[x, y].fieldType is Forest && board[x, y].industry.product is not Citizen)
             {
                 Field? forestToRemove = null;
                 foreach (Field f in forests)
@@ -136,15 +140,17 @@ namespace SpongeBobTycoon.Model
         public void BuyVehicle(VehicleType vehicleType, Product product) 
         {
             Vehicle vehicle;
-            
+            biggestVehicleID += 1;
             switch(vehicleType)
             {
                 case VehicleType.FastCar:
                     vehicle = new FastCar(product);
+                    vehicle.ID = biggestVehicleID;
                     break;
 
                 case VehicleType.SlowCar:
                     vehicle = new SlowCar(product);
+                    vehicle.ID = biggestVehicleID;
                     break;
 
                 default:
