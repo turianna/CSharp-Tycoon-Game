@@ -116,6 +116,8 @@ namespace SpongeBobTycoonWPF.ViewModel
             BuyRiverSlowBridgeCommand = new DelegateCommand(param => structure = BuildMode.SLOWRIVERBRIDGE);
             BuyLakeFastBridgeCommand = new DelegateCommand(param => structure = BuildMode.FASTLAKEBRIDGE);
             BuyLakeSlowBridgeCommand = new DelegateCommand(param => structure = BuildMode.SLOWLAKEBRIDGE);
+            TerraformUpCommand = new DelegateCommand(param => structure = BuildMode.TERRAFORM_UP);
+            TerraformDownCommand = new DelegateCommand(param => structure = BuildMode.TERRAFORM_DOWN);
             //ExitBuildCommand = new DelegateCommand(param => structure = BuildMode.NONE);
 
             MovingVehicleList = new ObservableCollection<Vehicle>();
@@ -149,8 +151,8 @@ namespace SpongeBobTycoonWPF.ViewModel
 
                     Board.Add(new GameField
                     {
-                        x = j,
-                        y = i,
+                        x = i,
+                        y = j,
                         Color = color_int,
                         ClickCommand = new DelegateCommand(param =>
                         {
@@ -166,7 +168,7 @@ namespace SpongeBobTycoonWPF.ViewModel
 
             }
         }
-        
+
         private void StopTime()
         {
             model.StopTimer();
@@ -246,6 +248,11 @@ namespace SpongeBobTycoonWPF.ViewModel
             
         }
 
+        private void Model_InsufficientFunds(object? sender, EventArgs e)
+        {
+            MessageBox.Show("Nincs elég pénzed!");
+        }
+
         private void Model_TimerTick(object? sender, int e)
         {
             GameTime = model.gameTimer;
@@ -260,9 +267,13 @@ namespace SpongeBobTycoonWPF.ViewModel
                 case Forest:
                     //ViewModelForest(e);
                     break;
-
             }
-                       
+        }
+        private void UpdateField(FieldChangedEventArgs e)
+        {
+            int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry);
+
+            Board[e.x * 100 + e.y].Color = color_int;
         }
 
         private void Model_Refresh(object? sender, EventArgs e)
@@ -282,23 +293,17 @@ namespace SpongeBobTycoonWPF.ViewModel
             model.StartNewGame();
         }
 
-        public void UpdateField(FieldChangedEventArgs e)
-        {
-            int color_int = DecideColor_int(model.Board(e.y, e.x).fieldType, model.Board(e.y, e.x).industry);
-
-            Board[e.y* 100 + e.x].Color = color_int;
-        }
 
         public void ViewModelForest(FieldChangedEventArgs e)
         {
-            if (model.Board(e.y, e.x).fieldType is Forest)
+            if (model.Board(e.x, e.y).fieldType is Forest)
             {
-                Forest forest = (Forest)model.Board(e.y, e.x).fieldType!;
-                Board[e.y * 100 + e.x].Content = forest.treeCount.ToString();
+                Forest forest = (Forest)model.Board(e.x, e.y).fieldType!;
+                Board[e.x * 100 + e.y].Content = forest.treeCount.ToString();
             }
             else
             {
-                Board[e.y * 100 + e.x].Content = "";
+                Board[e.x * 100 + e.y].Content = "";
             }
         }
 
@@ -325,16 +330,35 @@ namespace SpongeBobTycoonWPF.ViewModel
                 case BuildMode.SLOWLAKEBRIDGE:
                     model.BuyBridge(x, y, false, false);
                     break;
+                case BuildMode.TERRAFORM_UP:
+                    model.Terraform(x, y, true);
+                    break;
+                case BuildMode.TERRAFORM_DOWN:
+                    model.Terraform(x, y, false);
+                    break;
                 case BuildMode.NONE:
                     break;
             }
         }
 
+        /* this was only used to test terraforming, but it can be useful later to check the z coordinates, so I left it in
+        private void showZCoordinates()
+        {
+            for (int i = 0; i < 50; i++) //i = y
+                {
+                    for (int j = 0; j < 100; j++) //j = x
+                    {
+                        Board[i * 100 + j].Content = model.Board(i, j).Z.ToString();
+                    }
+            }
+        }
+        */
+
         public void ViewModel_PutStop(int x, int y)
         {
-            if (model.board[y,x].isStop== true)
+            if (model.board[x,y].isStop== true)
             {
-                Board[y * 100 + x].Content = "S";
+                Board[x * 100 + y].Content = "S";
             }
             
         }
