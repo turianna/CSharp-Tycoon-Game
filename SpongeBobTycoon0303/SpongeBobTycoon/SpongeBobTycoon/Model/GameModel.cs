@@ -111,14 +111,25 @@ namespace SpongeBobTycoon.Model
         public void BuyRoad(int x, int y) {
 
             if (board[x,y].fieldType is Grass)
-            {
-                money -= 20;             
+            {           
                 board[x, y].fieldType = new Road();
                 ChangeBalance(-20);
-                OnMoneyChanged(money);
-                
                 OnFieldChanged(x, y, board[x, y].fieldType);
-                CheckBalance();
+
+            }else if (board[x, y].fieldType is Forest)
+            {
+                Field? forestToRemove = null;
+                foreach (Field f in forests)
+                {
+                    if(f.X == x && f.Y == y)
+                    {
+                        forestToRemove = f;
+                    }
+                }
+                if(forestToRemove != null) forests.Remove(forestToRemove);
+                board[x, y].fieldType = new Road();
+                ChangeBalance(-60);
+                OnFieldChanged(x, y, board[x, y].fieldType);
             }
 
         }
@@ -142,10 +153,8 @@ namespace SpongeBobTycoon.Model
 
             ChangeBalance(-vehicle.cost);
 
-            OnMoneyChanged(money);
             parkingVehicles.Add(vehicle);
             OnVehicleBought(vehicle);
-            CheckBalance();
         }
         
         public void OnVehicleBought(Vehicle vehicle)
@@ -160,17 +169,14 @@ namespace SpongeBobTycoon.Model
                 if (isFast) {
                     board[x, y].fieldType = new FastBridge(isRiver);
                     ChangeBalance(-400);
-                    OnMoneyChanged(money);
                 }
                 else
                 {
                     board[x, y].fieldType = new SlowBridge(isRiver);
                     ChangeBalance(-200);
-                    OnMoneyChanged(money);
                 }
 
                 OnFieldChanged(x, y, board[x, y].fieldType);
-                CheckBalance();
             }
 
 
@@ -232,7 +238,8 @@ namespace SpongeBobTycoon.Model
         {
             if (money + amount < 0)
             {
-                OnInsufficientFunds();
+                timer.Stop();
+                OnGameOver();
                 return;
             }
             money += amount;
@@ -240,15 +247,6 @@ namespace SpongeBobTycoon.Model
             
         }
 
-        public void CheckBalance() 
-        {
-            if (money < 0)
-            {
-                timer.Stop();
-                OnGameOver();
-            }
-        
-        } //ha lenullázódik a pénzünk akkor OnGameOver
         public async Task LoadGame(String path) { }
         public async Task SaveGame(String path) { }
 
