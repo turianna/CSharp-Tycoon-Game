@@ -110,7 +110,7 @@ namespace SpongeBobTycoon.Model
             if (board[y,x].fieldType is Grass)
             {
                 board[y, x].fieldType = new Road();
-                money -= 2000;
+                money -= 20;
                 OnMoneyChanged(money);              
                 OnFieldChanged(x, y, board[y, x].fieldType);
                 CheckBalance();

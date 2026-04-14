@@ -258,7 +258,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             switch (e.fieldType)
             {
                 case Forest:
-                    ViewModelForest(e);
+                    //ViewModelForest(e);
                     break;
 
             }
@@ -345,8 +345,23 @@ namespace SpongeBobTycoonWPF.ViewModel
 
             switch (ft)
             {
-                case Forest:
-                    color_int = 1;
+                case Forest forest:
+                    if(forest.treeCount == 1)
+                    {
+                        color_int = 11;
+                    }
+                    else if(forest.treeCount == 2)
+                    {
+                        color_int = 12;
+                    }
+                    else if (forest.treeCount == 3)
+                    {
+                        color_int = 13;
+                    }
+                    else
+                    {
+                        color_int = 14;
+                    }
                     break;
 
                 case Lava:

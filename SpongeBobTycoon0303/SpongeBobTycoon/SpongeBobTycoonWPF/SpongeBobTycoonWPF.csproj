@@ -18,7 +18,13 @@
     <None Remove="Images\citizen.png" />
     <None Remove="Images\down-arrow.png" />
     <None Remove="Images\fast-forward.png" />
+    <None Remove="Images\homok.png" />
+    <None Remove="Images\korall1.png" />
+    <None Remove="Images\korall2.png" />
+    <None Remove="Images\korall3.png" />
+    <None Remove="Images\korall4.png" />
     <None Remove="Images\lake.png" />
+    <None Remove="Images\lava2.png" />
     <None Remove="Images\modernbridge.png" />
     <None Remove="Images\movingcar.png" />
     <None Remove="Images\net.png" />
@@ -51,9 +57,15 @@
     <Resource Include="Images\citizen.png" />
     <Resource Include="Images\down-arrow.png" />
     <Resource Include="Images\fast-forward.png" />
+    <Resource Include="Images\homok.png" />
+    <Resource Include="Images\korall1.png" />
+    <Resource Include="Images\korall2.png" />
+    <Resource Include="Images\korall3.png" />
+    <Resource Include="Images\korall4.png" />
     <Resource Include="Images\lake.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\lava2.png" />
     <Resource Include="Images\modernbridge.png" />
     <Resource Include="Images\movingcar.png" />
     <Resource Include="Images\net.png" />
