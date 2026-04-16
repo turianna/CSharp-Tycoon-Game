@@ -126,7 +126,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             MovingVehicleList = new ObservableCollection<Vehicle>();
             ParkingVehicleList = new ObservableCollection<Vehicle>();
             MovingVehicleListSize = model.movingVehicles.Count;
-            ParkingVehicleListSize = model.parkingVehicles.Count;
+            ParkingVehicleListSize = ParkingVehicleList.Count;
             structure = BuildMode.NONE;
 
             /*
