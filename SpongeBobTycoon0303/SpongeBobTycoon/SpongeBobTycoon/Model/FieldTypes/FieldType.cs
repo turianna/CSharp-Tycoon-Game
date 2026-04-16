@@ -11,5 +11,12 @@ namespace SpongeBobTycoon.Model.FieldTypes
         public int X;
         public int Y;
 
+
+        public FieldType() { }
+        public FieldType(int x, int y)
+        {
+            this.X = x;
+            this.Y = y;
+        }
     }
 }

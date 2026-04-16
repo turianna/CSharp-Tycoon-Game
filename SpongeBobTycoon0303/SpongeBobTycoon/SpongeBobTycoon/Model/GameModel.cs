@@ -19,6 +19,9 @@ namespace SpongeBobTycoon.Model
 
         public List<Vehicle> movingVehicles { get; set; }
         public List<Field> forests { get; set; }
+
+        private Vehicle VehicleForRoute { get; set; }
+        private List<Stop> StopsForRoute { get; set; }
         public int money { get; set; }
 
         private TerraformingManager TerraformManager = new TerraformingManager();
@@ -165,8 +168,7 @@ namespace SpongeBobTycoon.Model
 
         public void ChosenVehicle(Vehicle v)
         {
-            ChangeBalance(-200);
-            movingVehicles.Add(v);
+            movingVehicles.Add(v); // ennek is a routemanagerbe kell kerülnie
             int j = -1;
             for (int i = 0; i < parkingVehicles.Count; i++)
             {
@@ -176,6 +178,7 @@ namespace SpongeBobTycoon.Model
                 }
             }
             if (j != -1) parkingVehicles.RemoveAt(j);
+            VehicleForRoute = v;
         }
         
         public void OnVehicleBought(Vehicle vehicle)
@@ -207,12 +210,33 @@ namespace SpongeBobTycoon.Model
             if (board[x, y].fieldType is Road && IsStopValid(x,y) && board[x, y].industry!.product is not Citizen)
             {
                 board[x, y].isStop = true;
-                Stop stop = new Stop();
+                Stop stop = new Stop(x,y);
                 stops.Add(stop);
             }
             
         }
+        public void SelectStop(int x, int y)
+        {
+            if (board[x,y].fieldType is Stop)
+            {
+                foreach(Stop stop in stops)
+                {
+                    if (stop.X == x && stop.Y == y)
+                    {
+                        StopsForRoute.Add(stop);
+                    }
+                }
+            }
+        }
 
+        public void CreateRoute()
+        {
+            RouteManager routemanager = new RouteManager(VehicleForRoute);
+            foreach(Stop stop in StopsForRoute)
+            {
+                routemanager.stops.Add(stop);
+            }
+        }
         public void Terraform(int x, int y, bool isUp)
         {
             bool successfulTerraform = TerraformManager.Terraform(board, x, y, isUp);

@@ -356,7 +356,16 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Content="Moving Car"/>
+                                    <Button  Command="{Binding ClickCommand}" CommandParameter="{Binding Vehicle}">
+                                        <TextBlock>
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="Vehicle type: {0}, Product: {1}">
+                                                    <Binding Path="VehicleType"/>
+                                                    <Binding Path="Product" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Button>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -372,12 +381,21 @@
                         <ItemsControl ItemsSource="{Binding ParkingVehicleList}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <UniformGrid Rows="{Binding ParkingCarVehicleSize}" Columns="1"/>
+                                    <UniformGrid Columns="1"/>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Content="Parking Car" Command="{Binding SelectVehicleCommand}" CommandParameter="{Binding Vehicle}" />
+                                    <Button Command="{Binding ClickCommand}" CommandParameter="{Binding Vehicle}" >
+                                        <TextBlock>
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="Vehicle type: {0}, Product: {1}">
+                                                    <Binding Path="VehicleType"/>
+                                                    <Binding Path="Product" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Button>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -386,6 +404,28 @@
             </MenuItem>
         </Menu>
 
+        <Menu Grid.Row="0" HorizontalAlignment="Right">
+            <Menu.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"/>
+                </ItemsPanelTemplate>
+            </Menu.ItemsPanel>
+            <Button Content="Create Route" Command="{Binding CreateRouteCommand}" BorderBrush="Black">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Route_IsOn}" Value="true">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Route_IsOn}" Value="false">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Menu>
+        
         <ItemsControl Grid.Row="1" ItemsSource="{Binding Board}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -401,7 +441,7 @@
                                     <DataTrigger Binding="{Binding Color}" Value="0">
                                         <Setter Property="Background">
                                             <Setter.Value>
-                                                <ImageBrush ImageSource="Images/lava2.png" Stretch="Fill"/>
+                                                <ImageBrush ImageSource="Images/lava3.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
                                         <Setter Property="BorderThickness" Value="0" />
