@@ -377,7 +377,7 @@
                             </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Content="Parking Car" Command="{Binding ClickCommand}" CommandParameter="{Binding vehicle}" />
+                                    <Button Content="Parking Car" Command="{Binding SelectVehicleCommand}" CommandParameter="{Binding Vehicle}" />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
