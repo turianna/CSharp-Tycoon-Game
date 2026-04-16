@@ -65,8 +65,8 @@ namespace SpongeBobTycoonWPF.ViewModel
         public BuildMode structure;
 
         public ObservableCollection<GameField> Board { get; private set; }
-        public ObservableCollection<VehicleButton> MovingVehicleList { get; private set; }
-        public ObservableCollection<VehicleButton> ParkingVehicleList { get; private set; }
+        public ObservableCollection<Vehicle> MovingVehicleList { get; private set; }
+        public ObservableCollection<Vehicle> ParkingVehicleList { get; private set; }
         public int GameTime { 
             get { 
                 return time; 
@@ -120,11 +120,11 @@ namespace SpongeBobTycoonWPF.ViewModel
             TerraformUpCommand = new DelegateCommand(param => structure = BuildMode.TERRAFORM_UP);
             TerraformDownCommand = new DelegateCommand(param => structure = BuildMode.TERRAFORM_DOWN);
 
-            SelectVehicleCommand = new DelegateCommand(param => structure = BuildMode.ROUTE );
+            SelectVehicleCommand = new DelegateCommand(param => VehicleForRoute(param));
             //ExitBuildCommand = new DelegateCommand(param => structure = BuildMode.NONE);
 
-            MovingVehicleList = new ObservableCollection<VehicleButton>();
-            ParkingVehicleList = new ObservableCollection<VehicleButton>();
+            MovingVehicleList = new ObservableCollection<Vehicle>();
+            ParkingVehicleList = new ObservableCollection<Vehicle>();
             MovingVehicleListSize = model.movingVehicles.Count;
             ParkingVehicleListSize = model.parkingVehicles.Count;
             structure = BuildMode.NONE;
@@ -264,27 +264,34 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
         }
 
-
-        private void Model_VehicleBought(object? sender, Vehicle e)
+        private void VehicleForRoute(object v)
         {
-            ParkingVehicleList.Add(new VehicleButton
+            model.ChangeBalance(-400);
+            Vehicle vehicle = (Vehicle)v;
+            RouteManager rm = new RouteManager(vehicle);
+            int j = -1;
+            for(int i = 0; i < ParkingVehicleList.Count; i++)
             {
-                vehicle = e,
-                ClickCommand = new DelegateCommand(param =>
+                if (ParkingVehicleList[i].ID == vehicle.ID)
                 {
-                    if (param is Vehicle v)
-                    {
-                        VehicleClick(v);
-                    }
-                })
-            });
+                    j = i;
+                }
+            }
+            if(j != -1) ParkingVehicleList.RemoveAt(j);
+            model.ChosenVehicle(vehicle);
+            MovingVehicleList.Add(vehicle);
+            ParkingVehicleList.Clear();
 
-
-            //ParkingVehicleList.Add(new Vehicle(e.product));
-            
         }
 
 
+        private void Model_VehicleBought(object? sender, Vehicle e)
+        {
+            ParkingVehicleList.Add(e);
+        }
+
+
+        
         private void Model_TimerTick(object? sender, int e)
         {
             GameTime = model.gameTimer;
@@ -339,11 +346,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
         }
 
-        public void VehicleClick(Vehicle v)
-        {
-            RouteManager routeManager = new RouteManager();
-            routeManager.vehicle = v;
-        }
+        
 
         public void HandleClick(int x, int y)
         {

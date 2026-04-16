@@ -162,6 +162,21 @@ namespace SpongeBobTycoon.Model
             parkingVehicles.Add(vehicle);
             OnVehicleBought(vehicle);
         }
+
+        public void ChosenVehicle(Vehicle v)
+        {
+            ChangeBalance(-200);
+            movingVehicles.Add(v);
+            int j = -1;
+            for (int i = 0; i < parkingVehicles.Count; i++)
+            {
+                if (parkingVehicles[i].ID == v.ID)
+                {
+                    j = i;
+                }
+            }
+            if (j != -1) parkingVehicles.RemoveAt(j);
+        }
         
         public void OnVehicleBought(Vehicle vehicle)
         {
@@ -240,7 +255,7 @@ namespace SpongeBobTycoon.Model
         }
 
 
-        private void ChangeBalance(int amount)
+        public void ChangeBalance(int amount)
         {
             if (money + amount < 0)
             {

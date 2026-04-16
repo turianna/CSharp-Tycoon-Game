@@ -12,9 +12,11 @@ namespace SpongeBobTycoon.Model
         public Vehicle? vehicle {  get; set; }
         public List<Stop>? stops { get; set; }
 
-        public RouteManager() 
+
+
+        public RouteManager(Vehicle v) 
         { 
-        
+            vehicle = v;
         }
 
         public bool ValidRoute()
