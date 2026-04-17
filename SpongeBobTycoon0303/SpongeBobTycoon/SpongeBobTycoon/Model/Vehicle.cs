@@ -14,6 +14,7 @@ namespace SpongeBobTycoon.Model
         public List<(int, int)>? route {  get; set; }
         public Product ingredient;
         public Product product;
+        public string productName;
         public int ID;
         public Direction direction { get; set; }
         public int time;
@@ -22,6 +23,8 @@ namespace SpongeBobTycoon.Model
         public int repairCost;
         public int capacity;
         public int cost;
+        public int x;
+        public int y;
 
 
         //public (int,int) startPoint = path[0]

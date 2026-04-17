@@ -114,6 +114,8 @@ namespace SpongeBobTycoonWPF.ViewModel
             this.model.VehicleBought += Model_VehicleBought;
             this.model.GameOver += Model_GameOver;
             this.model.Refresh += Model_Refresh;
+            this.model.AddMovingVehicle += Model_AddMovingVehicle;
+            this.model.CarStepped += Model_CarStepped;
 
             StartCommand = new DelegateCommand(param => StartGame(param));
             StopTimeCommand = new DelegateCommand(_ => StopTime());
@@ -315,10 +317,62 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         public void CreateRoute()
         {
-            model.CreateRoute();
+            model.ModelCreateRoute();
             Route_IsOn = false;
         }
 
+        private void Model_AddMovingVehicle(object? sender, Vehicle e)
+        {
+            if (e is FastCar)
+            {
+                VMvehicleType = "Truck";
+            }
+            else
+            {
+                VMvehicleType = "Van";
+            }
+            switch (e.product)
+            {
+                case Algae:
+                    VMProduct = "Algee";
+                    break;
+                case Burger:
+                    VMProduct = "Burger";
+                    break;
+                case Citizen:
+                    VMProduct = "Citizen";
+                    break;
+                case Meat:
+                    VMProduct = "Meat";
+                    break;
+                case Net:
+                    VMProduct = "Net";
+                    break;
+                case Petfood:
+                    VMProduct = "Petfood";
+                    break;
+                case Spatula:
+                    VMProduct = "Spatula";
+                    break;
+                case Wood:
+                    VMProduct = "Wood";
+                    break;
+                    //Kéredes: Lehet a vehiclenek egy string productja? Mert ez nem jó itt.
+            }
+            MovingVehicleList.Add(new VehicleButton
+            {
+                Vehicle = e,
+                Product = VMProduct, //át kell írni a vehicle.product.tostring()re
+                VehicleType = VMvehicleType, //ezt is át kell írni
+                ClickCommand = new DelegateCommand(param =>
+                {
+                    if (param is Vehicle v)
+                    {
+                        VehicleForRoute(v); //ClickCommand, Ezt is át kell írni valamire ami illik arra mit kell csinálnia ha rákattintunk egy moving vehiclere
+                    }
+                })
+            });
+        }
         private void Model_VehicleBought(object? sender, Vehicle e)
         {
             if (e is FastCar)
@@ -489,6 +543,20 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
             
         }
+
+        public void Model_CarStepped(object sender, (int, int)coord)
+        {
+            if (model.board[coord.Item1, coord.Item2].isVehicle == true)
+            {
+                Board[coord.Item1 * 100 + coord.Item2].Content = "C";
+            }
+            else
+            {
+                Board[coord.Item1 * 100 + coord.Item2].Content = "";
+            }
+
+        }
+
 
         private int DecideColor_int(FieldType? ft, Industry? ind) 
         {

@@ -36,7 +36,8 @@ namespace SpongeBobTycoon.Model.FieldTypes
         public bool isVehicle;
         public Stop(int x, int y) : base(x, y) 
         {
-            
+            this.X = x;
+            this.Y = y;
         }
  
 
