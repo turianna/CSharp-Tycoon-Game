@@ -19,6 +19,9 @@ namespace SpongeBobTycoon.Model
 
         public List<Vehicle> movingVehicles { get; set; }
         public List<Field> forests { get; set; }
+
+        private Vehicle VehicleForRoute { get; set; }
+        private List<Stop> StopsForRoute { get; set; }
         public int money { get; set; }
 
         private TerraformingManager TerraformManager = new TerraformingManager();
@@ -32,12 +35,17 @@ namespace SpongeBobTycoon.Model
         public event EventHandler<FieldChangedEventArgs>? FieldChanged;
         public event EventHandler<Vehicle>? VehicleBought; //updatelni kell a parkoló autók listáját
         public event EventHandler Refresh;
+        public event EventHandler<(int,int)>? CarStepped;
+        public event EventHandler<Vehicle>? AddMovingVehicle;
 
         public event EventHandler<int>? TimerTick;
         public ITimer timer;
         public int gameTime;
+        public int fastCarTime;
+        public int slowCarTime;
         public TimeStatus timeStatus;
         public int gameTimer;
+        public int biggestVehicleID;
 
 
         public Field[,] board;
@@ -52,6 +60,7 @@ namespace SpongeBobTycoon.Model
             board = new Field[50, 100];
             parkingVehicles = new List<Vehicle>();
             movingVehicles = new List<Vehicle>();
+            StopsForRoute = new List<Stop>();
 
             GameData = new GameData();
             DataAccess = dataAccess;
@@ -64,9 +73,13 @@ namespace SpongeBobTycoon.Model
             timer.Elapsed += new EventHandler(Timer_Elapsed);
 
             gameTime = 4;
+            fastCarTime = 1;
+            slowCarTime = 3;
             gameTimer = 0;
             timeStatus = TimeStatus.BASE;
             money = 10000;
+            biggestVehicleID = 0;
+
             
             timer.Start();
         }
@@ -90,9 +103,13 @@ namespace SpongeBobTycoon.Model
             }
             
             gameTime = 4;
+            fastCarTime = 1;
+            slowCarTime = 3;
+
             gameTimer = 0;
             timeStatus = TimeStatus.BASE;
             money = 10000;
+            biggestVehicleID = 0;
             OnMoneyChanged(money);
 
             timer.Start();
@@ -112,29 +129,43 @@ namespace SpongeBobTycoon.Model
 
         public void BuyRoad(int x, int y) {
 
-            if (board[x,y].fieldType is Grass)
+            if (board[x,y].fieldType is Grass && board[x,y].industry.product is not Citizen)
             {           
                 board[x, y].fieldType = new Road();
                 ChangeBalance(-20);
-                OnMoneyChanged(money);
-                
                 OnFieldChanged(x, y, board[x, y].fieldType);
-                CheckBalance();
+
+            }else if (board[x, y].fieldType is Forest && board[x, y].industry.product is not Citizen)
+            {
+                Field? forestToRemove = null;
+                foreach (Field f in forests)
+                {
+                    if(f.X == x && f.Y == y)
+                    {
+                        forestToRemove = f;
+                    }
+                }
+                if(forestToRemove != null) forests.Remove(forestToRemove);
+                board[x, y].fieldType = new Road();
+                ChangeBalance(-60);
+                OnFieldChanged(x, y, board[x, y].fieldType);
             }
 
         }
         public void BuyVehicle(VehicleType vehicleType, Product product) 
         {
             Vehicle vehicle;
-            
+            biggestVehicleID += 1;
             switch(vehicleType)
             {
                 case VehicleType.FastCar:
                     vehicle = new FastCar(product);
+                    vehicle.ID = biggestVehicleID;
                     break;
 
                 case VehicleType.SlowCar:
                     vehicle = new SlowCar(product);
+                    vehicle.ID = biggestVehicleID;
                     break;
 
                 default:
@@ -143,10 +174,23 @@ namespace SpongeBobTycoon.Model
 
             ChangeBalance(-vehicle.cost);
 
-            OnMoneyChanged(money);
             parkingVehicles.Add(vehicle);
             OnVehicleBought(vehicle);
-            CheckBalance();
+        }
+
+        public void ChosenVehicle(Vehicle v)
+        {
+            movingVehicles.Add(v); // ennek is a routemanagerbe kell kerülnie
+            int j = -1;
+            for (int i = 0; i < parkingVehicles.Count; i++)
+            {
+                if (parkingVehicles[i].ID == v.ID)
+                {
+                    j = i;
+                }
+            }
+            if (j != -1) parkingVehicles.RemoveAt(j);
+            VehicleForRoute = v;
         }
         
         public void OnVehicleBought(Vehicle vehicle)
@@ -161,17 +205,14 @@ namespace SpongeBobTycoon.Model
                 if (isFast) {
                     board[x, y].fieldType = new FastBridge(isRiver);
                     ChangeBalance(-400);
-                    OnMoneyChanged(money);
                 }
                 else
                 {
                     board[x, y].fieldType = new SlowBridge(isRiver);
                     ChangeBalance(-200);
-                    OnMoneyChanged(money);
                 }
 
                 OnFieldChanged(x, y, board[x, y].fieldType);
-                CheckBalance();
             }
 
 
@@ -181,10 +222,40 @@ namespace SpongeBobTycoon.Model
             if (board[x, y].fieldType is Road && IsStopValid(x,y) && board[x, y].industry!.product is not Citizen)
             {
                 board[x, y].isStop = true;
-                Stop stop = new Stop();
+                Stop stop = new Stop(x,y);
                 stops.Add(stop);
             }
             
+        }
+        public void SelectStop(int x, int y)
+        {
+            if (board[x,y].isStop == true)
+            {
+                foreach(Stop stop in stops)
+                {
+                    if (stop.X == x && stop.Y == y)
+                    {
+                        StopsForRoute.Add(stop);
+                    }
+                }
+            }
+        }
+
+        public void ModelCreateRoute()
+        {
+            RouteManager routemanager = new RouteManager(VehicleForRoute);
+            foreach(Stop stop in StopsForRoute)
+            {
+                routemanager.stops.Add(stop);
+            }
+            StopsForRoute.Clear();
+            if (routemanager.DesignRoute(this))
+            {
+                movingVehicles.Add(routemanager.vehicle);
+                OnAddMovingVehicle(VehicleForRoute);
+                board[VehicleForRoute.x,VehicleForRoute.y].isVehicle = true;
+                OnCarStepped((VehicleForRoute.x, VehicleForRoute.y));
+            }
         }
 
         public void Terraform(int x, int y, bool isUp)
@@ -229,11 +300,12 @@ namespace SpongeBobTycoon.Model
         }
 
 
-        private void ChangeBalance(int amount)
+        public void ChangeBalance(int amount)
         {
             if (money + amount < 0)
             {
-                OnInsufficientFunds();
+                timer.Stop();
+                OnGameOver();
                 return;
             }
             money += amount;
@@ -241,15 +313,6 @@ namespace SpongeBobTycoon.Model
             
         }
 
-        public void CheckBalance() 
-        {
-            if (money < 0)
-            {
-                timer.Stop();
-                OnGameOver();
-            }
-        
-        } //ha lenullázódik a pénzünk akkor OnGameOver
         public async Task LoadGame(String path) { }
         public async Task SaveGame(String path) { }
 
@@ -260,6 +323,11 @@ namespace SpongeBobTycoon.Model
             GameOver?.Invoke(this, EventArgs.Empty);
         }
 
+        public void OnAddMovingVehicle(Vehicle v)
+        {
+            AddMovingVehicle?.Invoke(this, v);
+        }
+
         public void OnMoneyChanged(int m)
         {
             MoneyChanged?.Invoke(this, m);
@@ -268,6 +336,11 @@ namespace SpongeBobTycoon.Model
         public void OnInsufficientFunds()
         {
             InsufficientFunds?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void OnCarStepped((int,int) coord)
+        {
+            CarStepped?.Invoke(this, coord);
         }
 
         public void OnFieldChanged(int x, int y, FieldType type)
@@ -317,11 +390,29 @@ namespace SpongeBobTycoon.Model
         {
 
             gameTime--;
+            slowCarTime--;
+            if(slowCarTime == 0)
+            {
+                GameModelTickSlowVehicles();
+                switch (timeStatus)
+                {
+                    case TimeStatus.BASE:
+                        slowCarTime = 12;
+                        break;
+                    case TimeStatus.FAST:
+                        slowCarTime = 6;
+                        break;
+                    case TimeStatus.FASTEST:
+                        slowCarTime = 3;
+                        break;
+                }
+            }
             if(gameTime == 0)
             {
                 gameTimer++;
                 OnTimerTick(gameTimer);
-                GameModelTick();
+                GameModelTickForest();
+                GameModelTickFastVehicles();
                 switch (timeStatus)
                 {
                     case TimeStatus.BASE:
@@ -338,7 +429,59 @@ namespace SpongeBobTycoon.Model
             
         }
 
-        private void GameModelTick() 
+        private void CarStep(Vehicle v)
+        {
+
+            (int,int)[] localRoute = new (int,int)[v.route.Count];
+            localRoute = v.route.ToArray();
+            for (int i = 0; i < (localRoute.Length); i++)
+            {
+                if (localRoute[i].Item1 == v.x && localRoute[i].Item2 == v.y)
+                {
+                    if (i == (localRoute.Length) - 1)
+                    {
+                        board[v.x, v.y].isVehicle = false;
+                        OnCarStepped((v.x, v.y));
+                        v.x = localRoute[0].Item1;
+                        v.y = localRoute[0].Item2;
+                        board[v.x,v.y].isVehicle = true;
+                        OnCarStepped((v.x, v.y));
+
+                    }
+                    else
+                    {
+                        board[v.x, v.y].isVehicle = false;
+                        OnCarStepped((v.x, v.y));
+                        v.x = localRoute[i + 1].Item1;
+                        v.y = localRoute[i + 1].Item2;
+                        board[v.x, v.y].isVehicle = true;
+                        OnCarStepped((v.x, v.y));
+                    }
+
+                }
+
+            }
+        }
+
+        private void GameModelTickFastVehicles()
+        {
+            foreach (Vehicle v in movingVehicles)
+            {
+                if(v is SlowCar)
+                {
+                    CarStep(v);
+                }
+            }
+        }
+        private void GameModelTickSlowVehicles()
+        {
+            foreach(Vehicle v in movingVehicles)
+            {
+                
+            }
+        }
+
+        private void GameModelTickForest() 
         {
             //forest growth
             List<Field> newForests = new List<Field>(); //ez a lista azért kell, hogy ne módosítsuk a forests listát miközben iterálunk rajta, mert az hibához vezetne

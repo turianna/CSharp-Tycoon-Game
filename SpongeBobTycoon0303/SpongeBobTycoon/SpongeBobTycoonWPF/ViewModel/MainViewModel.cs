@@ -23,29 +23,41 @@ namespace SpongeBobTycoonWPF.ViewModel
         public int color_int;
         public int MovingVehicleListSize;
         public int ParkingVehicleListSize;
+        private string VMvehicleType;
+        private string VMProduct;
+        
+       
 
         private int time=0;
 
         private int money;
+        private bool route_ison;
         public int Money
         {
             get => money;
             set { money = value; OnPropertyChanged(); }
+        }
+        public bool Route_IsOn
+        {
+            get => route_ison;
+            set { route_ison = value; OnPropertyChanged(); }
         }
 
         public DelegateCommand StartCommand { get; private set; }
         public DelegateCommand NewGameCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
         public DelegateCommand LoadCommand { get; private set; }
-        public DelegateCommand QuitCommand { get; private set; }
+        public DelegateCommand QuitCommand { get; private set; } 
         public DelegateCommand StopTimeCommand { get; private set; }
         public DelegateCommand StartTimeCommand { get; private set; }
         public DelegateCommand SpeedUpTimeCommand { get; private set; }
+
 
         public DelegateCommand TerraformUpCommand { get; private set; }
         public DelegateCommand TerraformDownCommand { get; private set; }
 
         public DelegateCommand CreateRouteCommand { get; private set; }
+        public DelegateCommand SelectVehicleCommand { get; private set; }
 
         public DelegateCommand BuyRoadCommand { get; private set; }
         public DelegateCommand PutStopCommand { get; private set; }
@@ -60,12 +72,12 @@ namespace SpongeBobTycoonWPF.ViewModel
         public DelegateCommand BuyLakeFastBridgeCommand { get; private set; }
         public DelegateCommand BuyLakeSlowBridgeCommand { get; private set; }
 
-
+        
         public BuildMode structure;
 
         public ObservableCollection<GameField> Board { get; private set; }
-        public ObservableCollection<Vehicle> MovingVehicleList { get; private set; }
-        public ObservableCollection<Vehicle> ParkingVehicleList { get; private set; }
+        public ObservableCollection<VehicleButton> MovingVehicleList { get; private set; }
+        public ObservableCollection<VehicleButton> ParkingVehicleList { get; private set; }
         public int GameTime { 
             get { 
                 return time; 
@@ -102,11 +114,14 @@ namespace SpongeBobTycoonWPF.ViewModel
             this.model.VehicleBought += Model_VehicleBought;
             this.model.GameOver += Model_GameOver;
             this.model.Refresh += Model_Refresh;
+            this.model.AddMovingVehicle += Model_AddMovingVehicle;
+            this.model.CarStepped += Model_CarStepped;
 
             StartCommand = new DelegateCommand(param => StartGame(param));
             StopTimeCommand = new DelegateCommand(_ => StopTime());
             StartTimeCommand = new DelegateCommand(_ => StartTime());
             SpeedUpTimeCommand = new DelegateCommand(_ => SpeedUpTime());
+            CreateRouteCommand = new DelegateCommand(_ => CreateRoute());
             QuitCommand = new DelegateCommand(_ => QuitGame());
             BuyVanCommand = new DelegateCommand(param => BuyVan(param));
             BuyTruckCommand = new DelegateCommand(param => BuyTruck(param));
@@ -118,25 +133,47 @@ namespace SpongeBobTycoonWPF.ViewModel
             BuyLakeSlowBridgeCommand = new DelegateCommand(param => structure = BuildMode.SLOWLAKEBRIDGE);
             TerraformUpCommand = new DelegateCommand(param => structure = BuildMode.TERRAFORM_UP);
             TerraformDownCommand = new DelegateCommand(param => structure = BuildMode.TERRAFORM_DOWN);
+
+            //SelectVehicleCommand = new DelegateCommand(param => VehicleForRoute(param));
             //ExitBuildCommand = new DelegateCommand(param => structure = BuildMode.NONE);
 
-            MovingVehicleList = new ObservableCollection<Vehicle>();
-            ParkingVehicleList = new ObservableCollection<Vehicle>();
-            MovingVehicleListSize = model.movingVehicles.Count;
+            MovingVehicleList = new ObservableCollection<VehicleButton>();
+            ParkingVehicleList = new ObservableCollection<VehicleButton>();
+            MovingVehicleListSize = MovingVehicleList.Count;
             ParkingVehicleListSize = ParkingVehicleList.Count;
             structure = BuildMode.NONE;
 
-
-            foreach (Vehicle vehicle in model.movingVehicles)
+            /*
+            foreach (Vehicle v in model.movingVehicles)
             {
-                MovingVehicleList.Add(new Vehicle(vehicle.product));
+                MovingVehicleList.Add(new VehicleButton
+                {
+                    vehicle = v,
+                    ClickCommand = new DelegateCommand(param =>
+                    {
+                        if (param is Vehicle v)
+                        {
+                            VehicleClick(v);
+                        }
+                    })
+                });
             }
 
-            foreach (Vehicle vehicle in model.parkingVehicles)
+            foreach (Vehicle v in model.parkingVehicles)
             {
-                ParkingVehicleList.Add(new Vehicle(vehicle.product));
+                ParkingVehicleList.Add(new VehicleButton
+                {
+                    vehicle = v,
+                    ClickCommand = new DelegateCommand(param =>
+                    {
+                       if (param is Vehicle v)
+                       {
+                           VehicleClick(v);
+                       }
+                    })
+                });
             }
-
+            */
             Board = new ObservableCollection<GameField>();
             Create();
         }
@@ -241,18 +278,157 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
         }
 
+        private void VehicleForRoute(object v)
+        {
+            Vehicle vehicle = (Vehicle)v;
+            RouteManager rm = new RouteManager(vehicle);
+            int j = -1;
+            for(int i = 0; i < ParkingVehicleList.Count; i++)
+            {
+                if (ParkingVehicleList[i].Vehicle.ID == vehicle.ID)
+                {
+                    j = i;
+                }
+            }
+            if (j != -1)
+            {
+                ParkingVehicleList.RemoveAt(j);
 
+            }
+            model.ChosenVehicle(vehicle);
+            structure = BuildMode.ROUTE;
+            Route_IsOn = true;//jelezni kell a viewnak hogy jelenítsen meg egy gombot
+            /*
+            MovingVehicleList.Add(new VehicleButton
+            {
+                Vehicle = vehicle,
+                Product = VMProduct, //át kell írni a vehicle.product.tostring()re
+                VehicleType = VMvehicleType, //ezt is át kell írni
+                ClickCommand = new DelegateCommand(param =>
+                {
+                    if (param is Vehicle v)
+                    {
+                        VehicleForRoute(v); //ClickCommand, Ezt is át kell írni valamire ami illik arra mit kell csinálnia ha rákattintunk egy moving vehiclere
+                    }
+                })
+            }); ; //nem ide kell
+            */
+        }
+
+        public void CreateRoute()
+        {
+            model.ModelCreateRoute();
+            Route_IsOn = false;
+        }
+
+        private void Model_AddMovingVehicle(object? sender, Vehicle e)
+        {
+            if (e is FastCar)
+            {
+                VMvehicleType = "Truck";
+            }
+            else
+            {
+                VMvehicleType = "Van";
+            }
+            switch (e.product)
+            {
+                case Algae:
+                    VMProduct = "Algee";
+                    break;
+                case Burger:
+                    VMProduct = "Burger";
+                    break;
+                case Citizen:
+                    VMProduct = "Citizen";
+                    break;
+                case Meat:
+                    VMProduct = "Meat";
+                    break;
+                case Net:
+                    VMProduct = "Net";
+                    break;
+                case Petfood:
+                    VMProduct = "Petfood";
+                    break;
+                case Spatula:
+                    VMProduct = "Spatula";
+                    break;
+                case Wood:
+                    VMProduct = "Wood";
+                    break;
+                    //Kéredes: Lehet a vehiclenek egy string productja? Mert ez nem jó itt.
+            }
+            MovingVehicleList.Add(new VehicleButton
+            {
+                Vehicle = e,
+                Product = VMProduct, //át kell írni a vehicle.product.tostring()re
+                VehicleType = VMvehicleType, //ezt is át kell írni
+                ClickCommand = new DelegateCommand(param =>
+                {
+                    if (param is Vehicle v)
+                    {
+                        VehicleForRoute(v); //ClickCommand, Ezt is át kell írni valamire ami illik arra mit kell csinálnia ha rákattintunk egy moving vehiclere
+                    }
+                })
+            });
+        }
         private void Model_VehicleBought(object? sender, Vehicle e)
         {
-            ParkingVehicleList.Add(new Vehicle(e.product));
-            
+            if (e is FastCar)
+            {
+                VMvehicleType = "Truck";
+            }
+            else
+            {
+                VMvehicleType= "Van";
+            }
+            switch(e.product)
+            {
+                case Algae:
+                    VMProduct = "Algee";
+                    break;
+                case Burger:
+                    VMProduct = "Burger";
+                    break;
+                case Citizen:
+                    VMProduct = "Citizen";
+                    break;
+                case Meat:
+                    VMProduct = "Meat";
+                    break;
+                case Net:
+                    VMProduct = "Net";
+                    break;
+                case Petfood:
+                    VMProduct = "Petfood";
+                    break;
+                case Spatula:
+                    VMProduct = "Spatula";
+                    break;
+                case Wood:
+                    VMProduct = "Wood";
+                    break;
+                //Kéredes: Lehet a vehiclenek egy string productja? Mert ez nem jó itt.
+            }
+            ParkingVehicleList.Add(new VehicleButton
+            {
+                Vehicle = e,
+                Product = VMProduct,
+                VehicleType = VMvehicleType,
+                ClickCommand = new DelegateCommand(param =>
+                {
+                    if (param is Vehicle v)
+                    {
+                        VehicleForRoute(v); //ClickCommand, ez csak akkor fog lefutni ha rákattintunk a gombra
+                    }
+                })
+            });
+            //ParkingVehicleList.Add(e);
         }
 
-        private void Model_InsufficientFunds(object? sender, EventArgs e)
-        {
-            MessageBox.Show("Nincs elég pénzed!");
-        }
 
+        
         private void Model_TimerTick(object? sender, int e)
         {
             GameTime = model.gameTimer;
@@ -307,6 +483,8 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
         }
 
+        
+
         public void HandleClick(int x, int y)
         {
             switch (structure)
@@ -336,6 +514,9 @@ namespace SpongeBobTycoonWPF.ViewModel
                 case BuildMode.TERRAFORM_DOWN:
                     model.Terraform(x, y, false);
                     break;
+                case BuildMode.ROUTE:
+                    model.SelectStop(x,y);
+                    break;
                 case BuildMode.NONE:
                     break;
             }
@@ -362,6 +543,20 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
             
         }
+
+        public void Model_CarStepped(object sender, (int, int)coord)
+        {
+            if (model.board[coord.Item1, coord.Item2].isVehicle == true)
+            {
+                Board[coord.Item1 * 100 + coord.Item2].Content = "C";
+            }
+            else
+            {
+                Board[coord.Item1 * 100 + coord.Item2].Content = "";
+            }
+
+        }
+
 
         private int DecideColor_int(FieldType? ft, Industry? ind) 
         {
