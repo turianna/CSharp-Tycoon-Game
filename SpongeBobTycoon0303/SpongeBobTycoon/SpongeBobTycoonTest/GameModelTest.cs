@@ -81,20 +81,20 @@ namespace SpongeBobTycoonTest
 
             model.BuyRoad(8, 0); // Folyó
             Assert.IsFalse(model.board[8, 0].fieldType is Road);
-            Assert.AreEqual(model.money, 9940);
+            Assert.AreEqual(model.money, 9920);
             model.BuyRoad(14, 3); //Ipar
             Assert.IsFalse(model.board[14, 3].fieldType is Road);
-            Assert.AreEqual(model.money, 9940);
+            Assert.AreEqual(model.money, 9920);
             model.BuyRoad(3, 41); // Tó
             Assert.IsFalse(model.board[3, 41].fieldType is Road);
-            Assert.AreEqual(model.money, 9940);
+            Assert.AreEqual(model.money, 9920);
             model.BuyRoad(2, 5); // Város
             Assert.IsFalse(model.board[2, 5].fieldType is Road);
-            Assert.AreEqual(model.money, 9940);
+            Assert.AreEqual(model.money, 9920);
 
-            model.BuyRoad(2, 32); // erdő
-            Assert.IsTrue(model.board[2, 32].fieldType is Road);
-            Assert.AreEqual(model.money,9840);
+            model.BuyRoad(2, 31); // erdő
+            Assert.IsTrue(model.board[2, 31].fieldType is Road);
+            Assert.AreEqual(model.money,9860);
         }
 
         [TestMethod]
