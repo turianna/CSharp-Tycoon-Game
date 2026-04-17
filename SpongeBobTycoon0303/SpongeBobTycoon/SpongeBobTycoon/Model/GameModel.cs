@@ -41,6 +41,11 @@ namespace SpongeBobTycoon.Model
 
 
         public Field[,] board;
+        public Field Board(int i, int j)
+        {
+            return board[i, j];
+        }
+
         public GameModel(DataAccess dataAccess)
         {
             stops = new List<Stop>();
@@ -65,6 +70,7 @@ namespace SpongeBobTycoon.Model
             
             timer.Start();
         }
+       
 
         public void StartNewGame()
         {
@@ -92,11 +98,7 @@ namespace SpongeBobTycoon.Model
             timer.Start();
         }
 
-        public Field Board(int i, int j) 
-        {
-            return board[i, j];
-        }
-
+        
         public void InitializeBoard()
         {
             for(int i = 0; i < 50; i++)
@@ -111,8 +113,7 @@ namespace SpongeBobTycoon.Model
         public void BuyRoad(int x, int y) {
 
             if (board[x,y].fieldType is Grass)
-            {
-                money -= 20;             
+            {           
                 board[x, y].fieldType = new Road();
                 ChangeBalance(-20);
                 OnMoneyChanged(money);
