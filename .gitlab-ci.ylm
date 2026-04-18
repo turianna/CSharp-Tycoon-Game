@@ -1,0 +1,89 @@
+image: mcr.microsoft.com/dotnet/sdk:10.0
+
+stages:
+  - build
+  - test
+  - deploy
+
+include:
+  
+  - template: Jobs/Dependency-Scanning.gitlab-ci.yml
+  - template: Jobs/Secret-Detection.gitlab-ci.yml
+  - template: Jobs/SAST.gitlab-ci.yml
+  - component: szofttech.inf.elte.hu/components/code-quality-dotnet/windows@2
+
+variables:
+  GITLAB_ADVANCED_SAST_ENABLED: true
+
+build_model:
+  stage: build
+  before_script:
+    - dotnet --version
+  script:
+    - dotnet build SpongebobTycoon0303.SpongebobTycoon.SpongeBobTycoon
+    
+build_view:
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:10.0-windowsservercore-ltsc2025
+  tags: [windows]
+  before_script:
+    - dotnet --version
+  script:
+    - dotnet build SpongebobTycoon0303.SpongebobTycoon.SpongeBobTycoonWPF
+
+test_model:
+  stage: test
+  before_script:    
+    - dotnet restore SpongebobTycoon0303.SpongebobTycoon.SpongeBobTycoonTest --packages .nuget
+  script:
+    - > 
+      dotnet test SpongebobTycoon0303.SpongebobTycoon.SpongeBobTycoonTest --no-restore
+      --logger:"junit;MethodFormat=Class;FailureBodyFormat=Verbose"
+      --collect="XPlat Code Coverage"
+    - apt-get update -yqq
+    - apt-get install -yqq bc
+    - dotnet tool install --tool-path . dotnet-reportgenerator-globaltool
+    - ./reportgenerator "-reports:$CI_PROJECT_DIR/*/TestResults/*/coverage.cobertura.xml" "-targetdir:report" "-reporttypes:Cobertura"
+    
+    - ./reportgenerator "-reports:$CI_PROJECT_DIR/*/TestResults/*/coverage.cobertura.xml" "-targetdir:report/html" "-reporttypes:Html"
+    - line_rate="$(head -n 3 ./report/Cobertura.xml | sed 'N;N;s/.*line-rate="\([^" ]*\).*/\1/g')"
+    - coverage=$(echo "${line_rate} * 100" | bc)
+    - 'printf "TOTAL_COVERAGE=%2.2f\n" "$coverage"'
+    
+  artifacts:
+    paths:
+      - ./*/TestResults/TestResults.xml
+      - ./*/TestResults/*/coverage.cobertura.xml
+      - ./report/html/
+    reports:
+      junit:
+        - ./*/TestResults/TestResults.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: ./*/TestResults/*/coverage.cobertura.xml
+  coverage: '/TOTAL_COVERAGE=(\d+.\d+)/'
+   
+  cache:
+    key: "unittest-$CI_COMMIT_REF_SLUG"
+    paths:
+      - .nuget
+
+
+pages:
+  stage: deploy
+  image: ubuntu:24.04
+  before_script:
+    - apt-get update -yqq
+    - apt-get install -yqq doxygen graphviz
+  script:
+    - doxygen
+    - mkdir -p public/docs/
+    - cp -r doc/html/. public/docs/
+    - mkdir -p public/covergae
+    - cp -r report/html/. public/coverage/
+  artifacts:
+    paths:
+      - public
+    expire_in: 1 day
+  only:
+    - master
