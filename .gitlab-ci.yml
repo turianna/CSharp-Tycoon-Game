@@ -37,6 +37,7 @@ test_model:
     - dotnet restore SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoonTest --packages .nuget
   script:
     - > 
+      dotnet add package JUnitXml.TestLogger
       dotnet test SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoonTest --no-restore
       --logger:"junit;MethodFormat=Class;FailureBodyFormat=Verbose"
       --collect="XPlat Code Coverage"
