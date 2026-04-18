@@ -447,38 +447,175 @@
                                         <Setter Property="BorderThickness" Value="0" />
 
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Color}" Value="11">
+                                    <DataTrigger Binding="{Binding Color}" Value="110">
                                         <Setter Property="Background" >
                                             <Setter.Value>
-                                                <ImageBrush ImageSource="Images/korall1.png" Stretch="Fill"/>
+                                                <ImageBrush ImageSource="Images/korall1_0.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Color}" Value="12">
+                                    <DataTrigger Binding="{Binding Color}" Value="120">
                                         <Setter Property="Background" >
                                             <Setter.Value>
-                                                <ImageBrush ImageSource="Images/korall2.png" Stretch="Fill"/>
+                                                <ImageBrush ImageSource="Images/korall2_0.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Color}" Value="13">
+                                    <DataTrigger Binding="{Binding Color}" Value="130">
                                         <Setter Property="Background" >
                                             <Setter.Value>
-                                                <ImageBrush ImageSource="Images/korall3.png" Stretch="Fill"/>
+                                                <ImageBrush ImageSource="Images/korall3_0.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Color}" Value="14">
+                                    <DataTrigger Binding="{Binding Color}" Value="140">
                                         <Setter Property="Background" >
                                             <Setter.Value>
-                                                <ImageBrush ImageSource="Images/korall4.png" Stretch="Fill"/>
+                                                <ImageBrush ImageSource="Images/korall4_0.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
+
+                                    
+                                    <DataTrigger Binding="{Binding Color}" Value="111">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/korall1_1.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="121">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/korall2_1.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="131">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/korall3_1.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="141">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/korall4_1.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+
+                                    
+                                    <DataTrigger Binding="{Binding Color}" Value="112">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/korall1_2.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="122">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/korall2_2.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="132">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/korall3_2.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="142">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/korall4_2.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+
+                                    
+                                    <DataTrigger Binding="{Binding Color}" Value="113">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/korall1_3.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="123">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/korall2_3.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="133">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/korall3_3.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="143">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/korall4_3.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+
+                                    
+                                    <DataTrigger Binding="{Binding Color}" Value="114">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/korall1_4.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="124">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/korall2_4.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="134">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/korall3_4.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="144">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/korall4_4.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+
                                     <DataTrigger Binding="{Binding Color}" Value="2">
                                         <Setter Property="Background" Value="Red" />
                                         <Setter Property="BorderBrush" Value="Red" />
@@ -495,14 +632,45 @@
                                         <Setter Property="Background" Value="LightBlue" />
                                         <Setter Property="BorderBrush" Value="LightBlue" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Color}" Value="6">
-                                        <Setter Property="Background">
+                                    <DataTrigger Binding="{Binding Color}" Value="60">
+                                        <Setter Property="Background" >
                                             <Setter.Value>
-                                                <ImageBrush ImageSource="Images/homok.png" Stretch="Fill"/>
+                                                <ImageBrush ImageSource="Images/homok_0.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
                                         <Setter Property="BorderThickness" Value="0" />
-                                      
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="61">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/homok_1.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="62">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/homok_2.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="63">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/homok_3.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="64">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/homok_4.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
