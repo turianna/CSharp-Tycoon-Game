@@ -20,7 +20,7 @@ build_model:
   before_script:
     - dotnet --version
   script:
-    - dotnet build SpongeBobTycoon0303.SpongeBobTycoon.SpongeBobTycoon
+    - dotnet build SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoon
     
 build_view:
   stage: build
@@ -29,15 +29,15 @@ build_view:
   before_script:
     - dotnet --version
   script:
-    - dotnet build SpongeBobTycoon0303.SpongeBobTycoon.SpongeBobTycoonWPF
+    - dotnet build SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoonWPF
 
 test_model:
   stage: test
   before_script:    
-    - dotnet restore SpongeBobTycoon0303.SpongeBobTycoon.SpongeBobTycoonTest --packages .nuget
+    - dotnet restore SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoonTest --packages .nuget
   script:
     - > 
-      dotnet test SpongeBobTycoon0303.SpongeBobTycoon.SpongeBobTycoonTest --no-restore
+      dotnet test SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoonTest --no-restore
       --logger:"junit;MethodFormat=Class;FailureBodyFormat=Verbose"
       --collect="XPlat Code Coverage"
     - apt-get update -yqq
