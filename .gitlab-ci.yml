@@ -69,16 +69,26 @@ test_model:
 pages:
   stage: deploy
   image: ubuntu:24.04
+  
+  needs:
+    - job: test_model
+      artifacts: true
   before_script:
     - apt-get update -yqq
     - apt-get install -yqq doxygen graphviz
   script:
-    - ls -R
+  
     - doxygen Doxyfile
     - mkdir -p public/docs/
     - cp -r doc/html/. public/docs/
+    
     - mkdir -p public/coverage
-    - cp -r report/html/. public/coverage/
+    - |
+      if [ -d "report/html" ]; then
+        cp -r report/html/. public/coverage/
+      else
+        echo "Warning: report/html not found. Skipping coverage copy."
+      fi
   artifacts:
     paths:
       - public
