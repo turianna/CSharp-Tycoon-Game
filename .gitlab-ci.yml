@@ -45,9 +45,9 @@ test_model:
     - apt-get update -yqq
     - apt-get install -yqq bc
     - dotnet tool install --tool-path . dotnet-reportgenerator-globaltool
-    - ./reportgenerator "-reports:$CI_PROJECT_DIR/*/TestResults/*/coverage.cobertura.xml" "-targetdir:report" "-reporttypes:Cobertura"
+    - ./reportgenerator "-reports:$CI_PROJECT_DIR/TestResults/*/coverage.cobertura.xml" "-targetdir:report" "-reporttypes:Cobertura"
     
-    - ./reportgenerator "-reports:$CI_PROJECT_DIR/*/TestResults/*/coverage.cobertura.xml" "-targetdir:report/html" "-reporttypes:Html"
+    - ./reportgenerator "-reports:$CI_PROJECT_DIR/TestResults/*/coverage.cobertura.xml" "-targetdir:report/html" "-reporttypes:Html"
     - line_rate="$(head -n 3 ./report/Cobertura.xml | sed 'N;N;s/.*line-rate="\([^" ]*\).*/\1/g')"
     - coverage=$(echo "${line_rate} * 100" | bc)
     - 'printf "TOTAL_COVERAGE=%2.2f\n" "$coverage"'
@@ -59,10 +59,10 @@ test_model:
       - report/html/
     reports:
       junit:
-        - ./*/TestResults/TestResults.xml
+        - ./TestResults/TestResults.xml
       coverage_report:
         coverage_format: cobertura
-        path: ./*/TestResults/*/coverage.cobertura.xml
+        path: ./TestResults/*/coverage.cobertura.xml
   coverage: '/TOTAL_COVERAGE=(\d+.\d+)/'
    
   cache:
