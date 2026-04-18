@@ -73,7 +73,8 @@ pages:
     - apt-get update -yqq
     - apt-get install -yqq doxygen graphviz
   script:
-    - doxygen
+    - ls -R
+    - doxygen Doxyfile
     - mkdir -p public/docs/
     - cp -r doc/html/. public/docs/
     - mkdir -p public/coverage
