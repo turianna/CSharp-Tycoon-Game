@@ -36,43 +36,34 @@ test_model:
   before_script:    
     - dotnet restore SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoonTest --packages .nuget
   script:
+    # 1. ADD BOTH PACKAGES (Logger and Coverage Collector)
     - dotnet add SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoonTest package JUnitXml.TestLogger
+    - dotnet add SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoonTest package coverlet.collector
+    
     - > 
       dotnet test SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoonTest --no-restore
       --results-directory TestResults
       --logger:"junit;LogFileName=TestResults.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
       --collect="XPlat Code Coverage"
     
-    - ls -R TestResults
+    - ls -R TestResults 
     
     - apt-get update -yqq
     - apt-get install -yqq bc
     - dotnet tool install --tool-path . dotnet-reportgenerator-globaltool
     
-    - ./reportgenerator "-reports:TestResults/*/coverage.cobertura.xml" "-targetdir:report" "-reporttypes:Cobertura"
-    - ./reportgenerator "-reports:TestResults/*/coverage.cobertura.xml" "-targetdir:report/html" "-reporttypes:Html"
+    - ./reportgenerator "-reports:TestResults/**/coverage.cobertura.xml" "-targetdir:report" "-reporttypes:Cobertura"
+    - ./reportgenerator "-reports:TestResults/**/coverage.cobertura.xml" "-targetdir:report/html" "-reporttypes:Html"
     
-    - line_rate="$(head -n 3 ./report/Cobertura.xml | sed 'N;N;s/.*line-rate="\([^" ]*\).*/\1/g')"
-    - coverage=$(echo "${line_rate} * 100" | bc)
-    - 'printf "TOTAL_COVERAGE=%2.2f\n" "$coverage"'
-    
-  artifacts:
-    when: always
-    paths:
-      - TestResults/TestResults.xml
-      - TestResults/*/coverage.cobertura.xml
-      - report/html/
-    reports:
-      junit:
-        - TestResults/TestResults.xml  # REMOVED the "./*/" prefix
-      coverage_report:
-        coverage_format: cobertura
-        path: TestResults/*/coverage.cobertura.xml # REMOVED the "./*/" prefix
-  coverage: '/TOTAL_COVERAGE=(\d+.\d+)/'
-  cache:
-    key: "unittest-$CI_COMMIT_REF_SLUG"
-    paths:
-      - .nuget
+    - |
+      if [ -f "./report/Cobertura.xml" ]; then
+        line_rate=$(head -n 3 ./report/Cobertura.xml | sed 'N;N;s/.*line-rate="\([^" ]*\).*/\1/g')
+        coverage=$(echo "${line_rate} * 100" | bc)
+        printf "TOTAL_COVERAGE=%2.2f\n" "$coverage"
+      else
+        echo "Error: Cobertura.xml not found!"
+        exit 1
+      fi
 
 
 pages:
