@@ -39,6 +39,7 @@ test_model:
     - dotnet add SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoonTest package JUnitXml.TestLogger
     - > 
       dotnet test SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoonTest --no-restore
+      --results-directory TestResults
       --logger:"junit;MethodFormat=Class;FailureBodyFormat=Verbose"
       --collect="XPlat Code Coverage"
     - apt-get update -yqq
@@ -53,9 +54,9 @@ test_model:
     
   artifacts:
     paths:
-      - ./*/TestResults/TestResults.xml
-      - ./*/TestResults/*/coverage.cobertura.xml
-      - ./report/html/
+      - TestResults/TestResults.xml
+      - TestResults/*/coverage.cobertura.xml
+      - report/html/
     reports:
       junit:
         - ./*/TestResults/TestResults.xml
