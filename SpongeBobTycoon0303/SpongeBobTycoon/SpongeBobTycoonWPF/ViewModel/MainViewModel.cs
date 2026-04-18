@@ -184,7 +184,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             {
                 for (int j = 0; j < 100; j++) //j = x
                 {
-                    int color_int = DecideColor_int(model.Board(i, j).fieldType, model.Board(i, j).industry);
+                    int color_int = DecideColor_int(model.Board(i, j).fieldType, model.Board(i, j).industry, model.Board(i,j).Z);
 
                     Board.Add(new GameField
                     {
@@ -447,7 +447,7 @@ namespace SpongeBobTycoonWPF.ViewModel
         }
         private void UpdateField(FieldChangedEventArgs e)
         {
-            int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry);
+            int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry, model.Board(e.x, e.y).Z);
 
             Board[e.x * 100 + e.y].Color = color_int;
         }
@@ -558,28 +558,95 @@ namespace SpongeBobTycoonWPF.ViewModel
         }
 
 
-        private int DecideColor_int(FieldType? ft, Industry? ind) 
+        private int DecideColor_int(FieldType? ft, Industry? ind, int z) 
         {
             int color_int=6;
 
             switch (ft)
             {
                 case Forest forest:
-                    if(forest.treeCount == 1)
+                    switch (forest.treeCount)
                     {
-                        color_int = 11;
-                    }
-                    else if(forest.treeCount == 2)
-                    {
-                        color_int = 12;
-                    }
-                    else if (forest.treeCount == 3)
-                    {
-                        color_int = 13;
-                    }
-                    else
-                    {
-                        color_int = 14;
+                        case 1:
+                            switch (z)
+                            {
+                                case 0:
+                                    color_int = 110;
+                                    break;
+                                case 1:
+                                    color_int = 111;
+                                    break;
+                                case 2:
+                                    color_int = 112;
+                                    break;
+                                case 3:
+                                    color_int = 113;
+                                    break;
+                                case 4:
+                                    color_int = 114;
+                                    break;
+                            }
+                            break;
+                        case 2:
+                            switch (z)
+                            {
+                                case 0:
+                                    color_int = 120;
+                                    break;
+                                case 1:
+                                    color_int = 121;
+                                    break;
+                                case 2:
+                                    color_int = 122;
+                                    break;
+                                case 3:
+                                    color_int = 123;
+                                    break;
+                                case 4:
+                                    color_int = 124;
+                                    break;
+                            }
+                            break;
+                        case 3:
+                            switch (z)
+                            {
+                                case 0:
+                                    color_int = 130;
+                                    break;
+                                case 1:
+                                    color_int = 131;
+                                    break;
+                                case 2:
+                                    color_int = 132;
+                                    break;
+                                case 3:
+                                    color_int = 133;
+                                    break;
+                                case 4:
+                                    color_int = 134;
+                                    break;
+                            }
+                            break;
+                        case 4:
+                            switch (z)
+                            {
+                                case 0:
+                                    color_int = 140;
+                                    break;
+                                case 1:
+                                    color_int = 141;
+                                    break;
+                                case 2:
+                                    color_int = 142;
+                                    break;
+                                case 3:
+                                    color_int = 143;
+                                    break;
+                                case 4:
+                                    color_int = 144;
+                                    break;
+                            }
+                            break;
                     }
                     break;
 
@@ -591,8 +658,25 @@ namespace SpongeBobTycoonWPF.ViewModel
                     return 4;
 
                 case Grass:
-                     color_int = 6;
-                     break;
+                    switch (z)
+                    {
+                        case 0:
+                            color_int = 60;
+                            break;
+                        case 1:
+                            color_int = 61;
+                            break;
+                        case 2:
+                            color_int= 62;
+                            break;
+                        case 3:
+                            color_int = 63;
+                            break;
+                        case 4:
+                            color_int = 64;
+                            break;
+                    }
+                    break;
             }
                     switch (ind.product)
                     {
