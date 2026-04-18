@@ -36,8 +36,8 @@ test_model:
   before_script:    
     - dotnet restore SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoonTest --packages .nuget
   script:
+    - dotnet add SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoonTest package JUnitXml.TestLogger
     - > 
-      dotnet add package JUnitXml.TestLogger
       dotnet test SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoonTest --no-restore
       --logger:"junit;MethodFormat=Class;FailureBodyFormat=Verbose"
       --collect="XPlat Code Coverage"
@@ -80,7 +80,7 @@ pages:
     - doxygen
     - mkdir -p public/docs/
     - cp -r doc/html/. public/docs/
-    - mkdir -p public/covergae
+    - mkdir -p public/coverage
     - cp -r report/html/. public/coverage/
   artifacts:
     paths:
