@@ -17,9 +17,10 @@ namespace SpongeBobTycoon.Model
         public Industry? industry; 
         public bool isVehicle;
         public bool isStop;
+        public int id; // A viewhoz kell hogy jó képet rakjak az industrieshoz 
         //public bool isCrossRoad --> ez még lehet enum lesz
 
-        public Field(int x, int y,int z, Industry industry, FieldType ft, bool isVehicle, bool isStop)
+        public Field(int x, int y,int z, Industry industry, FieldType ft, bool isVehicle, bool isStop, int id)
         {
             this.X = x;
             this.Y = y;
@@ -27,7 +28,8 @@ namespace SpongeBobTycoon.Model
             this.industry = industry;
             this.fieldType = ft;
             this.isVehicle = isVehicle; //ennek is csak simán falsenak kéne lennie, szerintem nem kell a paraméter
-            this.isStop = isStop;   
+            this.isStop = isStop;
+            this.id = id;
         }
     }
 }

@@ -122,7 +122,7 @@ namespace SpongeBobTycoon.Model
             {
                 for(int j = 0; j < 100; j++)
                 {
-                    board[i, j] = new Field(i, j, 0, new Industry(), new FieldType(), false, false);
+                    board[i, j] = new Field(i, j, 0, new Industry(), new FieldType(), false, false,0);
                 }
             }
         }
