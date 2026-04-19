@@ -11,7 +11,8 @@ include:
   - template: Jobs/Secret-Detection.gitlab-ci.yml
   - template: Jobs/SAST.gitlab-ci.yml
   - component: szofttech.inf.elte.hu/components/code-quality-dotnet/windows@2
-
+    inputs:
+      check_path: "SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoon.sln" 
 variables:
   GITLAB_ADVANCED_SAST_ENABLED: true
 
