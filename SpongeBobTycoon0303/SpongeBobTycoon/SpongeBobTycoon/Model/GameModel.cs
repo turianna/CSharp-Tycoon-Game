@@ -1,4 +1,4 @@
-﻿using SpongeBobTycoon.Model.FieldTypes;
+using SpongeBobTycoon.Model.FieldTypes;
 using SpongeBobTycoon.Model.Industries;
 using SpongeBobTycoon.Model.Products;
 using SpongeBobTycoon.Persistence;
@@ -599,6 +599,5 @@ namespace SpongeBobTycoon.Model
 
             return forests;
         }
-        #endregion
     }
 }
