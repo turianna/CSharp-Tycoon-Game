@@ -497,7 +497,10 @@ namespace SpongeBobTycoon.Model
         {
             foreach(Vehicle v in movingVehicles)
             {
-                
+                if (v is FastCar)
+                {
+                    CarStep(v);
+                }
             }
         }
 
