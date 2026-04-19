@@ -26,7 +26,7 @@ namespace SpongeBobTycoon.Model
             route = new List<((int, int), (int, int), int)>();
             routeFinal = new List<(int, int)>();
             partRouteFinal = new List<(int, int)>();
-            queue = new Queue<(int, int)>();
+            
 
         }
 
@@ -38,10 +38,20 @@ namespace SpongeBobTycoon.Model
 
         private List<(int,int)> BFS(GameModel model, Stop cs, Stop ns)
         {
+            queue = new Queue<(int, int)>();
+            bool[,] visitedArray = new bool[model.board.GetLength(0), model.board.GetLength(1)];
+            for(int i = 0; i < model.board.GetLength(0); i++)
+            {
+                for(int j = 0; j <  model.board.GetLength(1); j++)
+                {
+                    visitedArray[i, j] = false;
+                }
+            }
             int crx = cs.X;
             int cry = cs.Y;
             int d = 0;
             partRouteFinal.Clear();
+            route.Clear();
 
             (int dx, int dy)[] directions =
                 {
@@ -49,51 +59,44 @@ namespace SpongeBobTycoon.Model
                     (0,-1),           (0,1),
                              (1,0)
                 };
+            queue.Enqueue((crx, cry));
+            visitedArray[crx, cry] = true;
 
-            while((crx != ns.X && cry != ns.Y) || queue.Count != 0)
+            while ((crx != ns.X || cry != ns.Y) && queue.Count != 0)
             {
+                var current = queue.Dequeue();
+                crx = current.Item1;
+                cry = current.Item2;
                 d++;
                 foreach (var (dx, dy) in directions)
                 {
                     int nx = crx + dx;
                     int ny = cry + dy;
-                    
 
                     if (nx >= 0 && nx < model.board.GetLength(0) &&
                         ny >= 0 && ny < model.board.GetLength(1))
                     {
-                        if (model.board[nx, ny].fieldType is Road)
+                        if (model.board[nx, ny].fieldType is Road && !visitedArray[nx,ny])
                         {
                             route.Add(((crx, cry), (nx, ny),d));
+                            visitedArray[nx,ny] = true;
                             queue.Enqueue((nx, ny));
                         }
 
                     }
                 }
-                (crx, cry) = queue.Dequeue();
             }
-
-            if (crx != ns.X && cry != ns.Y) //returns empty list if route isn't a closed circle
+            
+            if (crx != ns.X || cry != ns.Y) //supposed to return empty list if route isn't a closed circle, doesn't really work though
             {
                 return partRouteFinal;
             }
               
             route.Reverse();
-            (int,int) target;
             (int,int) start = (ns.X,ns.Y);
-            /*
-            foreach (((int x,int y)prev,(int x,int y)cur,int d)r in route)
-            {
-                if (r.cur.x == ns.X && r.cur.y == ns.Y)
-                {
-                    start = (r.cur.x, r.cur.y);
-                    target = (r.prev.x, r.prev.y);
 
-                }
-            }*/
-
-            int min = 5001;
-            while (cs.X != start.Item1 && cs.Y != start.Item2)
+            int min = 1000000;
+            while (cs.X != start.Item1 || cs.Y != start.Item2)
             {
                 foreach(((int x, int y) prev, (int x, int y) cur, int d)r in route)
                 {
@@ -113,6 +116,7 @@ namespace SpongeBobTycoon.Model
                     {
                         partRouteFinal.Add((r.cur.x,r.cur.y));
                         start = (r.prev.x,r.prev.y);
+
                     }
                 }
             }
@@ -126,10 +130,8 @@ namespace SpongeBobTycoon.Model
         {
             Stop current_stop;
             Stop next_stop;
-            List<(int, int)> routeCurrent;
+            List<(int, int)> routeCurrent ;
 
-            (int, int) current_stop_coordinates;
-            (int, int) next_stop_coordinates;
             if (ValidRoute() == true)
             {
                 for (int i = 0; i < (stops!.Count - 1); i++)
@@ -142,10 +144,10 @@ namespace SpongeBobTycoon.Model
                     if (routeCurrent.Count == 0) return false;
                     if (routeFinal.Count == 0)
                     {
-                        routeFinal = routeCurrent;
+                        routeFinal.AddRange(routeCurrent);
                     }
                     else{
-                        routeCurrent.RemoveAt(0);                    
+                        //routeCurrent.RemoveAt(0);                    
                         foreach((int,int)coord in routeCurrent)
                         {
                             routeFinal.Add(coord);
@@ -153,6 +155,18 @@ namespace SpongeBobTycoon.Model
                     }
                     
                 }
+                
+                if(stops.Count > 1)
+                {
+                    routeCurrent = BFS(model, stops[stops.Count - 1], stops[0]);
+                    if (routeCurrent.Count == 0) return false;
+                    //routeCurrent.RemoveAt(0);
+                    foreach ((int, int) coord in routeCurrent)
+                    {
+                        routeFinal.Add(coord);
+                    }
+                }
+                
                 vehicle.route = routeFinal;
                 vehicle.x = routeFinal.First().Item1;
                 vehicle.y = routeFinal.First().Item2;

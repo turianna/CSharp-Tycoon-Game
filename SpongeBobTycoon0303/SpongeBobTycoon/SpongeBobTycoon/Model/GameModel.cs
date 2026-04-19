@@ -181,7 +181,8 @@ namespace SpongeBobTycoon.Model
 
         public void ChosenVehicle(Vehicle v)
         {
-            movingVehicles.Add(v); // ennek is a routemanagerbe kell kerülnie
+            
+             // ennek is a routemanagerbe kell kerülnie
             int j = -1;
             for (int i = 0; i < parkingVehicles.Count; i++)
             {
@@ -476,6 +477,7 @@ namespace SpongeBobTycoon.Model
                         v.y = localRoute[i + 1].Item2;
                         board[v.x, v.y].isVehicle = true;
                         OnCarStepped((v.x, v.y));
+                        break;
                     }
 
                 }
@@ -487,7 +489,7 @@ namespace SpongeBobTycoon.Model
         {
             foreach (Vehicle v in movingVehicles)
             {
-                if(v is SlowCar)
+                if(v is FastCar)
                 {
                     CarStep(v);
                 }
@@ -497,7 +499,7 @@ namespace SpongeBobTycoon.Model
         {
             foreach(Vehicle v in movingVehicles)
             {
-                if (v is FastCar)
+                if (v is SlowCar)
                 {
                     CarStep(v);
                 }
