@@ -207,14 +207,23 @@ namespace SpongeBobTycoon.Model
         #region Routes & Stops
         public void PutStop(int x, int y) {
 
-            if (board[x, y].fieldType is Road && IsStopValid(x,y) && board[x, y].industry!.product is not Citizen)
+            bool isValid;
+            Industry? industry;
+
+            (isValid, industry) = IsStopValid(x, y);
+
+            if (board[x, y].fieldType is Road && isValid && board[x, y].industry!.product is not Citizen)
             {
                 board[x, y].isStop = true;
-                Stop stop = new Stop(x,y);
+                
+                Stop stop = new Stop(x,y, industry);
+                System.Diagnostics.Debug.WriteLine($"Stop created at ({x}, {y}) product: {industry.product.GetType().Name}, product amount: {industry.productAmount}");
                 stops.Add(stop);
             }
             
         }
+        
+
         public void SelectStop(int x, int y)
         {
             if (board[x,y].fieldType is Stop)
@@ -229,7 +238,7 @@ namespace SpongeBobTycoon.Model
             }
         }
 
-        public bool IsStopValid(int x, int y)
+        public (bool, Industry?) IsStopValid(int x, int y)
         {
             (int dx, int dy)[] directions =
                 {
@@ -248,12 +257,12 @@ namespace SpongeBobTycoon.Model
                 {
                     if (board[nx, ny].industry.product is not null)
                     {
-                        return true;
+                        return (true, board[nx, ny].industry);
                     }
 
                 }
             }
-            return false;
+            return (false, null);
         }
         
 

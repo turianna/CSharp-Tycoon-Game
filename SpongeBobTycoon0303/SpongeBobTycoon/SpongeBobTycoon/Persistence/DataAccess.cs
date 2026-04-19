@@ -147,17 +147,17 @@ namespace SpongeBobTycoon.Persistence
             switch (fieldType)
             {
                 case 'E':
-                    return (new Grass(), null);
+                    return (new Grass(), new Industry(null));
                 case 'R':
-                    return (new Lava(), null);
+                    return (new Lava(), new Industry(null));
                 case 'L':
-                    return (new Lava(), null);
+                    return (new Lava(), new Industry(null));
                 case 'C':
                     return (new Grass(), new Farm(new Citizen())); 
                 case 'D':
                     return (new Road(), new Farm(new Citizen()));
                 case 'T':
-                    return (new Forest(), null);
+                    return (new Forest(), new Industry(null));
                 case 'F':
                     switch (factoryType)
                     {

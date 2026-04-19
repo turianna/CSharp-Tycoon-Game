@@ -22,7 +22,7 @@ namespace SpongeBobTycoon.Model.Industries
         protected int productPerProduce;
 
         public Product product { get; set; }
-        protected int productAmount;
+        public int productAmount;
         public Industry(Product product)
         {
             this.product = product;

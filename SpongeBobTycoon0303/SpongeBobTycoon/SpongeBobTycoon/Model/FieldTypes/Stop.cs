@@ -37,9 +37,9 @@ namespace SpongeBobTycoon.Model.FieldTypes
         public Industry industry;
 
         public bool isVehicle;
-        public Stop(int x, int y) : base(x, y) 
+        public Stop(int x, int y, Industry industry) : base(x, y) 
         {
-            
+            this.industry = industry;
         }
  
 
