@@ -317,7 +317,7 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         public void CreateRoute()
         {
-            model.ModelCreateRoute();
+            model.CreateRoute();
             Route_IsOn = false;
         }
 
