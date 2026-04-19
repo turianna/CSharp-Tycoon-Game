@@ -65,3 +65,7 @@ test_model:
         echo "Error: Cobertura.xml not found!"
         exit 1
       fi
+  artifacts:
+    when: always
+    reports:
+      junit: TestResults/**/coverage.cobertura.xml
