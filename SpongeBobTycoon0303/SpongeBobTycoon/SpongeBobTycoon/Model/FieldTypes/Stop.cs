@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SpongeBobTycoon.Model.Industries;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,11 +34,12 @@ namespace SpongeBobTycoon.Model.FieldTypes
 
         } */
 
+        public Industry industry;
+
         public bool isVehicle;
-        public Stop(int x, int y) : base(x, y) 
+        public Stop(int x, int y, Industry industry) : base(x, y) 
         {
-            this.X = x;
-            this.Y = y;
+            this.industry = industry;
         }
  
 

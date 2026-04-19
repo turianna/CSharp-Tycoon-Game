@@ -317,7 +317,7 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         public void CreateRoute()
         {
-            model.ModelCreateRoute();
+            model.CreateRoute();
             Route_IsOn = false;
         }
 
@@ -681,13 +681,8 @@ namespace SpongeBobTycoonWPF.ViewModel
                     }
                     break;
             }
-                    switch (ind.product)
-                    {
-                        case Petfood:
-                            color_int = 2;
-                            break;
-
-                        case Burger:
+                switch(ind.product){
+                    case Burger:
                             switch (id) // burger 0. industry,burger,id
                             {
                                 case 1:
@@ -790,9 +785,9 @@ namespace SpongeBobTycoonWPF.ViewModel
                                     break;
                             }
                             break;
-                    }               
-                return color_int;
-
-        } 
+                }
+                                   
+            return color_int;
+        }
     }
 }
