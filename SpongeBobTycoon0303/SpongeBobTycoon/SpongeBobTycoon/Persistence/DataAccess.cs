@@ -34,13 +34,22 @@ namespace SpongeBobTycoon.Persistence
 
                 int i = 0; //indexes to know where to put a new field into the field matrix
                 int j = 0;
+                int algee_id = 0;
+                int burger_id = 0;
+                int meat_id = 0;
+                int net_id = 0;
+                int petfood_id = 0;
+                int spatula_id = 0;
+                int wood_id = 0;
+                int id = 0;
+
 
                 while ((line = sr.ReadLine()) != null)
                 {
 
                     //line = line.Trim();
                     line_seperated = line.Split(" ");
-
+                   
                     j = 0;
                     foreach (string field_data in line_seperated)
                     {
@@ -52,6 +61,7 @@ namespace SpongeBobTycoon.Persistence
                         Industry industry;
                         bool isVehicle = false;
                         bool isStop = false;
+                       
 
                         char height = field_data[0];
                         z = height - '0'; //converting char to int by exploiting unicode values
@@ -72,10 +82,45 @@ namespace SpongeBobTycoon.Persistence
 
                         (fieldType, industry) = DecideFieldTypeAndIndustry(fieldType_char, factoryType_char);
 
+                        switch (industry.product)
+                        {
+                            case Burger:
+                                burger_id++;
+                                id = burger_id;
+                                break;
+                            case Meat:
+                                meat_id++;
+                                id = meat_id;
+                                break;
+                            case Algae:
+                                algee_id++;
+                                id = algee_id;
+                                break;
+                            case Net:
+                                net_id++;
+                                id = net_id;
+                                break;
+                            case Petfood:
+                                petfood_id++;
+                                id = petfood_id;
+                                break;
+                            case Spatula:
+                                spatula_id++;
+                                id = spatula_id;
+                                break;
+                            case Wood:
+                                wood_id++;
+                                id = wood_id;
+                                break;
+                            default:
+                                id = 0; 
+                                break;
+
+                        }
 
                         if (i < 50 && j < 100)
                         {
-                            Field newField = new Field(x, y, z, industry, fieldType, isVehicle, isStop);
+                            Field newField = new Field(x, y, z, industry, fieldType, isVehicle, isStop,id);
                             fields[i, j] = newField;
 
                             if (fieldType is Forest) forests.Add(newField);
@@ -100,6 +145,7 @@ namespace SpongeBobTycoon.Persistence
 
         private (FieldType, Industry?) DecideFieldTypeAndIndustry(char fieldType, char factoryType) //helper method to keep clean code
         {
+
             List<Product> ingredients = new List<Product>();
             switch (fieldType)
             {

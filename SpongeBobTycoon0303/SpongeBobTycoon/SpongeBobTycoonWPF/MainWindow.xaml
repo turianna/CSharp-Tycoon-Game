@@ -620,10 +620,219 @@
                                         <Setter Property="Background" Value="Red" />
                                         <Setter Property="BorderBrush" Value="Red" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Color}" Value="3">
-                                        <Setter Property="Background" Value="Yellow" />
-                                        <Setter Property="BorderBrush" Value="Yellow" />
+                                    
+                                    <DataTrigger Binding="{Binding Color}" Value="2001">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger1.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2002">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger2.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2003">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger3.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2004">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger4.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2005">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger5.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2006">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger6.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2007">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger7.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding Color}" Value="2008">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger8.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2009">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger9.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2010">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger10.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2011">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger11.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2012">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger12.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2013">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger13.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2014">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger14.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding Color}" Value="2015">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger15.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2016">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger16.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2017">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger17.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2018">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger18.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2019">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger19.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2020">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger20.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="2021">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/burger21.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+
+                                    <DataTrigger Binding="{Binding Color}" Value="30">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/varos_0.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="31">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/varos_1.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="32">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/varos_2.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="33">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/varos_3.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="34">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/varos_4.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
+
                                     <DataTrigger Binding="{Binding Color}" Value="4">
                                         <Setter Property="Background" Value="Gray" />
                                         <Setter Property="BorderBrush" Value="Gray" />

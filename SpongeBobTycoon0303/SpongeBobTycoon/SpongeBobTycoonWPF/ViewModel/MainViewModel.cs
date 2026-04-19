@@ -184,7 +184,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             {
                 for (int j = 0; j < 100; j++) //j = x
                 {
-                    int color_int = DecideColor_int(model.Board(i, j).fieldType, model.Board(i, j).industry, model.Board(i,j).Z);
+                    int color_int = DecideColor_int(model.Board(i, j).fieldType, model.Board(i, j).industry, model.Board(i,j).Z, model.Board(i,j).id);
 
                     Board.Add(new GameField
                     {
@@ -447,7 +447,7 @@ namespace SpongeBobTycoonWPF.ViewModel
         }
         private void UpdateField(FieldChangedEventArgs e)
         {
-            int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry, model.Board(e.x, e.y).Z);
+            int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry, model.Board(e.x, e.y).Z, model.Board(e.x,e.y).id);
 
             Board[e.x * 100 + e.y].Color = color_int;
         }
@@ -558,7 +558,7 @@ namespace SpongeBobTycoonWPF.ViewModel
         }
 
 
-        private int DecideColor_int(FieldType? ft, Industry? ind, int z) 
+        private int DecideColor_int(FieldType? ft, Industry? ind, int z, int id) 
         {
             int color_int=6;
 
@@ -685,7 +685,72 @@ namespace SpongeBobTycoonWPF.ViewModel
                             break;
 
                         case Burger:
-                            color_int = 2;
+                            switch (id) // burger 0. industry,burger,id
+                            {
+                                case 1:
+                                   color_int = 2001;
+                                   break;
+                                case 2:
+                                   color_int = 2002;
+                                   break;
+                                case 3:
+                                   color_int = 2003;
+                                   break;
+                                case 4:
+                                   color_int = 2004;
+                                   break;
+                                case 5:
+                                   color_int = 2005;
+                                   break;
+                                case 6:
+                                    color_int = 2006;
+                                    break;
+                                case 7:
+                                    color_int = 2007;
+                                    break;
+                                case 8:
+                                    color_int = 2008;
+                                    break;
+                                case 9:
+                                    color_int = 2009;
+                                    break;
+                                case 10:
+                                    color_int = 2010;
+                                    break;
+                                case 11:
+                                    color_int = 2011;
+                                    break;
+                                case 12:
+                                    color_int = 2012;
+                                    break;
+                                case 13:
+                                   color_int = 2013;
+                                   break;
+                                case 14:
+                                    color_int = 2014;
+                                    break;
+                                case 15:
+                                    color_int = 2015;
+                                    break;
+                                case 16:
+                                    color_int = 2016;
+                                    break;
+                                case 17:
+                                    color_int = 2017;
+                                    break;
+                                case 18:
+                                    color_int = 2018;
+                                    break;
+                                case 19:
+                                    color_int = 2019;
+                                    break;
+                                case 20:
+                                    color_int = 2020;
+                                    break;
+                                case 21:
+                                    color_int = 2021;
+                                    break;
+                            }
                             break;
 
                         case Wood:
@@ -709,7 +774,18 @@ namespace SpongeBobTycoonWPF.ViewModel
                             break;
 
                         case Citizen:
-                            color_int = 3;
+                            switch (z)
+                            {
+                                case 1:
+                                    color_int = 31;
+                                    break;
+                                case 2:
+                                    color_int = 32;
+                                    break;
+                                case 3:
+                                    color_int = 33;
+                                    break;
+                            }
                             break;
                     }               
                 return color_int;
