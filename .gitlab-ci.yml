@@ -64,34 +64,3 @@ test_model:
         echo "Error: Cobertura.xml not found!"
         exit 1
       fi
-
-
-pages:
-  stage: deploy
-  image: ubuntu:24.04
-  
-  needs:
-    - job: test_model
-      artifacts: true
-  before_script:
-    - apt-get update -yqq
-    - apt-get install -yqq doxygen graphviz
-  script:
-  
-    - doxygen Doxyfile
-    - mkdir -p public/docs/
-    - cp -r doc/html/. public/docs/
-    
-    - mkdir -p public/coverage
-    - |
-      if [ -d "report/html" ]; then
-        cp -r report/html/. public/coverage/
-      else
-        echo "Warning: report/html not found. Skipping coverage copy."
-      fi
-  artifacts:
-    paths:
-      - public
-    expire_in: 1 day
-  only:
-    - master
