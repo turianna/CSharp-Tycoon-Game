@@ -68,25 +68,25 @@ namespace SpongeBobTycoon.Model.FieldTypes
 
             try
             {
-                if (fields[i - 1, j].fieldType is Grass) { directions.Add(Direction.UP); }
+                if (fields[i, j-1].fieldType is Grass) { directions.Add(Direction.UP); }
             }
             catch (IndexOutOfRangeException) { }
 
             try
             {
-                if (fields[i + 1, j].fieldType is Grass) { directions.Add(Direction.DOWN); }
+                if (fields[i, j+1].fieldType is Grass) { directions.Add(Direction.DOWN); }
             }
             catch (IndexOutOfRangeException) { }
 
             try
             {
-                if (fields[i, j - 1].fieldType is Grass) { directions.Add(Direction.LEFT); }
+                if (fields[i-1, j].fieldType is Grass) { directions.Add(Direction.LEFT); }
             }
             catch (IndexOutOfRangeException) { }
 
             try
             {
-                if (fields[i, j + 1].fieldType is Grass) { directions.Add(Direction.RIGHT); }
+                if (fields[i+1, j].fieldType is Grass) { directions.Add(Direction.RIGHT); }
             }
             catch (IndexOutOfRangeException) { }
             

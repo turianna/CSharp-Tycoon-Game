@@ -13,16 +13,62 @@
     <None Remove="Images\bridge.png" />
     <None Remove="Images\bridge_small.png" />
     <None Remove="Images\burger.png" />
+    <None Remove="Images\burger1.png" />
+    <None Remove="Images\burger10.png" />
+    <None Remove="Images\burger11.png" />
+    <None Remove="Images\burger12.png" />
+    <None Remove="Images\burger13.png" />
+    <None Remove="Images\burger14.png" />
+    <None Remove="Images\burger15.png" />
+    <None Remove="Images\burger16.png" />
+    <None Remove="Images\burger17.png" />
+    <None Remove="Images\burger18.png" />
+    <None Remove="Images\burger19.png" />
+    <None Remove="Images\burger2.png" />
+    <None Remove="Images\burger20.png" />
+    <None Remove="Images\burger21.png" />
+    <None Remove="Images\burger3.png" />
+    <None Remove="Images\burger4.png" />
+    <None Remove="Images\burger5.png" />
+    <None Remove="Images\burger6.png" />
+    <None Remove="Images\burger7.png" />
+    <None Remove="Images\burger8.png" />
+    <None Remove="Images\burger9.png" />
     <None Remove="Images\buy.png" />
     <None Remove="Images\buy_vehicle.png" />
     <None Remove="Images\citizen.png" />
     <None Remove="Images\down-arrow.png" />
     <None Remove="Images\fast-forward.png" />
     <None Remove="Images\homok.png" />
+    <None Remove="Images\homok_0.png" />
+    <None Remove="Images\homok_1.png" />
+    <None Remove="Images\homok_2.png" />
+    <None Remove="Images\homok_3.png" />
+    <None Remove="Images\homok_4.png" />
     <None Remove="Images\korall1.png" />
+    <None Remove="Images\korall1_0.png" />
+    <None Remove="Images\korall1_1.png" />
+    <None Remove="Images\korall1_2.png" />
+    <None Remove="Images\korall1_3.png" />
+    <None Remove="Images\korall1_4.png" />
     <None Remove="Images\korall2.png" />
+    <None Remove="Images\korall2_0.png" />
+    <None Remove="Images\korall2_1.png" />
+    <None Remove="Images\korall2_2.png" />
+    <None Remove="Images\korall2_3.png" />
+    <None Remove="Images\korall2_4.png" />
     <None Remove="Images\korall3.png" />
+    <None Remove="Images\korall3_0.png" />
+    <None Remove="Images\korall3_1.png" />
+    <None Remove="Images\korall3_2.png" />
+    <None Remove="Images\korall3_3.png" />
+    <None Remove="Images\korall3_4.png" />
     <None Remove="Images\korall4.png" />
+    <None Remove="Images\korall4_0.png" />
+    <None Remove="Images\korall4_1.png" />
+    <None Remove="Images\korall4_2.png" />
+    <None Remove="Images\korall4_3.png" />
+    <None Remove="Images\korall4_4.png" />
     <None Remove="Images\lake.png" />
     <None Remove="Images\lava2.png" />
     <None Remove="Images\lava3.png" />
@@ -41,8 +87,44 @@
     <None Remove="Images\truck.png" />
     <None Remove="Images\up-arrow.png" />
     <None Remove="Images\van.png" />
+    <None Remove="Images\varos1_1.png" />
+    <None Remove="Images\varos1_2.png" />
+    <None Remove="Images\varos1_3.png" />
+    <None Remove="Images\varos_0.png" />
+    <None Remove="Images\varos_1.png" />
+    <None Remove="Images\varos_2.png" />
+    <None Remove="Images\varos_3.png" />
+    <None Remove="Images\varos_4.png" />
     <None Remove="Images\wood.png" />
     <None Remove="Images\woodbridge.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\burger18.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\burger1.png" />
+    <Resource Include="Images\burger10.png" />
+    <Resource Include="Images\burger11.png" />
+    <Resource Include="Images\burger12.png" />
+    <Resource Include="Images\burger13.png" />
+    <Resource Include="Images\burger14.png" />
+    <Resource Include="Images\burger15.png" />
+    <Resource Include="Images\burger16.png" />
+    <Resource Include="Images\burger17.png" />
+    <Resource Include="Images\burger19.png" />
+    <Resource Include="Images\burger2.png" />
+    <Resource Include="Images\burger20.png" />
+    <Resource Include="Images\burger21.png" />
+    <Resource Include="Images\burger3.png" />
+    <Resource Include="Images\burger4.png" />
+    <Resource Include="Images\burger5.png" />
+    <Resource Include="Images\burger6.png" />
+    <Resource Include="Images\burger7.png" />
+    <Resource Include="Images\burger8.png" />
+    <Resource Include="Images\burger9.png" />
+    <Resource Include="Images\korall3_2.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,15 +140,33 @@
     <Resource Include="Images\citizen.png" />
     <Resource Include="Images\down-arrow.png" />
     <Resource Include="Images\fast-forward.png" />
-    <Resource Include="Images\homok.png" />
-    <Resource Include="Images\korall1.png" />
-    <Resource Include="Images\korall2.png" />
-    <Resource Include="Images\korall3.png" />
-    <Resource Include="Images\korall4.png" />
+    <Resource Include="Images\homok_0.png" />
+    <Resource Include="Images\homok_1.png" />
+    <Resource Include="Images\homok_2.png" />
+    <Resource Include="Images\homok_3.png" />
+    <Resource Include="Images\homok_4.png" />
+    <Resource Include="Images\korall1_0.png" />
+    <Resource Include="Images\korall1_1.png" />
+    <Resource Include="Images\korall1_2.png" />
+    <Resource Include="Images\korall1_3.png" />
+    <Resource Include="Images\korall1_4.png" />
+    <Resource Include="Images\korall2_0.png" />
+    <Resource Include="Images\korall2_1.png" />
+    <Resource Include="Images\korall2_2.png" />
+    <Resource Include="Images\korall2_3.png" />
+    <Resource Include="Images\korall2_4.png" />
+    <Resource Include="Images\korall3_0.png" />
+    <Resource Include="Images\korall3_1.png" />
+    <Resource Include="Images\korall3_3.png" />
+    <Resource Include="Images\korall3_4.png" />
+    <Resource Include="Images\korall4_0.png" />
+    <Resource Include="Images\korall4_1.png" />
+    <Resource Include="Images\korall4_2.png" />
+    <Resource Include="Images\korall4_3.png" />
+    <Resource Include="Images\korall4_4.png" />
     <Resource Include="Images\lake.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Images\lava2.png" />
     <Resource Include="Images\lava3.png" />
     <Resource Include="Images\modernbridge.png" />
     <Resource Include="Images\movingcar.png" />
@@ -84,6 +184,11 @@
     <Resource Include="Images\truck.png" />
     <Resource Include="Images\up-arrow.png" />
     <Resource Include="Images\van.png" />
+    <Resource Include="Images\varos_0.png" />
+    <Resource Include="Images\varos_1.png" />
+    <Resource Include="Images\varos_2.png" />
+    <Resource Include="Images\varos_3.png" />
+    <Resource Include="Images\varos_4.png" />
     <Resource Include="Images\wood.png" />
     <Resource Include="Images\woodbridge.png" />
   </ItemGroup>

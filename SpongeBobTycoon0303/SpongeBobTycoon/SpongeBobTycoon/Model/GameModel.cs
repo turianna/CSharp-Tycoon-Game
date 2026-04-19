@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,12 +40,17 @@ namespace SpongeBobTycoon.Model
         public event EventHandler<FieldChangedEventArgs>? FieldChanged;
         public event EventHandler<Vehicle>? VehicleBought; //updatelni kell a parkoló autók listáját
         public event EventHandler Refresh;
+        public event EventHandler<(int,int)>? CarStepped;
+        public event EventHandler<Vehicle>? AddMovingVehicle;
+
         public event EventHandler<int>? TimerTick;
         #endregion
 
 
         public ITimer timer;
         public int gameTime;
+        public int fastCarTime;
+        public int slowCarTime;
         public TimeStatus timeStatus;
         public int gameTimer;
         public int biggestVehicleID;
@@ -60,6 +66,7 @@ namespace SpongeBobTycoon.Model
             board = new Field[50, 100];
             parkingVehicles = new List<Vehicle>();
             movingVehicles = new List<Vehicle>();
+            StopsForRoute = new List<Stop>();
 
             GameData = new GameData();
             DataAccess = dataAccess;
@@ -72,6 +79,8 @@ namespace SpongeBobTycoon.Model
             timer.Elapsed += new EventHandler(Timer_Elapsed);
 
             gameTime = 4;
+            fastCarTime = 1;
+            slowCarTime = 3;
             gameTimer = 0;
             timeStatus = TimeStatus.BASE;
             money = 10000;
@@ -103,6 +112,9 @@ namespace SpongeBobTycoon.Model
             }
             
             gameTime = 4;
+            fastCarTime = 1;
+            slowCarTime = 3;
+
             gameTimer = 0;
             timeStatus = TimeStatus.BASE;
             money = 10000;
@@ -168,7 +180,8 @@ namespace SpongeBobTycoon.Model
 
         public void ChosenVehicle(Vehicle v)
         {
-            movingVehicles.Add(v); // ennek is a routemanagerbe kell kerülnie
+            
+             // ennek is a routemanagerbe kell kerülnie
             int j = -1;
             for (int i = 0; i < parkingVehicles.Count; i++)
             {
@@ -185,19 +198,38 @@ namespace SpongeBobTycoon.Model
 
         public void BuyBridge(int x, int y, bool isFast, bool isRiver) {
 
-            if (board[x, y].fieldType is Lava)
+            if (board[x, y].fieldType is Lava lavaField && board[x, y].industry.product is not Citizen)
             {
-                if (isFast) {
-                    board[x, y].fieldType = new FastBridge(isRiver);
-                    ChangeBalance(-400);
-                }
-                else
+                if (lavaField.isRiver && isRiver)
                 {
-                    board[x, y].fieldType = new SlowBridge(isRiver);
-                    ChangeBalance(-200);
+                    if (isFast)
+                    {
+                        board[x, y].fieldType = new FastBridge(isRiver);
+                        ChangeBalance(-400);
+                        OnFieldChanged(x, y, board[x, y].fieldType);
+                    }
+                    else
+                    {
+                        board[x, y].fieldType = new SlowBridge(isRiver);
+                        ChangeBalance(-200);
+                        OnFieldChanged(x, y, board[x, y].fieldType);
+                    }
+                }else if(lavaField.isRiver == false && isRiver == false)
+                {
+                    if (isFast)
+                    {
+                        board[x, y].fieldType = new FastBridge(isRiver);
+                        ChangeBalance(-400);
+                        OnFieldChanged(x, y, board[x, y].fieldType);
+                    }
+                    else
+                    {
+                        board[x, y].fieldType = new SlowBridge(isRiver);
+                        ChangeBalance(-200);
+                        OnFieldChanged(x, y, board[x, y].fieldType);
+                    }
                 }
-
-                OnFieldChanged(x, y, board[x, y].fieldType);
+                    
             }
 
 
@@ -226,7 +258,7 @@ namespace SpongeBobTycoon.Model
 
         public void SelectStop(int x, int y)
         {
-            if (board[x,y].fieldType is Stop)
+            if (board[x,y].isStop == true)
             {
                 foreach(Stop stop in stops)
                 {
@@ -273,7 +305,16 @@ namespace SpongeBobTycoon.Model
             {
                 routemanager.stops.Add(stop);
             }
+            StopsForRoute.Clear();
+            if (routemanager.DesignRoute(this))
+            {
+                movingVehicles.Add(routemanager.vehicle);
+                OnAddMovingVehicle(VehicleForRoute);
+                board[VehicleForRoute.x,VehicleForRoute.y].isVehicle = true;
+                OnCarStepped((VehicleForRoute.x, VehicleForRoute.y));
+            }
         }
+
         public void Terraform(int x, int y, bool isUp)
         {
             bool successfulTerraform = TerraformManager.Terraform(board, x, y, isUp);
@@ -320,11 +361,21 @@ namespace SpongeBobTycoon.Model
             VehicleBought?.Invoke(this, vehicle); //ezzel kellene jelezni, hogy jelenjen meg a nem mozgó járművek listájában az autó
         }
 
+        public void OnAddMovingVehicle(Vehicle v)
+        {
+            AddMovingVehicle?.Invoke(this, v);
+        }
+
         public void OnMoneyChanged(int m)
         {
             MoneyChanged?.Invoke(this, m);
         }
 
+
+        public void OnCarStepped((int,int) coord)
+        {
+            CarStepped?.Invoke(this, coord);
+        }
 
         public void OnFieldChanged(int x, int y, FieldType type)
         {
@@ -376,11 +427,29 @@ namespace SpongeBobTycoon.Model
         {
 
             gameTime--;
+            slowCarTime--;
+            if(slowCarTime == 0)
+            {
+                GameModelTickSlowVehicles();
+                switch (timeStatus)
+                {
+                    case TimeStatus.BASE:
+                        slowCarTime = 12;
+                        break;
+                    case TimeStatus.FAST:
+                        slowCarTime = 6;
+                        break;
+                    case TimeStatus.FASTEST:
+                        slowCarTime = 3;
+                        break;
+                }
+            }
             if(gameTime == 0)
             {
                 gameTimer++;
                 OnTimerTick(gameTimer);
-                GameModelTick();
+                GameModelTickForest();
+                GameModelTickFastVehicles();
                 switch (timeStatus)
                 {
                     case TimeStatus.BASE:
@@ -398,8 +467,63 @@ namespace SpongeBobTycoon.Model
         }
         #endregion
 
-        #region Tick
-        private void GameModelTick() 
+        private void CarStep(Vehicle v)
+        {
+
+            (int,int)[] localRoute = new (int,int)[v.route.Count];
+            localRoute = v.route.ToArray();
+            for (int i = 0; i < (localRoute.Length); i++)
+            {
+                if (localRoute[i].Item1 == v.x && localRoute[i].Item2 == v.y)
+                {
+                    if (i == (localRoute.Length) - 1)
+                    {
+                        board[v.x, v.y].isVehicle = false;
+                        OnCarStepped((v.x, v.y));
+                        v.x = localRoute[0].Item1;
+                        v.y = localRoute[0].Item2;
+                        board[v.x,v.y].isVehicle = true;
+                        OnCarStepped((v.x, v.y));
+
+                    }
+                    else
+                    {
+                        board[v.x, v.y].isVehicle = false;
+                        OnCarStepped((v.x, v.y));
+                        v.x = localRoute[i + 1].Item1;
+                        v.y = localRoute[i + 1].Item2;
+                        board[v.x, v.y].isVehicle = true;
+                        OnCarStepped((v.x, v.y));
+                        break;
+                    }
+
+                }
+
+            }
+        }
+
+        private void GameModelTickFastVehicles()
+        {
+            foreach (Vehicle v in movingVehicles)
+            {
+                if(v is FastCar)
+                {
+                    CarStep(v);
+                }
+            }
+        }
+        private void GameModelTickSlowVehicles()
+        {
+            foreach(Vehicle v in movingVehicles)
+            {
+                if (v is SlowCar)
+                {
+                    CarStep(v);
+                }
+            }
+        }
+
+        private void GameModelTickForest() 
         {
             //forest growth
             List<Field> newForests = new List<Field>(); //ez a lista azért kell, hogy ne módosítsuk a forests listát miközben iterálunk rajta, mert az hibához vezetne

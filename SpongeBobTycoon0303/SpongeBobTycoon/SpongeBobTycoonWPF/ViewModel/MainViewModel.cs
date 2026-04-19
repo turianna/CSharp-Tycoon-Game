@@ -114,6 +114,8 @@ namespace SpongeBobTycoonWPF.ViewModel
             this.model.VehicleBought += Model_VehicleBought;
             this.model.GameOver += Model_GameOver;
             this.model.Refresh += Model_Refresh;
+            this.model.AddMovingVehicle += Model_AddMovingVehicle;
+            this.model.CarStepped += Model_CarStepped;
 
             StartCommand = new DelegateCommand(param => StartGame(param));
             StopTimeCommand = new DelegateCommand(_ => StopTime());
@@ -182,7 +184,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             {
                 for (int j = 0; j < 100; j++) //j = x
                 {
-                    int color_int = DecideColor_int(model.Board(i, j).fieldType, model.Board(i, j).industry);
+                    int color_int = DecideColor_int(model.Board(i, j).fieldType, model.Board(i, j).industry, model.Board(i,j).Z, model.Board(i,j).id);
 
                     Board.Add(new GameField
                     {
@@ -315,10 +317,62 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         public void CreateRoute()
         {
-            model.CreateRoute();
+            model.ModelCreateRoute();
             Route_IsOn = false;
         }
 
+        private void Model_AddMovingVehicle(object? sender, Vehicle e)
+        {
+            if (e is FastCar)
+            {
+                VMvehicleType = "Truck";
+            }
+            else
+            {
+                VMvehicleType = "Van";
+            }
+            switch (e.product)
+            {
+                case Algae:
+                    VMProduct = "Algee";
+                    break;
+                case Burger:
+                    VMProduct = "Burger";
+                    break;
+                case Citizen:
+                    VMProduct = "Citizen";
+                    break;
+                case Meat:
+                    VMProduct = "Meat";
+                    break;
+                case Net:
+                    VMProduct = "Net";
+                    break;
+                case Petfood:
+                    VMProduct = "Petfood";
+                    break;
+                case Spatula:
+                    VMProduct = "Spatula";
+                    break;
+                case Wood:
+                    VMProduct = "Wood";
+                    break;
+                    //Kéredes: Lehet a vehiclenek egy string productja? Mert ez nem jó itt.
+            }
+            MovingVehicleList.Add(new VehicleButton
+            {
+                Vehicle = e,
+                Product = VMProduct, //át kell írni a vehicle.product.tostring()re
+                VehicleType = VMvehicleType, //ezt is át kell írni
+                ClickCommand = new DelegateCommand(param =>
+                {
+                    if (param is Vehicle v)
+                    {
+                        VehicleForRoute(v); //ClickCommand, Ezt is át kell írni valamire ami illik arra mit kell csinálnia ha rákattintunk egy moving vehiclere
+                    }
+                })
+            });
+        }
         private void Model_VehicleBought(object? sender, Vehicle e)
         {
             if (e is FastCar)
@@ -393,7 +447,7 @@ namespace SpongeBobTycoonWPF.ViewModel
         }
         private void UpdateField(FieldChangedEventArgs e)
         {
-            int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry);
+            int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry, model.Board(e.x, e.y).Z, model.Board(e.x,e.y).id);
 
             Board[e.x * 100 + e.y].Color = color_int;
         }
@@ -490,28 +544,109 @@ namespace SpongeBobTycoonWPF.ViewModel
             
         }
 
-        private int DecideColor_int(FieldType? ft, Industry? ind) 
+        public void Model_CarStepped(object sender, (int, int)coord)
+        {
+            if (model.board[coord.Item1, coord.Item2].isVehicle == true)
+            {
+                Board[coord.Item1 * 100 + coord.Item2].Content = "C";
+            }
+            else
+            {
+                Board[coord.Item1 * 100 + coord.Item2].Content = "";
+            }
+
+        }
+
+
+        private int DecideColor_int(FieldType? ft, Industry? ind, int z, int id) 
         {
             int color_int=6;
 
             switch (ft)
             {
                 case Forest forest:
-                    if(forest.treeCount == 1)
+                    switch (forest.treeCount)
                     {
-                        color_int = 11;
-                    }
-                    else if(forest.treeCount == 2)
-                    {
-                        color_int = 12;
-                    }
-                    else if (forest.treeCount == 3)
-                    {
-                        color_int = 13;
-                    }
-                    else
-                    {
-                        color_int = 14;
+                        case 1:
+                            switch (z)
+                            {
+                                case 0:
+                                    color_int = 110;
+                                    break;
+                                case 1:
+                                    color_int = 111;
+                                    break;
+                                case 2:
+                                    color_int = 112;
+                                    break;
+                                case 3:
+                                    color_int = 113;
+                                    break;
+                                case 4:
+                                    color_int = 114;
+                                    break;
+                            }
+                            break;
+                        case 2:
+                            switch (z)
+                            {
+                                case 0:
+                                    color_int = 120;
+                                    break;
+                                case 1:
+                                    color_int = 121;
+                                    break;
+                                case 2:
+                                    color_int = 122;
+                                    break;
+                                case 3:
+                                    color_int = 123;
+                                    break;
+                                case 4:
+                                    color_int = 124;
+                                    break;
+                            }
+                            break;
+                        case 3:
+                            switch (z)
+                            {
+                                case 0:
+                                    color_int = 130;
+                                    break;
+                                case 1:
+                                    color_int = 131;
+                                    break;
+                                case 2:
+                                    color_int = 132;
+                                    break;
+                                case 3:
+                                    color_int = 133;
+                                    break;
+                                case 4:
+                                    color_int = 134;
+                                    break;
+                            }
+                            break;
+                        case 4:
+                            switch (z)
+                            {
+                                case 0:
+                                    color_int = 140;
+                                    break;
+                                case 1:
+                                    color_int = 141;
+                                    break;
+                                case 2:
+                                    color_int = 142;
+                                    break;
+                                case 3:
+                                    color_int = 143;
+                                    break;
+                                case 4:
+                                    color_int = 144;
+                                    break;
+                            }
+                            break;
                     }
                     break;
 
@@ -519,16 +654,138 @@ namespace SpongeBobTycoonWPF.ViewModel
                     color_int = 0;
                     break;
 
+                case Bridge:
+                    return 5;
+
                 case Road:
                     return 4;
 
                 case Grass:
-                     color_int = 6;
-                     break;
+                    switch (z)
+                    {
+                        case 0:
+                            color_int = 60;
+                            break;
+                        case 1:
+                            color_int = 61;
+                            break;
+                        case 2:
+                            color_int= 62;
+                            break;
+                        case 3:
+                            color_int = 63;
+                            break;
+                        case 4:
+                            color_int = 64;
+                            break;
+                    }
+                    break;
             }
 
-            if(ind == null)
-            {
+                        case Burger:
+                            switch (id) // burger 0. industry,burger,id
+                            {
+                                case 1:
+                                   color_int = 2001;
+                                   break;
+                                case 2:
+                                   color_int = 2002;
+                                   break;
+                                case 3:
+                                   color_int = 2003;
+                                   break;
+                                case 4:
+                                   color_int = 2004;
+                                   break;
+                                case 5:
+                                   color_int = 2005;
+                                   break;
+                                case 6:
+                                    color_int = 2006;
+                                    break;
+                                case 7:
+                                    color_int = 2007;
+                                    break;
+                                case 8:
+                                    color_int = 2008;
+                                    break;
+                                case 9:
+                                    color_int = 2009;
+                                    break;
+                                case 10:
+                                    color_int = 2010;
+                                    break;
+                                case 11:
+                                    color_int = 2011;
+                                    break;
+                                case 12:
+                                    color_int = 2012;
+                                    break;
+                                case 13:
+                                   color_int = 2013;
+                                   break;
+                                case 14:
+                                    color_int = 2014;
+                                    break;
+                                case 15:
+                                    color_int = 2015;
+                                    break;
+                                case 16:
+                                    color_int = 2016;
+                                    break;
+                                case 17:
+                                    color_int = 2017;
+                                    break;
+                                case 18:
+                                    color_int = 2018;
+                                    break;
+                                case 19:
+                                    color_int = 2019;
+                                    break;
+                                case 20:
+                                    color_int = 2020;
+                                    break;
+                                case 21:
+                                    color_int = 2021;
+                                    break;
+                            }
+                            break;
+
+                        case Wood:
+                            color_int = 2;
+                            break;
+
+                        case Algae:
+                            color_int = 2;
+                            break;
+
+                        case Net:
+                            color_int = 2;
+                            break;
+
+                        case Spatula:
+                            color_int = 2;
+                            break;
+
+                        case Meat:
+                            color_int = 2;
+                            break;
+
+                        case Citizen:
+                            switch (z)
+                            {
+                                case 1:
+                                    color_int = 31;
+                                    break;
+                                case 2:
+                                    color_int = 32;
+                                    break;
+                                case 3:
+                                    color_int = 33;
+                                    break;
+                            }
+                            break;
+                    }               
                 return color_int;
             }
 
