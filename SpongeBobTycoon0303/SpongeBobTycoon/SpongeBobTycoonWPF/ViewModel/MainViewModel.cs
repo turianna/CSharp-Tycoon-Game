@@ -526,41 +526,48 @@ namespace SpongeBobTycoonWPF.ViewModel
                      color_int = 6;
                      break;
             }
-                    switch (ind.product)
-                    {
-                        case Petfood:
-                            color_int = 2;
-                            break;
 
-                        case Burger:
-                            color_int = 2;
-                            break;
-
-                        case Wood:
-                            color_int = 2;
-                            break;
-
-                        case Algae:
-                            color_int = 2;
-                            break;
-
-                        case Net:
-                            color_int = 2;
-                            break;
-
-                        case Spatula:
-                            color_int = 2;
-                            break;
-
-                        case Meat:
-                            color_int = 2;
-                            break;
-
-                        case Citizen:
-                            color_int = 3;
-                            break;
-                    }               
+            if(ind == null)
+            {
                 return color_int;
+            }
+
+            switch (ind.product)
+            {
+                case Petfood:
+                color_int = 21;
+                    break;
+                     
+                case Burger:
+                    color_int = 22;
+                    break;
+
+                case Wood:
+                    color_int = 23;
+                    break;
+
+                case Algae:
+                    color_int = 24;
+                    break;
+
+                case Net:
+                    color_int = 25;
+                    break;
+
+                case Spatula:
+                    color_int = 26;
+                    break;
+
+                case Meat:
+                    color_int = 27;
+                    break;
+
+                case Citizen:
+                    color_int = 3;
+                    break;
+            }               
+            
+            return color_int;
 
         } 
     }

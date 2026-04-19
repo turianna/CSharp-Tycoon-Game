@@ -13,30 +13,36 @@ namespace SpongeBobTycoon.Model
 {
     public class GameModel
     {
+        #region Properties
         public List<Stop> stops { get; set; }
 
         public List<Vehicle> parkingVehicles { get; set; } 
 
         public List<Vehicle> movingVehicles { get; set; }
-        public List<Field> forests { get; set; }
+        
 
         private Vehicle VehicleForRoute { get; set; }
         private List<Stop> StopsForRoute { get; set; }
         public int money { get; set; }
+        #endregion
 
+        #region Instances of other classes
         private TerraformingManager TerraformManager = new TerraformingManager();
-
         private GameData GameData { get; set; }
         private DataAccess DataAccess;
+        #endregion
 
+        #region Events
         public event EventHandler GameOver;
         public event EventHandler<int>? MoneyChanged;
         public event EventHandler? InsufficientFunds;
         public event EventHandler<FieldChangedEventArgs>? FieldChanged;
         public event EventHandler<Vehicle>? VehicleBought; //updatelni kell a parkoló autók listáját
         public event EventHandler Refresh;
-
         public event EventHandler<int>? TimerTick;
+        #endregion
+
+
         public ITimer timer;
         public int gameTime;
         public TimeStatus timeStatus;
@@ -45,6 +51,9 @@ namespace SpongeBobTycoon.Model
 
 
         public Field[,] board;
+        private List<Field> forests;
+        private List<Industry> industries;
+
         public GameModel(DataAccess dataAccess)
         {
             stops = new List<Stop>();
@@ -54,9 +63,9 @@ namespace SpongeBobTycoon.Model
 
             GameData = new GameData();
             DataAccess = dataAccess;
-            InitializeBoard();
             board = DataAccess.LoadMap();
             forests = DataAccess.GetForests();
+            industries = DataAccess.GetIndustries();
 
             timer = new GameTimer();
             timer.Interval = 250;
@@ -71,13 +80,17 @@ namespace SpongeBobTycoon.Model
             
             timer.Start();
         }
+        public Field Board(int i, int j)
+        {
+            return board[i, j];
+        }
 
+        #region Initialization
         public void StartNewGame()
         {
             stops.Clear();
             parkingVehicles.Clear(); 
             movingVehicles.Clear();
-            InitializeBoard();
             board = DataAccess.LoadMap();
             forests = DataAccess.GetForests();
             OnRefresh();
@@ -99,22 +112,9 @@ namespace SpongeBobTycoon.Model
             timer.Start();
         }
 
-        public Field Board(int i, int j) 
-        {
-            return board[i, j];
-        }
+        #endregion
 
-        public void InitializeBoard()
-        {
-            for(int i = 0; i < 50; i++)
-            {
-                for(int j = 0; j < 100; j++)
-                {
-                    board[i, j] = new Field(i, j, 0, new Industry(), new FieldType(), false, false);
-                }
-            }
-        }
-
+        #region Buying and Building
         public void BuyRoad(int x, int y) {
 
             if (board[x,y].fieldType is Grass && board[x,y].industry.product is not Citizen)
@@ -181,10 +181,7 @@ namespace SpongeBobTycoon.Model
             VehicleForRoute = v;
         }
         
-        public void OnVehicleBought(Vehicle vehicle)
-        {
-            VehicleBought?.Invoke(this, vehicle); //ezzel kellene jelezni, hogy jelenjen meg a nem mozgó járművek listájában az autó
-        }
+        
 
         public void BuyBridge(int x, int y, bool isFast, bool isRiver) {
 
@@ -204,7 +201,10 @@ namespace SpongeBobTycoon.Model
             }
 
 
-        } 
+        }
+        #endregion
+
+        #region Routes & Stops
         public void PutStop(int x, int y) {
 
             if (board[x, y].fieldType is Road && IsStopValid(x,y) && board[x, y].industry!.product is not Citizen)
@@ -229,6 +229,34 @@ namespace SpongeBobTycoon.Model
             }
         }
 
+        public bool IsStopValid(int x, int y)
+        {
+            (int dx, int dy)[] directions =
+                {
+                    (-1,-1), (-1,0), (-1,1),
+                    (0,-1),           (0,1),
+                    (1,-1),  (1,0),  (1,1)
+                };
+
+            foreach (var (dx, dy) in directions)
+            {
+                int nx = x + dx;
+                int ny = y + dy;
+
+                if (nx >= 0 && nx < board.GetLength(0) &&
+                    ny >= 0 && ny < board.GetLength(1))
+                {
+                    if (board[nx, ny].industry.product is not null)
+                    {
+                        return true;
+                    }
+
+                }
+            }
+            return false;
+        }
+        
+
         public void CreateRoute()
         {
             RouteManager routemanager = new RouteManager(VehicleForRoute);
@@ -251,34 +279,9 @@ namespace SpongeBobTycoon.Model
             OnFieldChanged(x, y, board[x, y].fieldType!);
         }
 
-        public bool IsStopValid(int x, int y)
-        {
-            (int dx, int dy)[] directions =
-                {
-                    (-1,-1), (-1,0), (-1,1),
-                    (0,-1),           (0,1),
-                    (1,-1),  (1,0),  (1,1)
-                };
+        #endregion
 
-            foreach (var (dx, dy) in directions)
-            {
-                int nx = x + dx;
-                int ny = y + dy;
-
-                if (nx >= 0 && nx < board.GetLength(0) &&
-                    ny >= 0 && ny < board.GetLength(1))
-                { 
-                    if (board[nx,ny].industry.product is not null)
-                    {
-                        return true;
-                    }
-                
-                }
-            }
-            return false;
-        }
-
-
+        #region Money handling
         public void ChangeBalance(int amount)
         {
             if (money + amount < 0)
@@ -291,15 +294,21 @@ namespace SpongeBobTycoon.Model
             OnMoneyChanged(money);
             
         }
+        #endregion
 
         public async Task LoadGame(String path) { }
         public async Task SaveGame(String path) { }
 
         public void Produce() { }
-       
+
+        #region Events
         public void OnGameOver()
         {
             GameOver?.Invoke(this, EventArgs.Empty);
+        }
+        public void OnVehicleBought(Vehicle vehicle)
+        {
+            VehicleBought?.Invoke(this, vehicle); //ezzel kellene jelezni, hogy jelenjen meg a nem mozgó járművek listájában az autó
         }
 
         public void OnMoneyChanged(int m)
@@ -307,10 +316,6 @@ namespace SpongeBobTycoon.Model
             MoneyChanged?.Invoke(this, m);
         }
 
-        public void OnInsufficientFunds()
-        {
-            InsufficientFunds?.Invoke(this, EventArgs.Empty);
-        }
 
         public void OnFieldChanged(int x, int y, FieldType type)
         {
@@ -327,6 +332,9 @@ namespace SpongeBobTycoon.Model
         {
             Refresh?.Invoke(this, EventArgs.Empty);
         }
+        #endregion
+
+        #region Timer
         public void BaseTime()
         {
             gameTime = 4;
@@ -379,7 +387,9 @@ namespace SpongeBobTycoon.Model
             }
             
         }
+        #endregion
 
+        #region Tick
         private void GameModelTick() 
         {
             //forest growth
@@ -406,6 +416,23 @@ namespace SpongeBobTycoon.Model
             }
 
             forests = forests.Concat(newForests).ToList();
+
+            //industry production
+
+            foreach (Industry industry in industries)
+            {
+                if (industry is Farm)
+                {
+                    Farm farm = (Farm)industry;
+                    farm.Produce();
+                }
+                else if (industry is Factory)
+                {
+                    Factory factory = (Factory)industry;
+                    factory.Produce();
+
+                }
+            }
         }
 
         private List<Field> ForestSpread(Direction? dir, Field f, List<Field> forests) 
@@ -439,6 +466,6 @@ namespace SpongeBobTycoon.Model
 
             return forests;
         }
-
+        #endregion
     }
 }

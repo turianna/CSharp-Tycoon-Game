@@ -479,7 +479,31 @@
                                         </Setter>
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Color}" Value="2">
+                                    <DataTrigger Binding="{Binding Color}" Value="21">
+                                        <Setter Property="Background" Value="Chocolate" />
+                                        <Setter Property="BorderBrush" Value="Chocolate" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="22">
+                                        <Setter Property="Background" Value="SandyBrown" />
+                                        <Setter Property="BorderBrush" Value="SandyBrown" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="23">
+                                        <Setter Property="Background" Value="SaddleBrown" />
+                                        <Setter Property="BorderBrush" Value="SaddleBrown" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="24">
+                                        <Setter Property="Background" Value="DarkSeaGreen" />
+                                        <Setter Property="BorderBrush" Value="DarkSeaGreen" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="25">
+                                        <Setter Property="Background" Value="LightCyan" />
+                                        <Setter Property="BorderBrush" Value="LightCyan" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="26">
+                                        <Setter Property="Background" Value="DarkSlateGray" />
+                                        <Setter Property="BorderBrush" Value="DarkSlateGray" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Color}" Value="27">
                                         <Setter Property="Background" Value="Red" />
                                         <Setter Property="BorderBrush" Value="Red" />
                                     </DataTrigger>
