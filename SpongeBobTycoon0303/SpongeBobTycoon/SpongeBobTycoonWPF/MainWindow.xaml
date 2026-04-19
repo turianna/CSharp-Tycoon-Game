@@ -233,7 +233,7 @@
                                             <StackPanel Orientation="Horizontal"/>
                                         </ItemsPanelTemplate>
                                     </Menu.ItemsPanel>
-                                    <MenuItem Command="{Binding BuyBridgeCommand}"  CommandParameter="LakeWood">
+                                    <MenuItem Command="{Binding BuyLakeSlowBridgeCommand}"  CommandParameter="LakeWood">
                                         <MenuItem.Icon>
                                             <Image Source="Images/woodbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
@@ -242,7 +242,7 @@
                                             </Image>
                                         </MenuItem.Icon>
                                     </MenuItem>
-                                    <MenuItem Command="{Binding BuyBridgeCommand}"  CommandParameter="LakeModern">
+                                    <MenuItem Command="{Binding BuyLakeFastBridgeCommand}"  CommandParameter="LakeModern">
                                         <MenuItem.Icon>
                                             <Image Source="Images/modernbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
@@ -267,7 +267,7 @@
                                             <StackPanel Orientation="Horizontal"/>
                                         </ItemsPanelTemplate>
                                     </Menu.ItemsPanel>
-                                    <MenuItem Command="{Binding BuyBridgeCommand}"  CommandParameter="RiverWood">
+                                    <MenuItem Command="{Binding BuyRiverSlowBridgeCommand}"  CommandParameter="RiverWood">
                                         <MenuItem.Icon>
                                             <Image Source="Images/woodbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
@@ -276,7 +276,7 @@
                                             </Image>
                                         </MenuItem.Icon>
                                     </MenuItem>
-                                    <MenuItem Command="{Binding BuyBridgeCommand}"  CommandParameter="RiverModern">
+                                    <MenuItem Command="{Binding BuyRiverFastBridgeCommand}"  CommandParameter="RiverModern">
                                         <MenuItem.Icon>
                                             <Image Source="Images/modernbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>

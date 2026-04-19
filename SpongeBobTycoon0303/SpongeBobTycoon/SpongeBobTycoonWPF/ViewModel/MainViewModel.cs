@@ -654,6 +654,9 @@ namespace SpongeBobTycoonWPF.ViewModel
                     color_int = 0;
                     break;
 
+                case Bridge:
+                    return 5;
+
                 case Road:
                     return 4;
 

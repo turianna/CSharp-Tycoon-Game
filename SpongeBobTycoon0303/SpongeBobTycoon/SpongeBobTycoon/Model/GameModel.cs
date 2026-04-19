@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -200,19 +201,38 @@ namespace SpongeBobTycoon.Model
 
         public void BuyBridge(int x, int y, bool isFast, bool isRiver) {
 
-            if (board[x, y].fieldType is Lava)
+            if (board[x, y].fieldType is Lava lavaField && board[x, y].industry.product is not Citizen)
             {
-                if (isFast) {
-                    board[x, y].fieldType = new FastBridge(isRiver);
-                    ChangeBalance(-400);
-                }
-                else
+                if (lavaField.isRiver && isRiver)
                 {
-                    board[x, y].fieldType = new SlowBridge(isRiver);
-                    ChangeBalance(-200);
+                    if (isFast)
+                    {
+                        board[x, y].fieldType = new FastBridge(isRiver);
+                        ChangeBalance(-400);
+                        OnFieldChanged(x, y, board[x, y].fieldType);
+                    }
+                    else
+                    {
+                        board[x, y].fieldType = new SlowBridge(isRiver);
+                        ChangeBalance(-200);
+                        OnFieldChanged(x, y, board[x, y].fieldType);
+                    }
+                }else if(lavaField.isRiver == false && isRiver == false)
+                {
+                    if (isFast)
+                    {
+                        board[x, y].fieldType = new FastBridge(isRiver);
+                        ChangeBalance(-400);
+                        OnFieldChanged(x, y, board[x, y].fieldType);
+                    }
+                    else
+                    {
+                        board[x, y].fieldType = new SlowBridge(isRiver);
+                        ChangeBalance(-200);
+                        OnFieldChanged(x, y, board[x, y].fieldType);
+                    }
                 }
-
-                OnFieldChanged(x, y, board[x, y].fieldType);
+                    
             }
 
 
