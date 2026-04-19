@@ -1,4 +1,4 @@
-﻿using SpongeBobTycoon.Model;
+using SpongeBobTycoon.Model;
 using SpongeBobTycoon.Model.Industries;
 using SpongeBobTycoon.Model.FieldTypes;
 using SpongeBobTycoon.Model.Products;
@@ -119,19 +119,6 @@ namespace SpongeBobTycoon.Persistence
 
                         }
 
-                        if (i < 50 && j < 100)
-                        {
-                            Field newField = new Field(x, y, z, industry, fieldType, isVehicle, isStop,id);
-                            fields[i, j] = newField;
-
-                            if (fieldType is Forest) forests.Add(newField);
-                        }
-                        else
-                        {
-                            System.Diagnostics.Debug.WriteLine($"Invalid map data at line {i + 1}, column {j + 1}"); //this is to help find the error in the map data, if there is one
-                            throw new InvalidMapDataException(); //if there are more than 50 rows or 100 columns, the map data is invalid
-                        }
-                        
                         //ha uj industry-hoz ertunk a feldolgozasban, akkor hozzaadjuk az industry listahoz
                         //uj industry = a folotte, es tole balra levo mezo nem ugyanaz, mint a mostani industry
                         if ((industry is Factory || industry is Farm) && isNewIndustry(industry, i, j, fields))
@@ -144,12 +131,18 @@ namespace SpongeBobTycoon.Persistence
                             //ha nem uj industry-nal vagyunk, akkor valamelyik szomszedja biztos, hogy a vizsgalt mezohoz azonos industryhoz tartozik
                         }
 
+                        if (i < 50 && j < 100)
+                        {
+                            Field newField = new Field(x, y, z, industry, fieldType, isVehicle, isStop,id);
+                            fields[i, j] = newField;
 
-                        Field newField = new Field(x, y, z, industry!, fieldType, isVehicle, isStop);
-                        fields[i, j] = newField;
-
-                        if (fieldType is Forest) forests.Add(newField);
-                        
+                            if (fieldType is Forest) forests.Add(newField);
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Invalid map data at line {i + 1}, column {j + 1}"); //this is to help    find the error in the map data, if there is one
+                            throw new InvalidMapDataException(); //if there are more than 50 rows or 100 columns, the map data is invalid
+                        }
                         
 
                         j++;
