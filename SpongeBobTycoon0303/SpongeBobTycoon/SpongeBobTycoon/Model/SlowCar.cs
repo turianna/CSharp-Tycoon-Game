@@ -18,7 +18,7 @@ namespace SpongeBobTycoon.Model
             switch (product)
             {
                 case Algae:
-                    capacity = 40;
+                    capacity = 20;
                     break;
 
                 case Burger:
@@ -30,11 +30,19 @@ namespace SpongeBobTycoon.Model
                     break;
 
                 case Meat:
-                    capacity = 40;
+                    capacity = 30;
                     break;
 
                 case Spatula:
                     capacity = 10;
+                    break;
+
+                case Petfood:
+                    capacity = 15;
+                    break;
+
+                case Net:
+                    capacity = 20;
                     break;
 
                 case Wood:

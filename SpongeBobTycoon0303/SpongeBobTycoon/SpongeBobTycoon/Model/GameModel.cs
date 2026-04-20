@@ -186,6 +186,14 @@ namespace SpongeBobTycoon.Model
 
             parkingVehicles.Add(vehicle);
             System.Diagnostics.Debug.WriteLine($"Bought a {vehicleType} with ID {vehicle.ID} for product {product.GetType().Name}");
+            if(vehicle.ingredients != null)
+            {
+                System.Diagnostics.Debug.WriteLine($"Vehicle has {vehicle.ingredients.Count} ingredients:");
+                for (int i = 0; i < vehicle.ingredients.Count; i++)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Ingredient: {vehicle.ingredients[i].GetType().Name}, amount: {vehicle.ingredientAmounts[i]}, capacity: {vehicle.ingredientCapacities[i]}");
+                }
+            }
             OnVehicleBought(vehicle);
         }
 
@@ -249,7 +257,8 @@ namespace SpongeBobTycoon.Model
             if (board[x, y].fieldType is Road && isValid && board[x, y].industry!.product is not Citizen)
             {
                 board[x, y].isStop = true;
-                
+                //board[x,y].industry = industry;
+
                 Stop stop = new Stop(x,y, industry);
                 System.Diagnostics.Debug.WriteLine($"Stop created at ({x}, {y}) product: {industry.product.GetType().Name}, product amount: {industry.productAmount}");
                 stops.Add(stop);
@@ -510,9 +519,9 @@ namespace SpongeBobTycoon.Model
                 v.y = localRoute[0].Item2;
                 board[v.x, v.y].isVehicle = true;
 
-                if (board[v.x, v.y].fieldType is Stop)
+                if (board[v.x, v.y].isStop)
                 {
-                    Stop stop = (Stop)board[v.x, v.y].fieldType!;
+                    Stop stop = findStopAt(v.x, v.y);
 
                     if (stop.industry.product is Citizen)
                     {
@@ -535,9 +544,9 @@ namespace SpongeBobTycoon.Model
                 v.y = localRoute[v.route_index].Item2;
                 board[v.x, v.y].isVehicle = true;
 
-                if (board[v.x, v.y].fieldType is Stop)
+                if (board[v.x, v.y].isStop)
                 {
-                    Stop stop = (Stop)board[v.x, v.y].fieldType!;
+                    Stop stop = findStopAt(v.x, v.y);
 
                     if (stop.industry.product is Citizen)
                     {
@@ -593,6 +602,18 @@ namespace SpongeBobTycoon.Model
 
             }
             */
+        }
+        private Stop findStopAt(int x, int y)
+        {
+            foreach (Stop stop in stops)
+            {
+                if (stop.X == x && stop.Y == y)
+                {
+                    return stop;
+                }
+            }
+
+            throw new Exception($"No stop found at ({x}, {y})");
         }
 
         private void GameModelTickFastVehicles()

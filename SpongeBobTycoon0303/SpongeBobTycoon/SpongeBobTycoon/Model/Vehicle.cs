@@ -45,6 +45,7 @@ namespace SpongeBobTycoon.Model
         {
             this.product = product;
             productAmount = 0;
+            this.route = new List<(int, int)>();
 
             switch (product)
             {
@@ -55,6 +56,7 @@ namespace SpongeBobTycoon.Model
 
                     ingredients.Add(new Algae());
                     ingredientAmounts.Add(0);
+                    ingredientCapacities.Add(10);
                     break;
 
                 case Burger:
@@ -114,11 +116,6 @@ namespace SpongeBobTycoon.Model
 
         public void Transaction(Stop currentStop)
         {
-            if (this.product.GetType() != currentStop.industry.product.GetType())
-            {
-                return;
-            }
-
             int stopAmount = currentStop.industry.productAmount;
             Product stopProduct = currentStop.industry.product;
 
@@ -131,7 +128,7 @@ namespace SpongeBobTycoon.Model
                 currentStop.industry.productAmount -= productToGet;
 
                 System.Diagnostics.Debug.WriteLine($"Vehicle {ID}, carrying {product.GetType().Name}: picked up product, new amount is {productAmount}/{capacity}");
-                System.Diagnostics.Debug.WriteLine($"Stop industry: {currentStop.industry.GetType().Name}, product amount left: {currentStop.industry.productAmount}");
+                System.Diagnostics.Debug.WriteLine($"Stop with industry: {currentStop.industry.GetType().Name} gave {productToGet} of {stopProduct.GetType().Name} product amount left: {currentStop.industry.productAmount}");
 
                 //ha a megalloban nem lehet leadni ingredientet (burgernel vagy petfoodnal), akkor kilepunk a metodusbol
                 if (!(currentStop.industry.product is Burger || currentStop.industry.product is Petfood)) return;
@@ -160,6 +157,8 @@ namespace SpongeBobTycoon.Model
 
                     ingredientAmounts[index] += productToGive;
                     currentStop.industry.productAmount -= productToGive;
+
+                    System.Diagnostics.Debug.WriteLine($"Vehicle with id {ID} received {productToGive} of {ingredients[index].GetType().Name}. New amount: {ingredientAmounts[index]}/{ingredientCapacities[index]}");
                 }
             }
         }
@@ -192,6 +191,7 @@ namespace SpongeBobTycoon.Model
                     break;
             }
 
+            System.Diagnostics.Debug.WriteLine($"Vehicle {ID} sold {productAmount} of {product.GetType().Name}, making {moneyEarned} dollars.");
             productAmount = 0;
             return moneyEarned;
         }

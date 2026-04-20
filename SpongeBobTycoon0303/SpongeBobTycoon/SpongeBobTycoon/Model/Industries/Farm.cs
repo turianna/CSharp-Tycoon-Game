@@ -64,7 +64,7 @@ namespace SpongeBobTycoon.Model.Industries
 
                 productionTimeLeft = productionTime;
 
-                System.Diagnostics.Debug.WriteLine($"Produced {product.GetType()}. New amount: {productAmount}");
+                //System.Diagnostics.Debug.WriteLine($"Produced {product.GetType()}. New amount: {productAmount}");
 
             }
 

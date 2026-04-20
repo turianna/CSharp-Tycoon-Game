@@ -89,18 +89,20 @@ namespace SpongeBobTycoon.Model.Industries
 
                 productionTimeLeft = productionTime;
 
-                System.Diagnostics.Debug.WriteLine($"Produced {product.GetType().Name}. New amount: {productAmount}");
+                //System.Diagnostics.Debug.WriteLine($"Produced {product.GetType().Name}. New amount: {productAmount}");
             }
 
         }
 
         public void ReceiveIngredient(Product product, int count) 
         {
+            if(count == 0 ) return;
+
             for (int i = 0; i < ingredients.Count; i++) 
             {
                 if (ingredients[i].GetType() != product.GetType()) continue;
 
-                System.Diagnostics.Debug.WriteLine($"{product.GetType} factory received {count} of {ingredients[i].GetType().Name}");
+                System.Diagnostics.Debug.WriteLine($"{this.product.GetType().Name} factory received {count} of {ingredients[i].GetType().Name}");
                 ingredientAmounts[i] += count;
             }
         }
