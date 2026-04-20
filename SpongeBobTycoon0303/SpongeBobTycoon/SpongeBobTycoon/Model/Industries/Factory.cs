@@ -37,15 +37,6 @@ namespace SpongeBobTycoon.Model.Industries
 
                     break;
 
-                case Net:
-                    productCapacity = 10;
-                    productPerProduce = 1;
-
-                    ingredients.Add(new Wood());
-                    ingredientAmounts.Add(0);
-                    ingredientsForProduction.Add(10);
-                    break;
-
                 case Petfood:
                     productCapacity = 10;
                     productPerProduce = 1;
@@ -98,9 +89,20 @@ namespace SpongeBobTycoon.Model.Industries
 
                 productionTimeLeft = productionTime;
 
-                System.Diagnostics.Debug.WriteLine($"Produced {product.GetType()}. New amount: {productAmount}");
+                System.Diagnostics.Debug.WriteLine($"Produced {product.GetType().Name}. New amount: {productAmount}");
             }
 
+        }
+
+        public void ReceiveIngredient(Product product, int count) 
+        {
+            for (int i = 0; i < ingredients.Count; i++) 
+            {
+                if (ingredients[i].GetType() != product.GetType()) continue;
+
+                System.Diagnostics.Debug.WriteLine($"{product.GetType} factory received {count} of {ingredients[i].GetType().Name}");
+                ingredientAmounts[i] += count;
+            }
         }
 
 

@@ -20,12 +20,17 @@ namespace SpongeBobTycoon.Model.Industries
 
                 case Citizen:
                     productCapacity = 100;
-                    productPerProduce = 10;
+                    productPerProduce = 5;
                     break;
 
                 case Meat:
                     productCapacity = 20;
                     productPerProduce = 4;
+                    break;
+                
+                case Net:
+                    productCapacity = 10;
+                    productPerProduce = 1;
                     break;
 
                 case Spatula:

@@ -14,6 +14,33 @@ namespace SpongeBobTycoon.Model
             this.product = product;
             time = 3;
             cost = 200;
+
+            switch (product)
+            {
+                case Algae:
+                    capacity = 20;
+                    break;
+
+                case Burger:
+                    capacity = 3;
+                    break;
+
+                case Citizen:
+                    capacity = 10;
+                    break;
+
+                case Meat:
+                    capacity = 20;
+                    break;
+
+                case Spatula:
+                    capacity = 5;
+                    break;
+
+                case Wood:
+                    capacity = 20;
+                    break;
+            }
         }
     }
 }

@@ -139,13 +139,13 @@ namespace SpongeBobTycoon.Model
         #region Buying and Building
         public void BuyRoad(int x, int y) {
 
-            if (board[x,y].fieldType is Grass && board[x,y].industry.product is not Citizen)
+            if (board[x,y].fieldType is Grass && board[x,y].industry!.product is not Citizen)
             {           
                 board[x, y].fieldType = new Road();
                 ChangeBalance(-20);
-                OnFieldChanged(x, y, board[x, y].fieldType);
+                OnFieldChanged(x, y, board[x, y].fieldType!);
 
-            }else if (board[x, y].fieldType is Forest && board[x, y].industry.product is not Citizen)
+            }else if (board[x, y].fieldType is Forest && board[x, y].industry!.product is not Citizen)
             {
                 Field? forestToRemove = null;
                 foreach (Field f in forests)
@@ -158,7 +158,7 @@ namespace SpongeBobTycoon.Model
                 if(forestToRemove != null) forests.Remove(forestToRemove);
                 board[x, y].fieldType = new Road();
                 ChangeBalance(-60);
-                OnFieldChanged(x, y, board[x, y].fieldType);
+                OnFieldChanged(x, y, board[x, y].fieldType!);
             }
 
         }
@@ -185,6 +185,7 @@ namespace SpongeBobTycoon.Model
             ChangeBalance(-vehicle.cost);
 
             parkingVehicles.Add(vehicle);
+            System.Diagnostics.Debug.WriteLine($"Bought a {vehicleType} with ID {vehicle.ID} for product {product.GetType().Name}");
             OnVehicleBought(vehicle);
         }
 
@@ -503,6 +504,19 @@ namespace SpongeBobTycoon.Model
                         v.x = localRoute[i + 1].Item1;
                         v.y = localRoute[i + 1].Item2;
                         board[v.x, v.y].isVehicle = true;
+
+                        if (board[v.x, v.y].fieldType is Stop)
+                        {
+                            Stop stop = (Stop)board[v.x, v.y].fieldType!;
+
+                            if (stop.industry.product is Citizen)
+                            {
+                                int moneyEarned = v.CityStopReached();
+                                ChangeBalance(moneyEarned);
+                            }
+                            v.Transaction(stop);
+                        }
+
                         OnCarStepped((v.x, v.y));
                         break;
                     }
