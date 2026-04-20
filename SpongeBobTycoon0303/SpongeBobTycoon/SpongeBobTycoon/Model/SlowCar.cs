@@ -1,4 +1,4 @@
-﻿using SpongeBobTycoon.Model.Products;
+using SpongeBobTycoon.Model.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +49,10 @@ namespace SpongeBobTycoon.Model
                     capacity = 40;
                     break;
             }
+
+            stepsUntilBroken = 45;
+            repairCost = 50;
+            brokness = stepsUntilBroken;
         }
 
     }

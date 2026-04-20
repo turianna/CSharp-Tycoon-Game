@@ -42,6 +42,7 @@ namespace SpongeBobTycoon.Model
         public event EventHandler Refresh;
         public event EventHandler<(int,int)>? CarStepped;
         public event EventHandler<Vehicle>? AddMovingVehicle;
+        public event EventHandler CreateRouteFailed;
 
         public event EventHandler<int>? TimerTick;
         #endregion
@@ -335,6 +336,10 @@ namespace SpongeBobTycoon.Model
                 board[VehicleForRoute.x,VehicleForRoute.y].isVehicle = true;
                 OnCarStepped((VehicleForRoute.x, VehicleForRoute.y));
             }
+            else
+            {
+                OnCreateRouteFailed();
+            }
         }
         public void RemoveVehicleFromRoute(Vehicle vehicle)
         {
@@ -410,6 +415,10 @@ namespace SpongeBobTycoon.Model
             MoneyChanged?.Invoke(this, m);
         }
 
+        public void OnCreateRouteFailed()
+        {
+            CreateRouteFailed?.Invoke(this, EventArgs.Empty);
+        }
 
         public void OnCarStepped((int,int) coord)
         {
@@ -532,6 +541,8 @@ namespace SpongeBobTycoon.Model
                 }
 
                 OnCarStepped((v.x, v.y));
+                v.brokness--;
+                CheckVehicleBrokness(v);
                 v.route_index = 0;
 
             }
@@ -557,6 +568,8 @@ namespace SpongeBobTycoon.Model
                 }
 
                 OnCarStepped((v.x, v.y));
+                v.brokness--;
+                CheckVehicleBrokness(v);
             }
 
             /*
@@ -616,6 +629,14 @@ namespace SpongeBobTycoon.Model
             throw new Exception($"No stop found at ({x}, {y})");
         }
 
+        private void CheckVehicleBrokness(Vehicle vehicle)
+        {
+            if(vehicle.brokness == 0)
+            {
+                vehicle.brokness = vehicle.stepsUntilBroken;
+                ChangeBalance(-vehicle.repairCost);
+            }
+        }
         private void GameModelTickFastVehicles()
         {
             foreach (Vehicle v in movingVehicles)
