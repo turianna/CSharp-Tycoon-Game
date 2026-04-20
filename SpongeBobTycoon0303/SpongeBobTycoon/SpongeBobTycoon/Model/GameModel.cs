@@ -509,6 +509,19 @@ namespace SpongeBobTycoon.Model
                 v.x = localRoute[0].Item1;
                 v.y = localRoute[0].Item2;
                 board[v.x, v.y].isVehicle = true;
+
+                if (board[v.x, v.y].fieldType is Stop)
+                {
+                    Stop stop = (Stop)board[v.x, v.y].fieldType!;
+
+                    if (stop.industry.product is Citizen)
+                    {
+                        int moneyEarned = v.CityStopReached();
+                        ChangeBalance(moneyEarned);
+                    }
+                    v.Transaction(stop);
+                }
+
                 OnCarStepped((v.x, v.y));
                 v.route_index = 0;
 
@@ -521,6 +534,19 @@ namespace SpongeBobTycoon.Model
                 v.x = localRoute[v.route_index].Item1;
                 v.y = localRoute[v.route_index].Item2;
                 board[v.x, v.y].isVehicle = true;
+
+                if (board[v.x, v.y].fieldType is Stop)
+                {
+                    Stop stop = (Stop)board[v.x, v.y].fieldType!;
+
+                    if (stop.industry.product is Citizen)
+                    {
+                        int moneyEarned = v.CityStopReached();
+                        ChangeBalance(moneyEarned);
+                    }
+                    v.Transaction(stop);
+                }
+
                 OnCarStepped((v.x, v.y));
             }
 
