@@ -95,7 +95,7 @@ namespace SpongeBobTycoon.Model
             route.Reverse();
             (int,int) start = (ns.X,ns.Y);
 
-            int min = 1000000;
+            int min = 5001;
             while (cs.X != start.Item1 || cs.Y != start.Item2)
             {
                 foreach(((int x, int y) prev, (int x, int y) cur, int d)r in route)
@@ -116,7 +116,7 @@ namespace SpongeBobTycoon.Model
                     {
                         partRouteFinal.Add((r.cur.x,r.cur.y));
                         start = (r.prev.x,r.prev.y);
-
+                        break;
                     }
                 }
             }
@@ -167,7 +167,7 @@ namespace SpongeBobTycoon.Model
                     }
                 }
                 
-                vehicle.route = routeFinal;
+                vehicle.route.AddRange(routeFinal);
                 vehicle.x = routeFinal.First().Item1;
                 vehicle.y = routeFinal.First().Item2;
                 return true;

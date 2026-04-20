@@ -16,6 +16,7 @@ namespace SpongeBobTycoon.Model
         public Product product;
         public string productName;
         public int ID;
+        public int route_index;
         public Direction direction { get; set; }
         public int time;
         public int timeUntilMoves;
@@ -31,6 +32,7 @@ namespace SpongeBobTycoon.Model
         public Vehicle(Product product)
         {
             this.product = product;
+            route = new List<(int, int)>();
         }
         public void Step(GameModel model, int x, int y)
         {

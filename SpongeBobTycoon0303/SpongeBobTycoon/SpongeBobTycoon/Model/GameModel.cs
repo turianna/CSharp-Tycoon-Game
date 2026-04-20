@@ -482,6 +482,28 @@ namespace SpongeBobTycoon.Model
 
             (int,int)[] localRoute = new (int,int)[v.route.Count];
             localRoute = v.route.ToArray();
+            if (v.route_index == (localRoute.Length) - 1)
+            {
+                board[v.x, v.y].isVehicle = false;
+                OnCarStepped((v.x, v.y));
+                v.x = localRoute[0].Item1;
+                v.y = localRoute[0].Item2;
+                board[v.x, v.y].isVehicle = true;
+                OnCarStepped((v.x, v.y));
+
+            }
+            else
+            {
+                board[v.x, v.y].isVehicle = false;
+                OnCarStepped((v.x, v.y));
+                v.route_index++;
+                v.x = localRoute[v.route_index].Item1;
+                v.y = localRoute[v.route_index].Item2;
+                board[v.x, v.y].isVehicle = true;
+                OnCarStepped((v.x, v.y));
+            }
+
+            /*
             for (int i = 0; i < (localRoute.Length); i++)
             {
                 if (localRoute[i].Item1 == v.x && localRoute[i].Item2 == v.y)
@@ -510,6 +532,7 @@ namespace SpongeBobTycoon.Model
                 }
 
             }
+            */
         }
 
         private void GameModelTickFastVehicles()
