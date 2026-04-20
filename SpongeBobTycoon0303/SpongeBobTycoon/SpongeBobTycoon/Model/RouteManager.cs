@@ -112,6 +112,7 @@ namespace SpongeBobTycoon.Model
                     }
                     if(!petfood || !algee || !city)
                     {
+                        System.Diagnostics.Debug.WriteLine("Route creation failed - not all stop requirements were met.");
                         return false;
                     }
                     break;

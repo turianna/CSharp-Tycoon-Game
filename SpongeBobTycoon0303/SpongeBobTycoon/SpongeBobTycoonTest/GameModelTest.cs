@@ -37,7 +37,7 @@ namespace SpongeBobTycoonTest
         public void TestStartNewGame()
         {
            
-            model.BuyVehicle(VehicleType.SlowCar, new Meat());
+            model.BuyVehicle(VehicleType.SlowCar, new Burger());
             Assert.AreEqual(model.parkingVehicles.Count, 1);
             model.BuyRoad(0, 0);
             Assert.IsTrue(model.board[0, 0].fieldType is Road);
@@ -101,9 +101,9 @@ namespace SpongeBobTycoonTest
         public void TestBuyVehicle()
         {
             model.StartNewGame();
-            model.BuyVehicle(VehicleType.SlowCar, new Meat());
+            model.BuyVehicle(VehicleType.SlowCar, new Burger());
             Assert.AreEqual(model.parkingVehicles.Count, 1);
-            Assert.IsTrue(model.parkingVehicles.ElementAt(0).product is Meat);
+            Assert.IsTrue(model.parkingVehicles.ElementAt(0).product is Burger);
             Assert.IsTrue(model.parkingVehicles.ElementAt(0) is SlowCar);
             Assert.AreEqual(model.money, 9900);
             model.BuyVehicle(VehicleType.SlowCar, new Citizen());
