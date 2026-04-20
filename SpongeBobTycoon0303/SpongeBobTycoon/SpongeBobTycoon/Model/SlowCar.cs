@@ -14,7 +14,9 @@ namespace SpongeBobTycoon.Model
             this.product = product;
             cost = 100;
             time = 5;
-            cost = 100;
+            stepsUntilBroken = 45;
+            repairCost = 50;
+            brokness = stepsUntilBroken;
         }
 
     }

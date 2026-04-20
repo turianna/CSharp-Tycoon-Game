@@ -28,6 +28,7 @@ namespace SpongeBobTycoon.Model
         public int cost;
         public int x;
         public int y;
+        public int brokness;
 
 
         //public (int,int) startPoint = path[0]
@@ -63,6 +64,7 @@ namespace SpongeBobTycoon.Model
                     productName = "Wood";
                     break;
             }
+            
 
         }
 
