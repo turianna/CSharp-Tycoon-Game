@@ -1,7 +1,9 @@
 ﻿using SpongeBobTycoon.Model.FieldTypes;
+using SpongeBobTycoon.Model.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +34,133 @@ namespace SpongeBobTycoon.Model
 
         public bool ValidRoute()
         {
+            if(stops.Count == 0) return false;
+            
+            switch (vehicle.product)
+            {
+               
+                case Burger:
+                    if(stops.Count <4) return false;
+                    bool burger = false;
+                    bool meat = false;
+                    bool spatula = false;
+                    bool city = false;
+                    foreach (Stop stop in stops)
+                    {
+                        switch (stop.industry.product)
+                        {
+                            case Burger:
+                                burger = true;
+                                break;
+                            case Meat:
+                                meat = true;
+                                break;
+                            case Spatula:
+                                spatula = true;
+                                break;
+                            case Citizen:
+                                city = true;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    if(!burger ||  !meat || !spatula || !city)
+                    {
+                        return false;
+                    }
+                    break;
+                case Net:
+                    if (stops.Count < 2) { return false; }
+                    bool net = false;
+                    city = false;
+                    foreach (Stop stop in stops)
+                    {
+                        if(stop.industry.product is Net)
+                        {
+                            net = true;
+                        }
+                        else if (stop.industry.product is Citizen)
+                        {
+                            city = true;
+                        }
+                    }
+                    if (!net || !city)
+                    {
+                        return false;
+                    }
+                    break;
+                case Petfood:
+                    if (stops.Count < 3) return false;
+                    bool petfood = false;
+                    bool algee = false;
+                    city = false;
+                    foreach (Stop stop in stops)
+                    {
+                        if (stop.industry.product is Petfood)
+                        {
+                            petfood = true;
+                        }
+                        else if (stop.industry.product is Algae)
+                        {
+                            algee = true;
+                        }
+                        else if (stop.industry.product is Citizen)
+                        {
+                            city = true;
+                        }
+                    }
+                    if(!petfood || !algee || !city)
+                    {
+                        return false;
+                    }
+                    break;
+                case Wood:
+                    if (stops.Count < 2) { return false; }
+                    bool wood = false;
+                    city = false;
+                    foreach (Stop stop in stops)
+                    {
+                        if(stop.industry.product is Wood)
+                        {
+                            wood = true;
+                        }
+                        else if (stop.industry.product is Citizen)
+                        {
+                            city = true;
+                        }
+                    }
+                    if (!wood || !city)
+                    {
+                        return false;
+                    }
+                    break;
+                case Citizen:
+                    if (stops.Count < 2) { return false; }
+                    bool city1 = false;
+                    bool city2 = false;
+                    foreach (Stop stop in stops)
+                    {
+                        if (stop.industry.product is Citizen && !city1)
+                        {
+                            city1 = true;
+                            
+                        }
+                        else if(stop.industry.product is Citizen || city1)
+                        {
+                            city2 = true;
+                        }
+                    }
+                    if (!city1 || !city2)
+                    {
+                        return false;
+                    }
+
+                    break;
+                default:
+                    return false;
+            }
+            
             return true;
             //min 2 és muszáj érintenie azt a megállót amit szállít az autó és körút-e és jó irányba megy-e az útvonal
         }
@@ -76,7 +205,7 @@ namespace SpongeBobTycoon.Model
                     if (nx >= 0 && nx < model.board.GetLength(0) &&
                         ny >= 0 && ny < model.board.GetLength(1))
                     {
-                        if (model.board[nx, ny].fieldType is Road && !visitedArray[nx,ny])
+                        if ((model.board[nx, ny].fieldType is Road || model.board[nx, ny].fieldType is Bridge) && !visitedArray[nx,ny])
                         {
                             route.Add(((crx, cry), (nx, ny),d));
                             visitedArray[nx,ny] = true;
@@ -137,11 +266,14 @@ namespace SpongeBobTycoon.Model
                 for (int i = 0; i < (stops!.Count - 1); i++)
                 {
                     current_stop = stops[i];
-                    next_stop = stops[i + 1];/*
-                    current_stop_coordinates = (current_stop.X, current_stop.Y);
-                    next_stop_coordinates = (next_stop.X, next_stop.Y);*/
+                    next_stop = stops[i + 1];
                     routeCurrent = BFS(model, current_stop, next_stop);
-                    if (routeCurrent.Count == 0) return false;
+                    if (routeCurrent.Count == 0)
+                    {
+                        stops.Clear();
+                        return false;
+                    }
+
                     if (routeFinal.Count == 0)
                     {
                         routeFinal.AddRange(routeCurrent);
@@ -159,7 +291,11 @@ namespace SpongeBobTycoon.Model
                 if(stops.Count > 1)
                 {
                     routeCurrent = BFS(model, stops[stops.Count - 1], stops[0]);
-                    if (routeCurrent.Count == 0) return false;
+                    if (routeCurrent.Count == 0)
+                    {
+                        stops.Clear();
+                        return false;
+                    }
                     //routeCurrent.RemoveAt(0);
                     foreach ((int, int) coord in routeCurrent)
                     {

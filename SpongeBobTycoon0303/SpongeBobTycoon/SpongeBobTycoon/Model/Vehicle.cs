@@ -15,8 +15,10 @@ namespace SpongeBobTycoon.Model
         public Product ingredient;
         public Product product;
         public string productName;
+        public string typeName;
         public int ID;
         public int route_index;
+        
         public Direction direction { get; set; }
         public int time;
         public int timeUntilMoves;
@@ -33,7 +35,37 @@ namespace SpongeBobTycoon.Model
         {
             this.product = product;
             route = new List<(int, int)>();
+
+            switch (product)
+            {
+                case Algae:
+                    productName = "Algee";
+                    break;
+                case Burger:
+                    productName = "Burger";
+                    break;
+                case Citizen:
+                    productName = "Citizen";
+                    break;
+                case Meat:
+                    productName = "Meat";
+                    break;
+                case Net:
+                    productName = "Net";
+                    break;
+                case Petfood:
+                    productName = "Petfood";
+                    break;
+                case Spatula:
+                    productName = "Spatula";
+                    break;
+                case Wood:
+                    productName = "Wood";
+                    break;
+            }
+
         }
+
         public void Step(GameModel model, int x, int y)
         {
             
