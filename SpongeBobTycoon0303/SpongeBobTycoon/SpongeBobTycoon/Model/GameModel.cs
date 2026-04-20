@@ -193,15 +193,6 @@ namespace SpongeBobTycoon.Model
         {
             
              // ennek is a routemanagerbe kell kerülnie
-            int j = -1;
-            for (int i = 0; i < parkingVehicles.Count; i++)
-            {
-                if (parkingVehicles[i].ID == v.ID)
-                {
-                    j = i;
-                }
-            }
-            if (j != -1) parkingVehicles.RemoveAt(j);
             VehicleForRoute = v;
         }
         
@@ -307,6 +298,7 @@ namespace SpongeBobTycoon.Model
             }
             return (false, null);
         }
+
         
 
         public void CreateRoute()
@@ -319,11 +311,38 @@ namespace SpongeBobTycoon.Model
             StopsForRoute.Clear();
             if (routemanager.DesignRoute(this))
             {
+                int j = -1;
+                for (int i = 0; i < parkingVehicles.Count; i++)
+                {
+                    if (parkingVehicles[i].ID == VehicleForRoute.ID)
+                    {
+                        j = i;
+                    }
+                }
+                if (j != -1) parkingVehicles.RemoveAt(j);
+
                 movingVehicles.Add(routemanager.vehicle);
                 OnAddMovingVehicle(VehicleForRoute);
                 board[VehicleForRoute.x,VehicleForRoute.y].isVehicle = true;
                 OnCarStepped((VehicleForRoute.x, VehicleForRoute.y));
             }
+        }
+        public void RemoveVehicleFromRoute(Vehicle vehicle)
+        {
+            int j = -1;
+            for (int i = 0; i < movingVehicles.Count; i++)
+            {
+                if (movingVehicles[i].ID == vehicle.ID)
+                {
+                    j = i;
+                }
+            }
+            if (j != -1) movingVehicles.RemoveAt(j);
+            board[vehicle.x, vehicle.y].isVehicle = false;
+            OnCarStepped((vehicle.x, vehicle.y));
+            vehicle.route_index = 0;
+            vehicle.route.Clear();
+            parkingVehicles.Add(vehicle);
         }
 
         public void Terraform(int x, int y, bool isUp)
@@ -483,6 +502,29 @@ namespace SpongeBobTycoon.Model
 
             (int,int)[] localRoute = new (int,int)[v.route.Count];
             localRoute = v.route.ToArray();
+            if (v.route_index == (localRoute.Length) - 1)
+            {
+                board[v.x, v.y].isVehicle = false;
+                OnCarStepped((v.x, v.y));
+                v.x = localRoute[0].Item1;
+                v.y = localRoute[0].Item2;
+                board[v.x, v.y].isVehicle = true;
+                OnCarStepped((v.x, v.y));
+                v.route_index = 0;
+
+            }
+            else
+            {
+                board[v.x, v.y].isVehicle = false;
+                OnCarStepped((v.x, v.y));
+                v.route_index++;
+                v.x = localRoute[v.route_index].Item1;
+                v.y = localRoute[v.route_index].Item2;
+                board[v.x, v.y].isVehicle = true;
+                OnCarStepped((v.x, v.y));
+            }
+
+            /*
             for (int i = 0; i < (localRoute.Length); i++)
             {
                 if (localRoute[i].Item1 == v.x && localRoute[i].Item2 == v.y)
@@ -524,6 +566,7 @@ namespace SpongeBobTycoon.Model
                 }
 
             }
+            */
         }
 
         private void GameModelTickFastVehicles()

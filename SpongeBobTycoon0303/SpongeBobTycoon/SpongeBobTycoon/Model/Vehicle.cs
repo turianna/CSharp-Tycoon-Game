@@ -19,11 +19,15 @@ namespace SpongeBobTycoon.Model
         public List<int>? ingredientCapacities;
 
         public Product product;
+        public string productName;
+        public string typeName;
         public int productAmount;
         public int capacity;
 
         //public string productName;
         public int ID;
+        public int route_index;
+        
         public Direction direction { get; set; }
         public int time;
         public int timeUntilMoves;
@@ -77,12 +81,40 @@ namespace SpongeBobTycoon.Model
                     throw new Exception("Invalid product for vehicle");
             }
 
+            switch (product)
+            {
+                case Algae:
+                    productName = "Algee";
+                    break;
+                case Burger:
+                    productName = "Burger";
+                    break;
+                case Citizen:
+                    productName = "Citizen";
+                    break;
+                case Meat:
+                    productName = "Meat";
+                    break;
+                case Net:
+                    productName = "Net";
+                    break;
+                case Petfood:
+                    productName = "Petfood";
+                    break;
+                case Spatula:
+                    productName = "Spatula";
+                    break;
+                case Wood:
+                    productName = "Wood";
+                    break;
+            }
+
         }
        
 
         public void Transaction(Stop currentStop)
         {
-            if(this.product.GetType() != currentStop.industry.product.GetType())
+            if (this.product.GetType() != currentStop.industry.product.GetType())
             {
                 return;
             }
@@ -91,7 +123,7 @@ namespace SpongeBobTycoon.Model
             Product stopProduct = currentStop.industry.product;
 
             //ha a megallonal a jarmu productjat lehet felvenni
-            if (this.product.GetType() == stopProduct.GetType()) 
+            if (this.product.GetType() == stopProduct.GetType())
             {
                 int productToGet = Math.Min(capacity - productAmount, stopAmount);
 
@@ -105,7 +137,7 @@ namespace SpongeBobTycoon.Model
                 if (!(currentStop.industry.product is Burger || currentStop.industry.product is Petfood)) return;
 
                 //ingredientek leadasa
-                for(int i = 0; i < ingredients!.Count; i++)
+                for (int i = 0; i < ingredients!.Count; i++)
                 {
                     Factory stopFactory = (Factory)currentStop.industry;
                     stopFactory.ReceiveIngredient(ingredients[i], ingredientAmounts![i]);
@@ -118,14 +150,14 @@ namespace SpongeBobTycoon.Model
             //ha a megallonal a jarmu ingredientjet lehet felvenni
             foreach (Product ingredient in ingredients)
             {
-                if(ingredient.GetType() == stopProduct.GetType())
+                if (ingredient.GetType() == stopProduct.GetType())
                 {
                     int index = ingredients.IndexOf(ingredient);
                     int ingredientAmount = ingredientAmounts![index];
                     int ingredientCapacity = ingredientCapacities![index];
 
                     int productToGive = Math.Min(ingredientCapacity - ingredientAmount, stopAmount);
-                    
+
                     ingredientAmounts[index] += productToGive;
                     currentStop.industry.productAmount -= productToGive;
                 }

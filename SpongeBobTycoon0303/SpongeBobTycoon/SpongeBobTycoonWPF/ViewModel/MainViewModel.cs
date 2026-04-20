@@ -282,10 +282,67 @@ namespace SpongeBobTycoonWPF.ViewModel
         {
             Vehicle vehicle = (Vehicle)v;
             RouteManager rm = new RouteManager(vehicle);
+            model.ChosenVehicle(vehicle);
+            structure = BuildMode.ROUTE;
+            Route_IsOn = true;
+ 
+        }
+
+        private void VehicleFromRoute(object v)
+        {
+            Vehicle vehicle = (Vehicle)v;
             int j = -1;
-            for(int i = 0; i < ParkingVehicleList.Count; i++)
+            for (int i = 0; i < MovingVehicleList.Count; i++)
             {
-                if (ParkingVehicleList[i].Vehicle.ID == vehicle.ID)
+                if (MovingVehicleList[i].Vehicle.ID == vehicle.ID)
+                {
+                    j = i;
+                }
+            }
+            if (j != -1)
+            {
+                MovingVehicleList.RemoveAt(j);
+
+            }
+            model.RemoveVehicleFromRoute(vehicle);
+
+
+            if (vehicle is FastCar)
+            {
+                VMvehicleType = "Truck";
+            }
+            else
+            {
+                VMvehicleType = "Van";
+            }
+
+            ParkingVehicleList.Add(new VehicleButton
+            {
+                Vehicle = vehicle,
+                Product = vehicle.productName,
+                VehicleType = VMvehicleType,
+                ClickCommand = new DelegateCommand(param =>
+                {
+                    if (param is Vehicle v)
+                    {
+                        VehicleForRoute(v); 
+                    }
+                })
+            });
+
+        }
+        public void CreateRoute()
+        {
+            model.CreateRoute();
+            Route_IsOn = false;
+        }
+
+        private void Model_AddMovingVehicle(object? sender, Vehicle e)
+        {
+            int j = -1;
+            for (int i = 0; i < ParkingVehicleList.Count; i++)
+            {
+                if (ParkingVehicleList[i].Vehicle.ID == e.ID)
                 {
                     j = i;
                 }
@@ -295,34 +352,7 @@ namespace SpongeBobTycoonWPF.ViewModel
                 ParkingVehicleList.RemoveAt(j);
 
             }
-            model.ChosenVehicle(vehicle);
-            structure = BuildMode.ROUTE;
-            Route_IsOn = true;//jelezni kell a viewnak hogy jelenítsen meg egy gombot
-            /*
-            MovingVehicleList.Add(new VehicleButton
-            {
-                Vehicle = vehicle,
-                Product = VMProduct, //át kell írni a vehicle.product.tostring()re
-                VehicleType = VMvehicleType, //ezt is át kell írni
-                ClickCommand = new DelegateCommand(param =>
-                {
-                    if (param is Vehicle v)
-                    {
-                        VehicleForRoute(v); //ClickCommand, Ezt is át kell írni valamire ami illik arra mit kell csinálnia ha rákattintunk egy moving vehiclere
-                    }
-                })
-            }); ; //nem ide kell
-            */
-        }
 
-        public void CreateRoute()
-        {
-            model.CreateRoute();
-            Route_IsOn = false;
-        }
-
-        private void Model_AddMovingVehicle(object? sender, Vehicle e)
-        {
             if (e is FastCar)
             {
                 VMvehicleType = "Truck";
@@ -331,44 +361,17 @@ namespace SpongeBobTycoonWPF.ViewModel
             {
                 VMvehicleType = "Van";
             }
-            switch (e.product)
-            {
-                case Algae:
-                    VMProduct = "Algee";
-                    break;
-                case Burger:
-                    VMProduct = "Burger";
-                    break;
-                case Citizen:
-                    VMProduct = "Citizen";
-                    break;
-                case Meat:
-                    VMProduct = "Meat";
-                    break;
-                case Net:
-                    VMProduct = "Net";
-                    break;
-                case Petfood:
-                    VMProduct = "Petfood";
-                    break;
-                case Spatula:
-                    VMProduct = "Spatula";
-                    break;
-                case Wood:
-                    VMProduct = "Wood";
-                    break;
-                    //Kéredes: Lehet a vehiclenek egy string productja? Mert ez nem jó itt.
-            }
+           
             MovingVehicleList.Add(new VehicleButton
             {
                 Vehicle = e,
-                Product = VMProduct, //át kell írni a vehicle.product.tostring()re
-                VehicleType = VMvehicleType, //ezt is át kell írni
+                Product = e.productName, 
+                VehicleType = VMvehicleType, 
                 ClickCommand = new DelegateCommand(param =>
                 {
                     if (param is Vehicle v)
                     {
-                        VehicleForRoute(v); //ClickCommand, Ezt is át kell írni valamire ami illik arra mit kell csinálnia ha rákattintunk egy moving vehiclere
+                        VehicleFromRoute(v);
                     }
                 })
             });
@@ -383,48 +386,20 @@ namespace SpongeBobTycoonWPF.ViewModel
             {
                 VMvehicleType= "Van";
             }
-            switch(e.product)
-            {
-                case Algae:
-                    VMProduct = "Algee";
-                    break;
-                case Burger:
-                    VMProduct = "Burger";
-                    break;
-                case Citizen:
-                    VMProduct = "Citizen";
-                    break;
-                case Meat:
-                    VMProduct = "Meat";
-                    break;
-                case Net:
-                    VMProduct = "Net";
-                    break;
-                case Petfood:
-                    VMProduct = "Petfood";
-                    break;
-                case Spatula:
-                    VMProduct = "Spatula";
-                    break;
-                case Wood:
-                    VMProduct = "Wood";
-                    break;
-                //Kéredes: Lehet a vehiclenek egy string productja? Mert ez nem jó itt.
-            }
+           
             ParkingVehicleList.Add(new VehicleButton
             {
                 Vehicle = e,
-                Product = VMProduct,
+                Product = e.productName,
                 VehicleType = VMvehicleType,
                 ClickCommand = new DelegateCommand(param =>
                 {
                     if (param is Vehicle v)
                     {
-                        VehicleForRoute(v); //ClickCommand, ez csak akkor fog lefutni ha rákattintunk a gombra
+                        VehicleForRoute(v); 
                     }
                 })
             });
-            //ParkingVehicleList.Add(e);
         }
 
 
