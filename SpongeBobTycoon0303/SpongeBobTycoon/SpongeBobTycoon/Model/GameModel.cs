@@ -124,6 +124,16 @@ namespace SpongeBobTycoon.Model
             timer.Start();
         }
 
+        public void InitializeBoard()
+        {
+            for (int i = 0; i < 50; i++)
+            {
+                for (int j = 0; j < 100; j++)
+                {
+                    board[i, j] = new Field(i, j, 1, new Industry(new Product()), new FieldType(), false, false, 1);
+                }
+            }
+        }
         #endregion
 
         #region Buying and Building
