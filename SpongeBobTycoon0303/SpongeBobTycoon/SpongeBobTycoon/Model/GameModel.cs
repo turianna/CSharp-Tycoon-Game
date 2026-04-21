@@ -471,7 +471,7 @@ namespace SpongeBobTycoon.Model
         }
         #endregion
 
-        #region Timer
+        #region Timer & Ticks
         public void BaseTime()
         {
             gameTime = 4;
@@ -504,29 +504,13 @@ namespace SpongeBobTycoon.Model
         {
 
             gameTime--;
-            slowCarTime--;
-            if(slowCarTime == 0)
-            {
-                GameModelTickSlowVehicles();
-                switch (timeStatus)
-                {
-                    case TimeStatus.BASE:
-                        slowCarTime = 12;
-                        break;
-                    case TimeStatus.FAST:
-                        slowCarTime = 6;
-                        break;
-                    case TimeStatus.FASTEST:
-                        slowCarTime = 3;
-                        break;
-                }
-            }
+            
             if(gameTime == 0)
             {
                 gameTimer++;
                 OnTimerTick(gameTimer);
                 GameModelTickForest();
-                GameModelTickFastVehicles();
+                GameModelTickVehicles();
                 switch (timeStatus)
                 {
                     case TimeStatus.BASE:
@@ -542,6 +526,91 @@ namespace SpongeBobTycoon.Model
             }
             
         }
+
+        private void GameModelTickVehicles()
+        {
+            foreach (Vehicle v in movingVehicles)
+            {
+               if (v.CanVehicleMove(board, movingVehicles)) CarStep(v); 
+            }
+        }
+
+        private void GameModelTickForest()
+        {
+            //forest growth
+            List<Field> newForests = new List<Field>(); //ez a lista azért kell, hogy ne módosítsuk a forests listát miközben iterálunk rajta, mert az hibához vezetne
+
+            foreach (Field f in forests)
+            {
+                if (f.fieldType is not Forest) throw new Exception();
+                Forest forest = (Forest)f.fieldType;
+
+                if (forest.GrowthTick())
+                {
+                    OnFieldChanged(f.X, f.Y, forest);
+                }
+
+                if (forest.readyToSpread)
+                {
+                    Direction? dir = forest.Spread(this, f.X, f.Y);
+
+                    newForests = ForestSpread(dir, f, newForests);
+                    forest.readyToSpread = false;
+
+                }
+            }
+
+            forests = forests.Concat(newForests).ToList();
+
+            //industry production
+
+            foreach (Industry industry in industries)
+            {
+                if (industry is Farm)
+                {
+                    Farm farm = (Farm)industry;
+                    farm.Produce();
+                }
+                else if (industry is Factory)
+                {
+                    Factory factory = (Factory)industry;
+                    factory.Produce();
+
+                }
+            }
+        }
+
+        private List<Field> ForestSpread(Direction? dir, Field f, List<Field> forests)
+        {
+            if (dir is not null)
+            {
+                switch (dir)
+                {
+                    case Direction.UP:
+                        OnFieldChanged(f.X, f.Y - 1, new Forest());
+                        forests.Add(board[f.X, f.Y - 1]);
+                        break;
+
+                    case Direction.DOWN:
+                        OnFieldChanged(f.X, f.Y + 1, new Forest());
+                        forests.Add(board[f.X, f.Y + 1]);
+                        break;
+
+                    case Direction.LEFT:
+                        OnFieldChanged(f.X - 1, f.Y, new Forest());
+                        forests.Add(board[f.X - 1, f.Y]);
+                        break;
+
+                    case Direction.RIGHT:
+                        OnFieldChanged(f.X + 1, f.Y, new Forest());
+                        forests.Add(board[f.X + 1, f.Y]);
+                        break;
+
+                }
+            }
+
+            return forests;
+        }
         #endregion
 
         private void CarStep(Vehicle v)
@@ -549,57 +618,44 @@ namespace SpongeBobTycoon.Model
 
             (int,int)[] localRoute = new (int,int)[v.route.Count];
             localRoute = v.route.ToArray();
-            if (v.route_index == (localRoute.Length) - 1)
+
+            //before changing routeIndex
+            board[v.x, v.y].isVehicle = false;
+            //int oldX = v.x;
+            //int oldY = v.y;
+
+            //change routeIndex, set new x and y for vehicle
+            v.route_index++;
+            OnCarStepped((v.x, v.y));
+            v.x = localRoute[v.route_index % (localRoute.Length - 1)].Item1;
+            v.y = localRoute[v.route_index % (localRoute.Length - 1)].Item2;
+            board[v.x, v.y].isVehicle = true;
+            
+            //look for next tile, to see if it's an incline
+            int nextX = localRoute[(v.route_index + 1) % (localRoute.Length - 1)].Item1;
+            int nextY = localRoute[(v.route_index + 1) % (localRoute.Length - 1)].Item2;
+            if (board[nextX, nextY].Z > board[v.x, v.y].Z) v.timeUntilMoves += 1;
+
+            //determine which direction the car is going, by the previous and current tile
+            //v.direction = v.DecideDirection(nextX, nextX, v.x, v.y);
+
+            //if we arrived at a stop, handle transactions
+            if (board[v.x, v.y].isStop)
             {
-                board[v.x, v.y].isVehicle = false;
-                OnCarStepped((v.x, v.y));
-                v.x = localRoute[0].Item1;
-                v.y = localRoute[0].Item2;
-                board[v.x, v.y].isVehicle = true;
+                Stop stop = findStopAt(v.x, v.y);
 
-                if (board[v.x, v.y].isStop)
+                if (stop.industry.product is Citizen)
                 {
-                    Stop stop = findStopAt(v.x, v.y);
-
-                    if (stop.industry.product is Citizen)
-                    {
-                        int moneyEarned = v.CityStopReached();
-                        ChangeBalance(moneyEarned);
-                    }
-                    v.Transaction(stop);
+                    int moneyEarned = v.CityStopReached();
+                    ChangeBalance(moneyEarned);
                 }
-
-                OnCarStepped((v.x, v.y));
-                v.brokness--;
-                CheckVehicleBrokness(v);
-                v.route_index = 0;
-
+                v.Transaction(stop);
             }
-            else
-            {
-                board[v.x, v.y].isVehicle = false;
-                OnCarStepped((v.x, v.y));
-                v.route_index++;
-                v.x = localRoute[v.route_index].Item1;
-                v.y = localRoute[v.route_index].Item2;
-                board[v.x, v.y].isVehicle = true;
 
-                if (board[v.x, v.y].isStop)
-                {
-                    Stop stop = findStopAt(v.x, v.y);
+            OnCarStepped((v.x, v.y));
+            v.brokness--;
+            CheckVehicleBrokness(v);
 
-                    if (stop.industry.product is Citizen)
-                    {
-                        int moneyEarned = v.CityStopReached();
-                        ChangeBalance(moneyEarned);
-                    }
-                    v.Transaction(stop);
-                }
-
-                OnCarStepped((v.x, v.y));
-                v.brokness--;
-                CheckVehicleBrokness(v);
-            }
 
             /*
             for (int i = 0; i < (localRoute.Length); i++)
@@ -666,102 +722,6 @@ namespace SpongeBobTycoon.Model
                 ChangeBalance(-vehicle.repairCost);
             }
         }
-        private void GameModelTickFastVehicles()
-        {
-            foreach (Vehicle v in movingVehicles)
-            {
-                if(v is FastCar)
-                {
-                    CarStep(v);
-                }
-            }
-        }
-        private void GameModelTickSlowVehicles()
-        {
-            foreach(Vehicle v in movingVehicles)
-            {
-                if (v is SlowCar)
-                {
-                    CarStep(v);
-                }
-            }
-        }
-
-        private void GameModelTickForest() 
-        {
-            //forest growth
-            List<Field> newForests = new List<Field>(); //ez a lista azért kell, hogy ne módosítsuk a forests listát miközben iterálunk rajta, mert az hibához vezetne
-
-            foreach (Field f in forests)
-            {
-                if (f.fieldType is not Forest) throw new Exception();
-                Forest forest = (Forest)f.fieldType;
-                
-                if (forest.GrowthTick()) 
-                {
-                    OnFieldChanged(f.X, f.Y, forest);
-                }
-
-                if (forest.readyToSpread) 
-                {
-                    Direction? dir = forest.Spread(this, f.X, f.Y);
-
-                    newForests = ForestSpread(dir, f, newForests);
-                    forest.readyToSpread = false;
-
-                }
-            }
-
-            forests = forests.Concat(newForests).ToList();
-
-            //industry production
-
-            foreach (Industry industry in industries)
-            {
-                if (industry is Farm)
-                {
-                    Farm farm = (Farm)industry;
-                    farm.Produce();
-                }
-                else if (industry is Factory)
-                {
-                    Factory factory = (Factory)industry;
-                    factory.Produce();
-
-                }
-            }
-        }
-
-        private List<Field> ForestSpread(Direction? dir, Field f, List<Field> forests) 
-        {
-            if (dir is not null)
-            {
-                switch (dir)
-                {
-                    case Direction.UP:
-                        OnFieldChanged(f.X, f.Y-1, new Forest());
-                        forests.Add(board[f.X, f.Y-1]);
-                        break;
-
-                    case Direction.DOWN:
-                        OnFieldChanged(f.X, f.Y+1, new Forest());
-                        forests.Add(board[f.X, f.Y+1]);
-                        break;
-
-                    case Direction.LEFT:
-                        OnFieldChanged(f.X-1, f.Y, new Forest());
-                        forests.Add(board[f.X-1, f.Y]);
-                        break;
-
-                    case Direction.RIGHT:
-                        OnFieldChanged(f.X+1, f.Y, new Forest());
-                        forests.Add(board[f.X+1, f.Y]);
-                        break;
-
-                }
-            }
-
-            return forests;
-        }
+        
     }
 }
