@@ -251,28 +251,6 @@ namespace SpongeBobTycoonWPF.ViewModel
             switch (param)
             {
                 case "Wood":
-                    model.BuyVehicle(VehicleType.SlowCar, new Wood());
-                    break;
-                case "Burger":
-                    model.BuyVehicle(VehicleType.SlowCar, new Burger());
-                    break;
-                case "Petfood":
-                    model.BuyVehicle(VehicleType.SlowCar, new Petfood());
-                    break;
-                case "Net":
-                    model.BuyVehicle(VehicleType.SlowCar, new Net());
-                    break;
-                case "Citizen":
-                    model.BuyVehicle(VehicleType.SlowCar, new Citizen());
-                    break;
-            }
-        }
-
-        private void BuyTruck(object param)
-        {
-            switch (param)
-            {
-                case "Wood":
                     model.BuyVehicle(VehicleType.FastCar, new Wood());
                     break;
                 case "Burger":
@@ -286,6 +264,28 @@ namespace SpongeBobTycoonWPF.ViewModel
                     break;
                 case "Citizen":
                     model.BuyVehicle(VehicleType.FastCar, new Citizen());
+                    break;
+            }
+        }
+
+        private void BuyTruck(object param)
+        {
+            switch (param)
+            {
+                case "Wood":
+                    model.BuyVehicle(VehicleType.SlowCar, new Wood());
+                    break;
+                case "Burger":
+                    model.BuyVehicle(VehicleType.SlowCar, new Burger());
+                    break;
+                case "Petfood":
+                    model.BuyVehicle(VehicleType.SlowCar, new Petfood());
+                    break;
+                case "Net":
+                    model.BuyVehicle(VehicleType.SlowCar, new Net());
+                    break;
+                case "Citizen":
+                    model.BuyVehicle(VehicleType.SlowCar, new Citizen());
                     break;
             }
         }
@@ -321,11 +321,11 @@ namespace SpongeBobTycoonWPF.ViewModel
 
             if (vehicle is FastCar)
             {
-                VMvehicleType = "Truck";
+                VMvehicleType = "Van";
             }
             else
             {
-                VMvehicleType = "Van";
+                VMvehicleType = "Truck";
             }
 
             ParkingVehicleList.Add(new VehicleButton
@@ -367,11 +367,11 @@ namespace SpongeBobTycoonWPF.ViewModel
 
             if (e is FastCar)
             {
-                VMvehicleType = "Truck";
+                VMvehicleType = "Van";
             }
             else
             {
-                VMvehicleType = "Van";
+                VMvehicleType = "Truck";
             }
            
             MovingVehicleList.Add(new VehicleButton
@@ -392,11 +392,11 @@ namespace SpongeBobTycoonWPF.ViewModel
         {
             if (e is FastCar)
             {
-                VMvehicleType = "Truck";
+                VMvehicleType = "Van";
             }
             else
             {
-                VMvehicleType= "Van";
+                VMvehicleType= "Truck";
             }
            
             ParkingVehicleList.Add(new VehicleButton
@@ -455,22 +455,6 @@ namespace SpongeBobTycoonWPF.ViewModel
         {
             model.StartNewGame();
         }
-
-
-        public void ViewModelForest(FieldChangedEventArgs e)
-        {
-            if (model.Board(e.x, e.y).fieldType is Forest)
-            {
-                Forest forest = (Forest)model.Board(e.x, e.y).fieldType!;
-                Board[e.x * 100 + e.y].Content = forest.treeCount.ToString();
-            }
-            else
-            {
-                Board[e.x * 100 + e.y].Content = "";
-            }
-        }
-
-        
 
         public void HandleClick(int x, int y)
         {
@@ -533,16 +517,16 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         public void Model_CarStepped(object sender, (int, int,Vehicle)coord)
         {
-            if (model.board[coord.Item1, coord.Item2].isVehicle == true && model.board[coord.Item1, coord.Item2].areTwoVehicles == false && coord.Item3.direction == 1)
+            if (model.board[coord.Item1, coord.Item2].isVehicle == true && model.board[coord.Item1, coord.Item2].areTwoVehicles == false && coord.Item3.dir == 1)
             {
                 vehiclePicture = 1;
-            }else if(model.board[coord.Item1, coord.Item2].isVehicle == true && model.board[coord.Item1, coord.Item2].areTwoVehicles == false && coord.Item3.direction == 2)
+            }else if(model.board[coord.Item1, coord.Item2].isVehicle == true && model.board[coord.Item1, coord.Item2].areTwoVehicles == false && coord.Item3.dir == 2)
             {
                 vehiclePicture = 2;
-            }else if(model.board[coord.Item1, coord.Item2].isVehicle == true && model.board[coord.Item1, coord.Item2].areTwoVehicles == false && coord.Item3.direction == 3)
+            }else if(model.board[coord.Item1, coord.Item2].isVehicle == true && model.board[coord.Item1, coord.Item2].areTwoVehicles == false && coord.Item3.dir == 3)
             {
                 vehiclePicture = 3;
-            }else if(model.board[coord.Item1, coord.Item2].isVehicle == true && model.board[coord.Item1, coord.Item2].areTwoVehicles == false && coord.Item3.direction == 4)
+            }else if(model.board[coord.Item1, coord.Item2].isVehicle == true && model.board[coord.Item1, coord.Item2].areTwoVehicles == false && coord.Item3.dir == 4)
             {
                 vehiclePicture = 4;
             }

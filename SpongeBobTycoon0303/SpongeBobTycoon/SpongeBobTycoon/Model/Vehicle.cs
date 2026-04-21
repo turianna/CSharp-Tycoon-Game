@@ -28,9 +28,10 @@ namespace SpongeBobTycoon.Model
         public int ID;
         public int route_index;
         
-        //public Direction direction { get; set; }
-        public int direction { get; set; }
+        public Direction direction { get; set; }
+        public int dir { get; set; }
         public int time;
+        protected int baseTime;
         public int timeUntilMoves;
         public int stepsUntilBroken;
         public int repairCost;
@@ -197,6 +198,82 @@ namespace SpongeBobTycoon.Model
             System.Diagnostics.Debug.WriteLine($"Vehicle {ID} sold {productAmount} of {product.GetType().Name}, making {moneyEarned} dollars.");
             productAmount = 0;
             return moneyEarned;
+        }
+
+        public bool CanVehicleMove(Field[,] board, List<Vehicle> allVehicles)
+        {
+            int nextX = route![(route_index+1) % (route.Count - 1)].Item1;
+            int nextY = route[(route_index+1) % (route.Count - 1)].Item2;
+            this.direction = DecideDirection(nextX, nextY, this.x, this.y);
+
+            Vehicle? vehicleInTheWay = null;
+            if (board[nextX, nextY].isVehicle)
+            {
+                foreach(Vehicle v in allVehicles)
+                {
+                    if (v == this) continue;
+                    if (v.x == nextX && v.y == nextY) vehicleInTheWay = v;
+                }
+                
+                if(vehicleInTheWay != null && vehicleInTheWay.direction != InverseDirection(this.direction)) 
+                {
+                    System.Diagnostics.Debug.WriteLine($"Vehicle {ID} is blocked");
+                    timeUntilMoves++;
+                }
+
+            }
+
+            timeUntilMoves--;
+
+            if (timeUntilMoves == 0)
+            {
+                timeUntilMoves = baseTime;
+                //stepsUntilBroken--;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private Direction InverseDirection(Direction dir)
+        {
+            switch (dir)
+            {
+                case Direction.UP:
+                    return Direction.DOWN;
+                case Direction.DOWN:
+                    return Direction.UP;
+                case Direction.LEFT:
+                    return Direction.RIGHT;
+                case Direction.RIGHT:
+                    return Direction.LEFT;
+                default:
+                    throw new Exception("Hiba: az emberiseg nem tudta hogy valojaban letezik egy otodik irany");
+            }
+        }
+
+        public Direction DecideDirection(int nextX, int nextY, int X, int Y)
+        {
+            if(nextX == X-1 && nextY == Y)
+            {
+                return Direction.UP;
+            }
+            if(nextX == X + 1 && nextY == Y)
+            {
+                return Direction.DOWN;
+            }
+            if(nextX == X && nextY == Y - 1)
+            {
+                return Direction.LEFT;
+            }
+            if (nextX == X && nextY == Y + 1)
+            {
+                return Direction.RIGHT;
+            }
+            else return this.direction;
+
+
         }
     }
 }

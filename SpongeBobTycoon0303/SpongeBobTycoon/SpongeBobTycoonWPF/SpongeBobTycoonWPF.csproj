@@ -81,6 +81,8 @@
     <None Remove="Images\petfood.png" />
     <None Remove="Images\river.png" />
     <None Remove="Images\road.png" />
+    <None Remove="Images\RoadNS.jpg" />
+    <None Remove="Images\RoadWE.jpg" />
     <None Remove="Images\route.png" />
     <None Remove="Images\stop.png" />
     <None Remove="Images\stop2.png" />
@@ -116,6 +118,12 @@
     <None Remove="Images\varos_2.png" />
     <None Remove="Images\varos_3.png" />
     <None Remove="Images\varos_4.png" />
+    <None Remove="Images\VehicleBothNS.png" />
+    <None Remove="Images\VehicleBothWE.png" />
+    <None Remove="Images\VehicleDown.png" />
+    <None Remove="Images\VehicleLeft.png" />
+    <None Remove="Images\VehicleRight.png" />
+    <None Remove="Images\VehicleUp.png" />
     <None Remove="Images\wood.png" />
     <None Remove="Images\woodbridge.png" />
   </ItemGroup>
@@ -199,6 +207,8 @@
     <Resource Include="Images\play.png" />
     <Resource Include="Images\river.png" />
     <Resource Include="Images\road.png" />
+    <Resource Include="Images\RoadNS.jpg" />
+    <Resource Include="Images\RoadWE.jpg" />
     <Resource Include="Images\route.png" />
     <Resource Include="Images\stop.png" />
     <Resource Include="Images\stop2.png" />
@@ -231,6 +241,12 @@
     <Resource Include="Images\varos_2.png" />
     <Resource Include="Images\varos_3.png" />
     <Resource Include="Images\varos_4.png" />
+    <Resource Include="Images\VehicleBothNS.png" />
+    <Resource Include="Images\VehicleBothWE.png" />
+    <Resource Include="Images\VehicleDown.png" />
+    <Resource Include="Images\VehicleLeft.png" />
+    <Resource Include="Images\VehicleRight.png" />
+    <Resource Include="Images\VehicleUp.png" />
     <Resource Include="Images\wood.png" />
     <Resource Include="Images\woodbridge.png" />
   </ItemGroup>

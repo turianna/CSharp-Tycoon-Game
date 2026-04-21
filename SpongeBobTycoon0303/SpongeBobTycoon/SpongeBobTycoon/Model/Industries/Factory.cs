@@ -14,6 +14,7 @@ namespace SpongeBobTycoon.Model.Industries
         private List<int> ingredientsForProduction;
 
         bool producing;
+        private float productPerSecond;
 
         public Factory(Product product) : base(product)
         {
