@@ -140,13 +140,12 @@ namespace SpongeBobTycoon.Model
         #region Buying and Building
         public void BuyRoad(int x, int y) {
 
-            if (board[x,y].fieldType is Grass && board[x,y].industry!.product is not Citizen)
+            if (board[x,y].fieldType is Grass && board[x,y].industry.product is not Citizen && AdjacentRoad(x, y))
             {           
                 board[x, y].fieldType = new Road();
                 ChangeBalance(-20);
                 OnFieldChanged(x, y, board[x, y].fieldType!);
-
-            }else if (board[x, y].fieldType is Forest && board[x, y].industry!.product is not Citizen)
+            }else if (board[x, y].fieldType is Forest && board[x, y].industry.product is not Citizen && AdjacentRoad(x, y))
             {
                 Field? forestToRemove = null;
                 foreach (Field f in forests)
@@ -207,11 +206,37 @@ namespace SpongeBobTycoon.Model
         
         
 
+        public bool AdjacentRoad(int x, int y)
+        {
+            (int dx, int dy)[] directions =
+                {
+                             (-1,0), 
+                    (0,-1),           (0,1),
+                              (1,0),  
+                };
+
+            foreach (var (dx, dy) in directions)
+            {
+                int nx = x + dx;
+                int ny = y + dy;
+
+                if (nx >= 0 && nx < board.GetLength(0) &&
+                    ny >= 0 && ny < board.GetLength(1))
+                {
+                    if (board[nx, ny].fieldType is Road || board[nx, ny].fieldType is Bridge)
+                    {
+                        return true;
+                    }
+
+                }
+            }
+            return false;
+        }
         public void BuyBridge(int x, int y, bool isFast, bool isRiver) {
 
             if (board[x, y].fieldType is Lava lavaField && board[x, y].industry.product is not Citizen)
             {
-                if (lavaField.isRiver && isRiver)
+                if (lavaField.isRiver && isRiver && AdjacentRoad(x,y))
                 {
                     if (isFast)
                     {
@@ -225,7 +250,7 @@ namespace SpongeBobTycoon.Model
                         ChangeBalance(-200);
                         OnFieldChanged(x, y, board[x, y].fieldType);
                     }
-                }else if(lavaField.isRiver == false && isRiver == false)
+                }else if(lavaField.isRiver == false && isRiver == false && AdjacentRoad(x, y))
                 {
                     if (isFast)
                     {
