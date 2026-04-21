@@ -45,6 +45,7 @@ namespace SpongeBobTycoon.Model
         public event EventHandler CreateRouteFailed;
 
         public event EventHandler<int>? TimerTick;
+        int[] news;
         #endregion
 
 
@@ -86,8 +87,9 @@ namespace SpongeBobTycoon.Model
             timeStatus = TimeStatus.BASE;
             money = 10000;
             biggestVehicleID = 0;
+            news = new int[4];
 
-            
+
             timer.Start();
         }
         public Field Board(int i, int j)
@@ -143,6 +145,17 @@ namespace SpongeBobTycoon.Model
             if (board[x,y].fieldType is Grass && board[x,y].industry.product is not Citizen && AdjacentRoad(x, y))
             {           
                 board[x, y].fieldType = new Road();
+                if (news[0]==1 && news[1]==0 && news[2] == 0 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
+                else if(news[0] == 0 && news[1] == 1 && news[2] == 1 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
+                else if(news[0] == 1 && news[1] == 1 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.CROSSROAD;
+                else if(news[0] == 1 && news[1] == 0 && news[2] == 1 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TURNNW;
+                else if(news[0] == 1 && news[1] == 1 && news[2] == 0 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TURNNE;
+                else if(news[0] == 0 && news[1] == 0 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TURNSW;
+                else if(news[0] == 0 && news[1] == 1 && news[2] == 0 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TURNSE;
+                else if(news[0] == 1 && news[1] == 1 && news[2] == 1 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TN;
+                else if(news[0] == 1 && news[1] == 1 && news[2] == 0 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TE;
+                else if(news[0] == 1 && news[1] == 0 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TW;
+                else if(news[0] == 0 && news[1] == 1 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TS;
                 ChangeBalance(-20);
                 OnFieldChanged(x, y, board[x, y].fieldType!);
             }else if (board[x, y].fieldType is Forest && board[x, y].industry.product is not Citizen && AdjacentRoad(x, y)) 
@@ -157,6 +170,17 @@ namespace SpongeBobTycoon.Model
                 }
                 if(forestToRemove != null) forests.Remove(forestToRemove);
                 board[x, y].fieldType = new Road();
+                if (news[0] == 1 && news[1] == 0 && news[2] == 0 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
+                else if (news[0] == 0 && news[1] == 1 && news[2] == 1 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
+                else if (news[0] == 1 && news[1] == 1 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.CROSSROAD;
+                else if (news[0] == 1 && news[1] == 0 && news[2] == 1 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TURNNW;
+                else if (news[0] == 1 && news[1] == 1 && news[2] == 0 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TURNNE;
+                else if (news[0] == 0 && news[1] == 0 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TURNSW;
+                else if (news[0] == 0 && news[1] == 1 && news[2] == 0 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TURNSE;
+                else if (news[0] == 1 && news[1] == 1 && news[2] == 1 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TN;
+                else if (news[0] == 1 && news[1] == 1 && news[2] == 0 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TE;
+                else if (news[0] == 1 && news[1] == 0 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TW;
+                else if (news[0] == 0 && news[1] == 1 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TS;
                 ChangeBalance(-60);
                 OnFieldChanged(x, y, board[x, y].fieldType!);
             }
@@ -208,6 +232,11 @@ namespace SpongeBobTycoon.Model
 
         public bool AdjacentRoad(int x, int y)
         {
+            bool isTrue = false;
+            for(int i = 0; i < 4; i++)
+            {
+                news[i] = 0;
+            }
             (int dx, int dy)[] directions =
                 {
                              (-1,0), 
@@ -225,12 +254,16 @@ namespace SpongeBobTycoon.Model
                 {
                     if ((board[nx, ny].fieldType is Road || board[nx, ny].fieldType is Bridge) && Math.Abs(board[nx,ny].Z - board[x,y].Z)<2)
                     {
-                        return true;
+                        if ((dx, dy) == (-1, 0)) news[0] = 1;
+                        if ((dx, dy) == (0, 1)) news[1] = 1;
+                        if ((dx, dy) == (0, -1)) news[2] = 1;
+                        if ((dx, dy) == (1, 0)) news[3] = 1;
+                        isTrue = true;
                     }
-
                 }
             }
-            return false;
+            
+            return isTrue;
         }
         public void BuyBridge(int x, int y, bool isFast, bool isRiver) {
 

@@ -9,5 +9,6 @@ namespace SpongeBobTycoon.Model.FieldTypes
     public class Road : FieldType
     {
         public Direction direction;
+        public RoadType roadType;
     }
 }
