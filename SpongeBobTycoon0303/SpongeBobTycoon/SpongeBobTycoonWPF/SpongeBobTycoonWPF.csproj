@@ -13,6 +13,27 @@
     <None Remove="Images\bridge.png" />
     <None Remove="Images\bridge_small.png" />
     <None Remove="Images\burger.png" />
+    <None Remove="Images\burger1.png" />
+    <None Remove="Images\burger10.png" />
+    <None Remove="Images\burger11.png" />
+    <None Remove="Images\burger12.png" />
+    <None Remove="Images\burger13.png" />
+    <None Remove="Images\burger14.png" />
+    <None Remove="Images\burger15.png" />
+    <None Remove="Images\burger16.png" />
+    <None Remove="Images\burger17.png" />
+    <None Remove="Images\burger18.png" />
+    <None Remove="Images\burger19.png" />
+    <None Remove="Images\burger2.png" />
+    <None Remove="Images\burger20.png" />
+    <None Remove="Images\burger21.png" />
+    <None Remove="Images\burger3.png" />
+    <None Remove="Images\burger4.png" />
+    <None Remove="Images\burger5.png" />
+    <None Remove="Images\burger6.png" />
+    <None Remove="Images\burger7.png" />
+    <None Remove="Images\burger8.png" />
+    <None Remove="Images\burger9.png" />
     <None Remove="Images\buy.png" />
     <None Remove="Images\buy_vehicle.png" />
     <None Remove="Images\citizen.png" />
@@ -66,11 +87,43 @@
     <None Remove="Images\truck.png" />
     <None Remove="Images\up-arrow.png" />
     <None Remove="Images\van.png" />
+    <None Remove="Images\varos1_1.png" />
+    <None Remove="Images\varos1_2.png" />
+    <None Remove="Images\varos1_3.png" />
+    <None Remove="Images\varos_0.png" />
+    <None Remove="Images\varos_1.png" />
+    <None Remove="Images\varos_2.png" />
+    <None Remove="Images\varos_3.png" />
+    <None Remove="Images\varos_4.png" />
     <None Remove="Images\wood.png" />
     <None Remove="Images\woodbridge.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\burger18.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\burger1.png" />
+    <Resource Include="Images\burger10.png" />
+    <Resource Include="Images\burger11.png" />
+    <Resource Include="Images\burger12.png" />
+    <Resource Include="Images\burger13.png" />
+    <Resource Include="Images\burger14.png" />
+    <Resource Include="Images\burger15.png" />
+    <Resource Include="Images\burger16.png" />
+    <Resource Include="Images\burger17.png" />
+    <Resource Include="Images\burger19.png" />
+    <Resource Include="Images\burger2.png" />
+    <Resource Include="Images\burger20.png" />
+    <Resource Include="Images\burger21.png" />
+    <Resource Include="Images\burger3.png" />
+    <Resource Include="Images\burger4.png" />
+    <Resource Include="Images\burger5.png" />
+    <Resource Include="Images\burger6.png" />
+    <Resource Include="Images\burger7.png" />
+    <Resource Include="Images\burger8.png" />
+    <Resource Include="Images\burger9.png" />
     <Resource Include="Images\korall3_2.png" />
   </ItemGroup>
 
@@ -131,6 +184,11 @@
     <Resource Include="Images\truck.png" />
     <Resource Include="Images\up-arrow.png" />
     <Resource Include="Images\van.png" />
+    <Resource Include="Images\varos_0.png" />
+    <Resource Include="Images\varos_1.png" />
+    <Resource Include="Images\varos_2.png" />
+    <Resource Include="Images\varos_3.png" />
+    <Resource Include="Images\varos_4.png" />
     <Resource Include="Images\wood.png" />
     <Resource Include="Images\woodbridge.png" />
   </ItemGroup>

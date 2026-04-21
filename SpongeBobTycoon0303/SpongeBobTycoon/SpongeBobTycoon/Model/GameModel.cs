@@ -1,4 +1,4 @@
-﻿using SpongeBobTycoon.Model.FieldTypes;
+using SpongeBobTycoon.Model.FieldTypes;
 using SpongeBobTycoon.Model.Industries;
 using SpongeBobTycoon.Model.Products;
 using SpongeBobTycoon.Persistence;
@@ -14,22 +14,26 @@ namespace SpongeBobTycoon.Model
 {
     public class GameModel
     {
+        #region Properties
         public List<Stop> stops { get; set; }
 
         public List<Vehicle> parkingVehicles { get; set; } 
 
         public List<Vehicle> movingVehicles { get; set; }
-        public List<Field> forests { get; set; }
+        
 
         private Vehicle VehicleForRoute { get; set; }
         private List<Stop> StopsForRoute { get; set; }
         public int money { get; set; }
+        #endregion
 
+        #region Instances of other classes
         private TerraformingManager TerraformManager = new TerraformingManager();
-
         private GameData GameData { get; set; }
         private DataAccess DataAccess;
+        #endregion
 
+        #region Events
         public event EventHandler GameOver;
         public event EventHandler<int>? MoneyChanged;
         public event EventHandler? InsufficientFunds;
@@ -38,8 +42,12 @@ namespace SpongeBobTycoon.Model
         public event EventHandler Refresh;
         public event EventHandler<(int,int)>? CarStepped;
         public event EventHandler<Vehicle>? AddMovingVehicle;
+        public event EventHandler CreateRouteFailed;
 
         public event EventHandler<int>? TimerTick;
+        #endregion
+
+
         public ITimer timer;
         public int gameTime;
         public int fastCarTime;
@@ -50,10 +58,8 @@ namespace SpongeBobTycoon.Model
 
 
         public Field[,] board;
-        public Field Board(int i, int j)
-        {
-            return board[i, j];
-        }
+        private List<Field> forests;
+        private List<Industry> industries;
 
         public GameModel(DataAccess dataAccess)
         {
@@ -65,9 +71,9 @@ namespace SpongeBobTycoon.Model
 
             GameData = new GameData();
             DataAccess = dataAccess;
-            InitializeBoard();
             board = DataAccess.LoadMap();
             forests = DataAccess.GetForests();
+            industries = DataAccess.GetIndustries();
 
             timer = new GameTimer();
             timer.Interval = 250;
@@ -84,14 +90,17 @@ namespace SpongeBobTycoon.Model
             
             timer.Start();
         }
-       
+        public Field Board(int i, int j)
+        {
+            return board[i, j];
+        }
 
+        #region Initialization
         public void StartNewGame()
         {
             stops.Clear();
             parkingVehicles.Clear(); 
             movingVehicles.Clear();
-            InitializeBoard();
             board = DataAccess.LoadMap();
             forests = DataAccess.GetForests();
             OnRefresh();
@@ -116,27 +125,28 @@ namespace SpongeBobTycoon.Model
             timer.Start();
         }
 
-        
         public void InitializeBoard()
         {
-            for(int i = 0; i < 50; i++)
+            for (int i = 0; i < 50; i++)
             {
-                for(int j = 0; j < 100; j++)
+                for (int j = 0; j < 100; j++)
                 {
-                    board[i, j] = new Field(i, j, 0, new Industry(), new FieldType(), false, false);
+                    board[i, j] = new Field(i, j, 1, new Industry(new Product()), new FieldType(), false, false, 1);
                 }
             }
         }
+        #endregion
 
+        #region Buying and Building
         public void BuyRoad(int x, int y) {
 
-            if (board[x,y].fieldType is Grass && board[x,y].industry.product is not Citizen)
+            if (board[x,y].fieldType is Grass && board[x,y].industry!.product is not Citizen)
             {           
                 board[x, y].fieldType = new Road();
                 ChangeBalance(-20);
-                OnFieldChanged(x, y, board[x, y].fieldType);
+                OnFieldChanged(x, y, board[x, y].fieldType!);
 
-            }else if (board[x, y].fieldType is Forest && board[x, y].industry.product is not Citizen)
+            }else if (board[x, y].fieldType is Forest && board[x, y].industry!.product is not Citizen)
             {
                 Field? forestToRemove = null;
                 foreach (Field f in forests)
@@ -149,7 +159,7 @@ namespace SpongeBobTycoon.Model
                 if(forestToRemove != null) forests.Remove(forestToRemove);
                 board[x, y].fieldType = new Road();
                 ChangeBalance(-60);
-                OnFieldChanged(x, y, board[x, y].fieldType);
+                OnFieldChanged(x, y, board[x, y].fieldType!);
             }
 
         }
@@ -176,28 +186,26 @@ namespace SpongeBobTycoon.Model
             ChangeBalance(-vehicle.cost);
 
             parkingVehicles.Add(vehicle);
+            System.Diagnostics.Debug.WriteLine($"Bought a {vehicleType} with ID {vehicle.ID} for product {product.GetType().Name}");
+            if(vehicle.ingredients != null)
+            {
+                System.Diagnostics.Debug.WriteLine($"Vehicle has {vehicle.ingredients.Count} ingredients:");
+                for (int i = 0; i < vehicle.ingredients.Count; i++)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Ingredient: {vehicle.ingredients[i].GetType().Name}, amount: {vehicle.ingredientAmounts[i]}, capacity: {vehicle.ingredientCapacities[i]}");
+                }
+            }
             OnVehicleBought(vehicle);
         }
 
         public void ChosenVehicle(Vehicle v)
         {
-            movingVehicles.Add(v); // ennek is a routemanagerbe kell kerülnie
-            int j = -1;
-            for (int i = 0; i < parkingVehicles.Count; i++)
-            {
-                if (parkingVehicles[i].ID == v.ID)
-                {
-                    j = i;
-                }
-            }
-            if (j != -1) parkingVehicles.RemoveAt(j);
+            
+             // ennek is a routemanagerbe kell kerülnie
             VehicleForRoute = v;
         }
         
-        public void OnVehicleBought(Vehicle vehicle)
-        {
-            VehicleBought?.Invoke(this, vehicle); //ezzel kellene jelezni, hogy jelenjen meg a nem mozgó járművek listájában az autó
-        }
+        
 
         public void BuyBridge(int x, int y, bool isFast, bool isRiver) {
 
@@ -240,17 +248,30 @@ namespace SpongeBobTycoon.Model
             }
 
 
-        } 
+        }
+        #endregion
+
+        #region Routes & Stops
         public void PutStop(int x, int y) {
 
-            if (board[x, y].fieldType is Road && IsStopValid(x,y) && board[x, y].industry!.product is not Citizen)
+            bool isValid;
+            Industry? industry;
+
+            (isValid, industry) = IsStopValid(x, y);
+
+            if (board[x, y].fieldType is Road && isValid && board[x, y].industry!.product is not Citizen)
             {
                 board[x, y].isStop = true;
-                Stop stop = new Stop(x,y);
+                //board[x,y].industry = industry;
+
+                Stop stop = new Stop(x,y, industry);
+                System.Diagnostics.Debug.WriteLine($"Stop created at ({x}, {y}) product: {industry.product.GetType().Name}, product amount: {industry.productAmount}");
                 stops.Add(stop);
             }
             
         }
+        
+
         public void SelectStop(int x, int y)
         {
             if (board[x,y].isStop == true)
@@ -265,7 +286,36 @@ namespace SpongeBobTycoon.Model
             }
         }
 
-        public void ModelCreateRoute()
+        public (bool, Industry?) IsStopValid(int x, int y)
+        {
+            (int dx, int dy)[] directions =
+                {
+                    (-1,-1), (-1,0), (-1,1),
+                    (0,-1),           (0,1),
+                    (1,-1),  (1,0),  (1,1)
+                };
+
+            foreach (var (dx, dy) in directions)
+            {
+                int nx = x + dx;
+                int ny = y + dy;
+
+                if (nx >= 0 && nx < board.GetLength(0) &&
+                    ny >= 0 && ny < board.GetLength(1))
+                {
+                    if (board[nx, ny].industry.product is not null)
+                    {
+                        return (true, board[nx, ny].industry);
+                    }
+
+                }
+            }
+            return (false, null);
+        }
+
+        
+
+        public void CreateRoute()
         {
             RouteManager routemanager = new RouteManager(VehicleForRoute);
             foreach(Stop stop in StopsForRoute)
@@ -275,11 +325,42 @@ namespace SpongeBobTycoon.Model
             StopsForRoute.Clear();
             if (routemanager.DesignRoute(this))
             {
+                int j = -1;
+                for (int i = 0; i < parkingVehicles.Count; i++)
+                {
+                    if (parkingVehicles[i].ID == VehicleForRoute.ID)
+                    {
+                        j = i;
+                    }
+                }
+                if (j != -1) parkingVehicles.RemoveAt(j);
+
                 movingVehicles.Add(routemanager.vehicle);
                 OnAddMovingVehicle(VehicleForRoute);
                 board[VehicleForRoute.x,VehicleForRoute.y].isVehicle = true;
                 OnCarStepped((VehicleForRoute.x, VehicleForRoute.y));
             }
+            else
+            {
+                OnCreateRouteFailed();
+            }
+        }
+        public void RemoveVehicleFromRoute(Vehicle vehicle)
+        {
+            int j = -1;
+            for (int i = 0; i < movingVehicles.Count; i++)
+            {
+                if (movingVehicles[i].ID == vehicle.ID)
+                {
+                    j = i;
+                }
+            }
+            if (j != -1) movingVehicles.RemoveAt(j);
+            board[vehicle.x, vehicle.y].isVehicle = false;
+            OnCarStepped((vehicle.x, vehicle.y));
+            vehicle.route_index = 0;
+            vehicle.route.Clear();
+            parkingVehicles.Add(vehicle);
         }
 
         public void Terraform(int x, int y, bool isUp)
@@ -296,34 +377,9 @@ namespace SpongeBobTycoon.Model
             OnFieldChanged(x, y, board[x, y].fieldType!);
         }
 
-        public bool IsStopValid(int x, int y)
-        {
-            (int dx, int dy)[] directions =
-                {
-                    (-1,-1), (-1,0), (-1,1),
-                    (0,-1),           (0,1),
-                    (1,-1),  (1,0),  (1,1)
-                };
+        #endregion
 
-            foreach (var (dx, dy) in directions)
-            {
-                int nx = x + dx;
-                int ny = y + dy;
-
-                if (nx >= 0 && nx < board.GetLength(0) &&
-                    ny >= 0 && ny < board.GetLength(1))
-                { 
-                    if (board[nx,ny].industry.product is not null)
-                    {
-                        return true;
-                    }
-                
-                }
-            }
-            return false;
-        }
-
-
+        #region Money handling
         public void ChangeBalance(int amount)
         {
             if (money + amount < 0)
@@ -336,15 +392,21 @@ namespace SpongeBobTycoon.Model
             OnMoneyChanged(money);
             
         }
+        #endregion
 
         public async Task LoadGame(String path) { }
         public async Task SaveGame(String path) { }
 
         public void Produce() { }
-       
+
+        #region Events
         public void OnGameOver()
         {
             GameOver?.Invoke(this, EventArgs.Empty);
+        }
+        public void OnVehicleBought(Vehicle vehicle)
+        {
+            VehicleBought?.Invoke(this, vehicle); //ezzel kellene jelezni, hogy jelenjen meg a nem mozgó járművek listájában az autó
         }
 
         public void OnAddMovingVehicle(Vehicle v)
@@ -357,9 +419,9 @@ namespace SpongeBobTycoon.Model
             MoneyChanged?.Invoke(this, m);
         }
 
-        public void OnInsufficientFunds()
+        public void OnCreateRouteFailed()
         {
-            InsufficientFunds?.Invoke(this, EventArgs.Empty);
+            CreateRouteFailed?.Invoke(this, EventArgs.Empty);
         }
 
         public void OnCarStepped((int,int) coord)
@@ -382,6 +444,9 @@ namespace SpongeBobTycoon.Model
         {
             Refresh?.Invoke(this, EventArgs.Empty);
         }
+        #endregion
+
+        #region Timer
         public void BaseTime()
         {
             gameTime = 4;
@@ -452,12 +517,66 @@ namespace SpongeBobTycoon.Model
             }
             
         }
+        #endregion
 
         private void CarStep(Vehicle v)
         {
 
             (int,int)[] localRoute = new (int,int)[v.route.Count];
             localRoute = v.route.ToArray();
+            if (v.route_index == (localRoute.Length) - 1)
+            {
+                board[v.x, v.y].isVehicle = false;
+                OnCarStepped((v.x, v.y));
+                v.x = localRoute[0].Item1;
+                v.y = localRoute[0].Item2;
+                board[v.x, v.y].isVehicle = true;
+
+                if (board[v.x, v.y].isStop)
+                {
+                    Stop stop = findStopAt(v.x, v.y);
+
+                    if (stop.industry.product is Citizen)
+                    {
+                        int moneyEarned = v.CityStopReached();
+                        ChangeBalance(moneyEarned);
+                    }
+                    v.Transaction(stop);
+                }
+
+                OnCarStepped((v.x, v.y));
+                v.brokness--;
+                CheckVehicleBrokness(v);
+                v.route_index = 0;
+
+            }
+            else
+            {
+                board[v.x, v.y].isVehicle = false;
+                OnCarStepped((v.x, v.y));
+                v.route_index++;
+                v.x = localRoute[v.route_index].Item1;
+                v.y = localRoute[v.route_index].Item2;
+                board[v.x, v.y].isVehicle = true;
+
+                if (board[v.x, v.y].isStop)
+                {
+                    Stop stop = findStopAt(v.x, v.y);
+
+                    if (stop.industry.product is Citizen)
+                    {
+                        int moneyEarned = v.CityStopReached();
+                        ChangeBalance(moneyEarned);
+                    }
+                    v.Transaction(stop);
+                }
+
+                OnCarStepped((v.x, v.y));
+                v.brokness--;
+                CheckVehicleBrokness(v);
+            }
+
+            /*
             for (int i = 0; i < (localRoute.Length); i++)
             {
                 if (localRoute[i].Item1 == v.x && localRoute[i].Item2 == v.y)
@@ -479,19 +598,54 @@ namespace SpongeBobTycoon.Model
                         v.x = localRoute[i + 1].Item1;
                         v.y = localRoute[i + 1].Item2;
                         board[v.x, v.y].isVehicle = true;
+
+                        if (board[v.x, v.y].fieldType is Stop)
+                        {
+                            Stop stop = (Stop)board[v.x, v.y].fieldType!;
+
+                            if (stop.industry.product is Citizen)
+                            {
+                                int moneyEarned = v.CityStopReached();
+                                ChangeBalance(moneyEarned);
+                            }
+                            v.Transaction(stop);
+                        }
+
                         OnCarStepped((v.x, v.y));
+                        break;
                     }
 
                 }
 
             }
+            */
+        }
+        private Stop findStopAt(int x, int y)
+        {
+            foreach (Stop stop in stops)
+            {
+                if (stop.X == x && stop.Y == y)
+                {
+                    return stop;
+                }
+            }
+
+            throw new Exception($"No stop found at ({x}, {y})");
         }
 
+        private void CheckVehicleBrokness(Vehicle vehicle)
+        {
+            if(vehicle.brokness == 0)
+            {
+                vehicle.brokness = vehicle.stepsUntilBroken;
+                ChangeBalance(-vehicle.repairCost);
+            }
+        }
         private void GameModelTickFastVehicles()
         {
             foreach (Vehicle v in movingVehicles)
             {
-                if(v is SlowCar)
+                if(v is FastCar)
                 {
                     CarStep(v);
                 }
@@ -501,7 +655,10 @@ namespace SpongeBobTycoon.Model
         {
             foreach(Vehicle v in movingVehicles)
             {
-                
+                if (v is SlowCar)
+                {
+                    CarStep(v);
+                }
             }
         }
 
@@ -531,6 +688,23 @@ namespace SpongeBobTycoon.Model
             }
 
             forests = forests.Concat(newForests).ToList();
+
+            //industry production
+
+            foreach (Industry industry in industries)
+            {
+                if (industry is Farm)
+                {
+                    Farm farm = (Farm)industry;
+                    farm.Produce();
+                }
+                else if (industry is Factory)
+                {
+                    Factory factory = (Factory)industry;
+                    factory.Produce();
+
+                }
+            }
         }
 
         private List<Field> ForestSpread(Direction? dir, Field f, List<Field> forests) 
@@ -564,6 +738,5 @@ namespace SpongeBobTycoon.Model
 
             return forests;
         }
-
     }
 }

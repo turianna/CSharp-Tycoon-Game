@@ -1,4 +1,4 @@
-﻿using SpongeBobTycoon.Model.Products;
+using SpongeBobTycoon.Model.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,45 @@ namespace SpongeBobTycoon.Model
             this.product = product;
             cost = 100;
             time = 5;
-            cost = 100;
+
+            switch (product)
+            {
+                case Algae:
+                    capacity = 20;
+                    break;
+
+                case Burger:
+                    capacity = 6;
+                    break;
+
+                case Citizen:
+                    capacity = 20;
+                    break;
+
+                case Meat:
+                    capacity = 30;
+                    break;
+
+                case Spatula:
+                    capacity = 10;
+                    break;
+
+                case Petfood:
+                    capacity = 15;
+                    break;
+
+                case Net:
+                    capacity = 20;
+                    break;
+
+                case Wood:
+                    capacity = 40;
+                    break;
+            }
+
+            stepsUntilBroken = 45;
+            repairCost = 50;
+            brokness = stepsUntilBroken;
         }
 
     }

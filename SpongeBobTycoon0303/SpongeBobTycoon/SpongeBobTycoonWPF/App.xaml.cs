@@ -35,6 +35,7 @@ namespace SpongeBobTycoonWPF
             gameview.DataContext = viewModel;
             menuview.Show();
             model.GameOver += new EventHandler(MGameOver);
+            model.CreateRouteFailed += new EventHandler(MCreateRouteFailed);
 
         }
 
@@ -42,6 +43,11 @@ namespace SpongeBobTycoonWPF
         private void MGameOver(object? sender, EventArgs e)
         {
             MessageBox.Show("Sajnálom, vesztettél!", "Játék vége!", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void MCreateRouteFailed(object? sender, EventArgs e)
+        {
+            MessageBox.Show("Sajnálom, ezt az útvonalat nem lehet létrehozni. Kérlek válassz helyes útvonalat!", "Helytelen útvonal!", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 
