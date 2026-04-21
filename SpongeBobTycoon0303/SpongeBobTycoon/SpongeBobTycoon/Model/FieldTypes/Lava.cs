@@ -9,5 +9,10 @@ namespace SpongeBobTycoon.Model.FieldTypes
     public class Lava :FieldType //water
     {
         public bool isRiver;
+        
+        public Lava(bool isRiver)
+        {
+            this.isRiver = isRiver;
+        }
     }
 }

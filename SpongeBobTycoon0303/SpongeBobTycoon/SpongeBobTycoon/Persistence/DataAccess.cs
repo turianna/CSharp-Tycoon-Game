@@ -195,9 +195,9 @@ namespace SpongeBobTycoon.Persistence
                 case 'E':
                     return (new Grass(), new Industry(null));
                 case 'R':
-                    return (new Lava(), new Industry(null));
+                    return (new Lava(true), new Industry());
                 case 'L':
-                    return (new Lava(), new Industry(null));
+                    return (new Lava(false), new Industry());
                 case 'C':
                     return (new Grass(), new Farm(new Citizen())); 
                 case 'D':
