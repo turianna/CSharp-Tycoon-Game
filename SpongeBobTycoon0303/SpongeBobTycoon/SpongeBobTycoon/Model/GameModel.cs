@@ -232,6 +232,10 @@ namespace SpongeBobTycoon.Model
                         OnFieldChanged(x, y, board[x, y].fieldType);
                     }
                 }
+                else
+                {
+                    return;
+                }
                     
             }
 
