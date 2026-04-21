@@ -12,8 +12,9 @@ namespace SpongeBobTycoon.Model
         public SlowCar(Product product) : base(product)
         {
             this.product = product;
-            cost = 100;
-            time = 5;
+            cost = 200;
+            baseTime = 2;
+            timeUntilMoves = baseTime;
 
             switch (product)
             {
