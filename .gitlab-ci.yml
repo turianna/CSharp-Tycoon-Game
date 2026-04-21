@@ -37,7 +37,6 @@ test_model:
   before_script:    
     - dotnet restore SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoonTest --packages .nuget
   script:
-    # 1. ADD BOTH PACKAGES (Logger and Coverage Collector)
     - dotnet add SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoonTest package JUnitXml.TestLogger
     - dotnet add SpongeBobTycoon0303/SpongeBobTycoon/SpongeBobTycoonTest package coverlet.collector
     
@@ -56,16 +55,18 @@ test_model:
     - ./reportgenerator "-reports:TestResults/**/coverage.cobertura.xml" "-targetdir:report" "-reporttypes:Cobertura"
     - ./reportgenerator "-reports:TestResults/**/coverage.cobertura.xml" "-targetdir:report/html" "-reporttypes:Html"
     
-    - |
-      if [ -f "./report/Cobertura.xml" ]; then
-        line_rate=$(head -n 3 ./report/Cobertura.xml | sed 'N;N;s/.*line-rate="\([^" ]*\).*/\1/g')
-        coverage=$(echo "${line_rate} * 100" | bc)
-        printf "TOTAL_COVERAGE=%2.2f\n" "$coverage"
-      else
-        echo "Error: Cobertura.xml not found!"
-        exit 1
-      fi
+    - line_rate=$(head -n 3 ./report/Cobertura.xml | sed 'N;N;s/.*line-rate="\([^" ]*\).*/\1/g')
+    - coverage=$(echo "${line_rate} * 100" | bc)
+    - printf "TOTAL_COVERAGE=%2.2f\n" "$coverage"
+      
+  coverage: '/TOTAL_COVERAGE=\d+\.\d+/' 
   artifacts:
     when: always
+    paths:
+      - report/ 
     reports:
-      junit: TestResults/**/coverage.cobertura.xml
+      junit: TestResults/**/TestResults.xml 
+      coverage_report:
+        coverage_format: cobertura
+        path: report/Cobertura.xml
+  
