@@ -61,6 +61,7 @@ namespace SpongeBobTycoon.Persistence
                         FieldType fieldType;
                         Industry? industry;
                         bool isVehicle = false;
+                        bool areTwoVehicles = false;
                         bool isStop = false;
                        
 
@@ -133,7 +134,7 @@ namespace SpongeBobTycoon.Persistence
 
                         if (i < 50 && j < 100)
                         {
-                            Field newField = new Field(x, y, z, industry, fieldType, isVehicle, isStop,id);
+                            Field newField = new Field(x, y, z, industry, fieldType, isVehicle, areTwoVehicles, isStop,id);
                             fields[i, j] = newField;
 
                             if (fieldType is Forest) forests.Add(newField);

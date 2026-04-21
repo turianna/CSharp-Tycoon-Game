@@ -28,7 +28,8 @@ namespace SpongeBobTycoon.Model
         public int ID;
         public int route_index;
         
-        public Direction direction { get; set; }
+        //public Direction direction { get; set; }
+        public int direction { get; set; }
         public int time;
         public int timeUntilMoves;
         public int stepsUntilBroken;

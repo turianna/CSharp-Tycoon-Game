@@ -10,5 +10,7 @@ namespace SpongeBobTycoon.Model.FieldTypes
     {
         public Direction direction;
         public RoadType roadType;
+        public int vehicle_dir;
+
     }
 }

@@ -40,7 +40,7 @@ namespace SpongeBobTycoon.Model
         public event EventHandler<FieldChangedEventArgs>? FieldChanged;
         public event EventHandler<Vehicle>? VehicleBought; //updatelni kell a parkoló autók listáját
         public event EventHandler Refresh;
-        public event EventHandler<(int,int)>? CarStepped;
+        public event EventHandler<(int,int, Vehicle)>? CarStepped;
         public event EventHandler<Vehicle>? AddMovingVehicle;
         public event EventHandler CreateRouteFailed;
 
@@ -133,7 +133,7 @@ namespace SpongeBobTycoon.Model
             {
                 for (int j = 0; j < 100; j++)
                 {
-                    board[i, j] = new Field(i, j, 1, new Industry(new Product()), new FieldType(), false, false, 1);
+                    board[i, j] = new Field(i, j, 1, new Industry(new Product()), new FieldType(), false, false, false, 1);
                 }
             }
         }
@@ -396,7 +396,7 @@ namespace SpongeBobTycoon.Model
                 movingVehicles.Add(routemanager.vehicle);
                 OnAddMovingVehicle(VehicleForRoute);
                 board[VehicleForRoute.x,VehicleForRoute.y].isVehicle = true;
-                OnCarStepped((VehicleForRoute.x, VehicleForRoute.y));
+                OnCarStepped((VehicleForRoute.x, VehicleForRoute.y, VehicleForRoute));
             }
             else
             {
@@ -415,7 +415,7 @@ namespace SpongeBobTycoon.Model
             }
             if (j != -1) movingVehicles.RemoveAt(j);
             board[vehicle.x, vehicle.y].isVehicle = false;
-            OnCarStepped((vehicle.x, vehicle.y));
+            OnCarStepped((vehicle.x, vehicle.y, vehicle));
             vehicle.route_index = 0;
             vehicle.route.Clear();
             parkingVehicles.Add(vehicle);
@@ -482,9 +482,9 @@ namespace SpongeBobTycoon.Model
             CreateRouteFailed?.Invoke(this, EventArgs.Empty);
         }
 
-        public void OnCarStepped((int,int) coord)
+        public void OnCarStepped((int,int,Vehicle) tuple)
         {
-            CarStepped?.Invoke(this, coord);
+            CarStepped?.Invoke(this, tuple);
         }
 
         public void OnFieldChanged(int x, int y, FieldType type)
@@ -584,8 +584,24 @@ namespace SpongeBobTycoon.Model
             localRoute = v.route.ToArray();
             if (v.route_index == (localRoute.Length) - 1)
             {
+                if (v.x == localRoute[v.route_index + 1].Item1 && (v.y < localRoute[v.route_index + 1].Item2) && board[v.x, v.y].areTwoVehicles == false) v.direction = 1;
+                else if (v.x == localRoute[v.route_index + 1].Item1 && (v.y > localRoute[v.route_index + 1].Item2) && board[v.x, v.y].areTwoVehicles == false) v.direction = 2;
+                else if (v.x < localRoute[v.route_index + 1].Item1 && (v.y == localRoute[v.route_index + 1].Item2) && board[v.x,v.y].areTwoVehicles == false) v.direction = 3;
+                else if (v.x > localRoute[v.route_index + 1].Item1 && (v.y == localRoute[v.route_index + 1].Item2) && board[v.x,v.y].areTwoVehicles == false) v.direction = 4;
+                else if (v.x != localRoute[v.route_index + 1].Item1 && (v.y == localRoute[v.route_index + 1].Item2) && board[localRoute[v.route_index + 1].Item1, localRoute[v.route_index + 1].Item2].isVehicle)
+                {
+                    v.direction = 5;
+                    board[v.x,v.y].areTwoVehicles = true;
+                }
+                else if (v.x == localRoute[v.route_index + 1].Item1 && (v.y != localRoute[v.route_index + 1].Item2) && board[localRoute[v.route_index + 1].Item1, localRoute[v.route_index + 1].Item2].isVehicle)
+                {
+                    v.direction = 6;
+                    board[v.x, v.y].areTwoVehicles = true;
+                }
+
                 board[v.x, v.y].isVehicle = false;
-                OnCarStepped((v.x, v.y));
+                board[v.x, v.y].areTwoVehicles = false;
+                OnCarStepped((v.x, v.y,v));
                 v.x = localRoute[0].Item1;
                 v.y = localRoute[0].Item2;
                 board[v.x, v.y].isVehicle = true;
@@ -602,7 +618,7 @@ namespace SpongeBobTycoon.Model
                     v.Transaction(stop);
                 }
 
-                OnCarStepped((v.x, v.y));
+                OnCarStepped((v.x, v.y,v)); //át kell adni az autót is az irány miatt
                 v.brokness--;
                 CheckVehicleBrokness(v);
                 v.route_index = 0;
@@ -611,7 +627,7 @@ namespace SpongeBobTycoon.Model
             else
             {
                 board[v.x, v.y].isVehicle = false;
-                OnCarStepped((v.x, v.y));
+                OnCarStepped((v.x, v.y, v));
                 v.route_index++;
                 v.x = localRoute[v.route_index].Item1;
                 v.y = localRoute[v.route_index].Item2;
@@ -629,7 +645,7 @@ namespace SpongeBobTycoon.Model
                     v.Transaction(stop);
                 }
 
-                OnCarStepped((v.x, v.y));
+                OnCarStepped((v.x, v.y, v));
                 v.brokness--;
                 CheckVehicleBrokness(v);
             }

@@ -9,6 +9,9 @@ namespace SpongeBobTycoonWPF.ViewModel
     public class GameField : ViewModelBase
     {
         private int color;
+        private int roadPicture;
+        private int stopPicture;
+        private int vehiclePicture;
         private string content = "";
 
         public int Color
@@ -20,6 +23,34 @@ namespace SpongeBobTycoonWPF.ViewModel
                 OnPropertyChanged(nameof(Color));
             }
         }
+        public int RoadPicture
+        {
+            get => roadPicture;
+            set
+            {
+                roadPicture = value;
+                OnPropertyChanged(nameof(RoadPicture));
+            }
+        }
+        public int VehiclePicture
+        {
+            get => VehiclePicture;
+            set
+            {
+                vehiclePicture = value;
+                OnPropertyChanged(nameof(vehiclePicture));
+            }
+        }
+        public int StopPicture
+        {
+            get => stopPicture;
+            set
+            {
+                stopPicture = value;
+                OnPropertyChanged(nameof(StopPicture));
+            }
+        }
+
         public int x { get; set; }
         public int y { get; set; }
 

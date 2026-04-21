@@ -844,28 +844,301 @@
 
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding Color}" Value="60"/>
-                                            <!--<Condition Binding="{Binding Road}" Value="1"/>-->
-                                            <!--<Condition Binding="{Binding Vehicle}" Value="true"/>-->
-                                            <!--<Condition Binding="{Binding Stop}" Value="true"/>-->
+                                            <Condition Binding="{Binding RoadPicture}" Value="401"/>
+                                            <Condition Binding="{Binding VehiclePicture}" Value="0"/>
+                                            <Condition Binding="{Binding StopPicture}" Value="0"/>
                                         </MultiDataTrigger.Conditions>
-
                                         <Setter Property="Background" >
                                             <Setter.Value>
-                                                <ImageBrush ImageSource="Images/homok_1.png" Stretch="Fill"/>
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Setter Property="Background" >
-                                            <Setter.Value>
-                                                <ImageBrush ImageSource="Images/homok_1.png" Stretch="Fill"/>
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Setter Property="Background" >
-                                            <Setter.Value>
-                                                <ImageBrush ImageSource="Images/homok_1.png" Stretch="Fill"/>
+                                                <ImageBrush ImageSource="Images/RoadNS.jpg" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
                                     </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RoadPicture}" Value="402"/>
+                                            <Condition Binding="{Binding VehiclePicture}" Value="0"/>
+                                            <Condition Binding="{Binding StopPicture}" Value="0"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/RoadWE.jpg" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RoadPicture}" Value="401"/>
+                                            <Condition Binding="{Binding VehiclePicture}" Value="1"/>
+                                            <Condition Binding="{Binding StopPicture}" Value="0"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/RoadNS.jpg" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/VehicleUp.png" Stretch="Fill"/> 
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RoadPicture}" Value="401"/>
+                                            <Condition Binding="{Binding VehiclePicture}" Value="2"/>
+                                            <Condition Binding="{Binding StopPicture}" Value="0"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/RoadNS.jpg" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/VehicleDown.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RoadPicture}" Value="402"/>
+                                            <Condition Binding="{Binding VehiclePicture}" Value="3"/>
+                                            <Condition Binding="{Binding StopPicture}" Value="0"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/RoadWE.jpg" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/VehicleRight.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RoadPicture}" Value="402"/>
+                                            <Condition Binding="{Binding VehiclePicture}" Value="4"/>
+                                            <Condition Binding="{Binding StopPicture}" Value="0"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/RoadWE.jpg" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/VehicleLeft.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RoadPicture}" Value="401"/>
+                                            <Condition Binding="{Binding VehiclePicture}" Value="5"/>
+                                            <Condition Binding="{Binding StopPicture}" Value="0"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/RoadNS.jpg" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/VehicleBothNS.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RoadPicture}" Value="402"/>
+                                            <Condition Binding="{Binding VehiclePicture}" Value="6"/>
+                                            <Condition Binding="{Binding StopPicture}" Value="0"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/RoadWE.jpg" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                 <ImageBrush ImageSource="Images/VehicleBothWE.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger>
+
+
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RoadPicture}" Value="401"/>
+                                            <Condition Binding="{Binding VehiclePicture}" Value="0"/>
+                                            <Condition Binding="{Binding StopPicture}" Value="1"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/RoadNS.jpg" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/StopPicture.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RoadPicture}" Value="402"/>
+                                            <Condition Binding="{Binding VehiclePicture}" Value="0"/>
+                                            <Condition Binding="{Binding StopPicture}" Value="1"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/RoadWE.jpg" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/StopPicture.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RoadPicture}" Value="401"/>
+                                            <Condition Binding="{Binding VehiclePicture}" Value="1"/>
+                                            <Condition Binding="{Binding StopPicture}" Value="1"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/RoadNS.jpg" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/VehicleUp.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/StopPicture.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RoadPicture}" Value="401"/>
+                                            <Condition Binding="{Binding VehiclePicture}" Value="2"/>
+                                            <Condition Binding="{Binding StopPicture}" Value="1"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/RoadNS.jpg" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/VehicleDown.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/StopPicture.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RoadPicture}" Value="402"/>
+                                            <Condition Binding="{Binding VehiclePicture}" Value="3"/>
+                                            <Condition Binding="{Binding StopPicture}" Value="1"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/RoadWE.jpg" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/VehicleRight.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/StopPicture.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RoadPicture}" Value="402"/>
+                                            <Condition Binding="{Binding VehiclePicture}" Value="4"/>
+                                            <Condition Binding="{Binding StopPicture}" Value="1"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/RoadWE.jpg" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/VehicleLeft.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/StopPicture.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RoadPicture}" Value="401"/>
+                                            <Condition Binding="{Binding VehiclePicture}" Value="5"/>
+                                            <Condition Binding="{Binding StopPicture}" Value="1"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/RoadNS.jpg" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/VehicleBothNS.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/StopPicture.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding RoadPicture}" Value="402"/>
+                                            <Condition Binding="{Binding VehiclePicture}" Value="6"/>
+                                            <Condition Binding="{Binding StopPicture}" Value="1"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/RoadWE.jpg" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/VehicleBothWE.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/StopPicture.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger>
+
+
+
 
                                     <DataTrigger Binding="{Binding Color}" Value="61">
                                         <Setter Property="Background" >

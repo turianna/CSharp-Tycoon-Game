@@ -1,3 +1,4 @@
+
 using SpongeBobTycoon.Model;
 using SpongeBobTycoon.Model.FieldTypes;
 using SpongeBobTycoon.Model.Industries;
@@ -21,6 +22,9 @@ namespace SpongeBobTycoonWPF.ViewModel
     {
         public GameModel model;
         public int color_int;
+        public int vehiclePicture;
+        public int routePicture;
+        public int stopPicture;
         public int MovingVehicleListSize;
         public int ParkingVehicleListSize;
         private string VMvehicleType;
@@ -185,21 +189,29 @@ namespace SpongeBobTycoonWPF.ViewModel
                 for (int j = 0; j < 100; j++) //j = x
                 {
                     int color_int = DecideColor_int(model.Board(i, j).fieldType, model.Board(i, j).industry, model.Board(i,j).Z, model.Board(i,j).id);
-
-                    Board.Add(new GameField
-                    {
-                        x = i,
-                        y = j,
-                        Color = color_int,
-                        ClickCommand = new DelegateCommand(param =>
+                    int roadPicture = DecideRoadPicture(model.Board(i,j).fieldType);
+                    int vehiclePicture = DecideVehiclePicture(model.Board(i,j).fieldType);
+                    int stopPicture = 0;
+                    if (model.Board(i, j).isStop) { 
+                        stopPicture = 1;
+                    }
+                        Board.Add(new GameField
                         {
-                            if (param is Tuple<int, int> pos)
+                            x = i,
+                            y = j,
+                            Color = color_int,
+                            RoadPicture = roadPicture,
+                            VehiclePicture = vehiclePicture,
+                            StopPicture = stopPicture,
+                            ClickCommand = new DelegateCommand(param =>
                             {
-                                HandleClick(pos.Item1, pos.Item2);
-                            }
-                        }),
-                        Content = ""
-                    });
+                                if (param is Tuple<int, int> pos)
+                                {
+                                    HandleClick(pos.Item1, pos.Item2);
+                                }
+                            }),
+                            Content = ""
+                        });
                     if (color_int == 1) Board[i * 100 + j].Content = ((Forest)model.Board(i, j).fieldType!).treeCount.ToString();
                 }
 
@@ -519,25 +531,90 @@ namespace SpongeBobTycoonWPF.ViewModel
             
         }
 
-        public void Model_CarStepped(object sender, (int, int)coord)
+        public void Model_CarStepped(object sender, (int, int,Vehicle)coord)
         {
-            if (model.board[coord.Item1, coord.Item2].isVehicle == true)
+            if (model.board[coord.Item1, coord.Item2].isVehicle == true && model.board[coord.Item1, coord.Item2].areTwoVehicles == false && coord.Item3.direction == 1)
             {
-                Board[coord.Item1 * 100 + coord.Item2].Content = "C";
-            }
-            else
+                vehiclePicture = 1;
+            }else if(model.board[coord.Item1, coord.Item2].isVehicle == true && model.board[coord.Item1, coord.Item2].areTwoVehicles == false && coord.Item3.direction == 2)
             {
-                Board[coord.Item1 * 100 + coord.Item2].Content = "";
+                vehiclePicture = 2;
+            }else if(model.board[coord.Item1, coord.Item2].isVehicle == true && model.board[coord.Item1, coord.Item2].areTwoVehicles == false && coord.Item3.direction == 3)
+            {
+                vehiclePicture = 3;
+            }else if(model.board[coord.Item1, coord.Item2].isVehicle == true && model.board[coord.Item1, coord.Item2].areTwoVehicles == false && coord.Item3.direction == 4)
+            {
+                vehiclePicture = 4;
             }
 
         }
 
-
+        private int DecideVehiclePicture(FieldType? ft)
+        {
+            int vehicle_dir = 0; //0-empty, 1 -up, 2-down, 3-right, 4-left, 5-2NS, 6-2WE
+            switch (ft)
+            {
+                case Road road:
+                    vehicle_dir = road.vehicle_dir;
+                    switch (vehicle_dir)
+                    {
+                        
+                    }
+                    break;
+                 
+            }
+            return 1;
+        }
+        private int DecideRoadPicture(FieldType? ft)
+        {
+            RoadType which_road = RoadType.NONE;
+            switch (ft)
+            {
+                case Road road:
+                    which_road = road.roadType;
+                    switch (which_road)
+                    {
+                        case RoadType.STRAIGHTNS:
+                            color_int = 401;
+                            break;
+                        case RoadType.STRAIGHTWE:
+                            color_int = 402;
+                            break;
+                        case RoadType.CROSSROAD:
+                            color_int = 444;
+                            break;
+                        case RoadType.TURNNW:
+                            color_int = 401;
+                            break;
+                        case RoadType.TURNNE:
+                            color_int = 401;
+                            break;
+                        case RoadType.TURNSW:
+                            color_int = 402;
+                            break;
+                        case RoadType.TURNSE:
+                            color_int = 402;
+                            break;
+                        case RoadType.TN:
+                            color_int = 401;
+                            break;
+                        case RoadType.TE:
+                            color_int = 402;
+                            break;
+                        case RoadType.TW:
+                            color_int = 402;
+                            break;
+                        case RoadType.TS:
+                            color_int = 401;
+                            break;
+                    }
+                    break;
+                }
+            return color_int;
+        }
         private int DecideColor_int(FieldType? ft, Industry? ind, int z, int id) 
         {
             int color_int=6;
-            RoadType which_road = RoadType.NONE;
-
             switch (ft)
             {
                 case Forest forest:
@@ -632,46 +709,6 @@ namespace SpongeBobTycoonWPF.ViewModel
 
                 case Bridge:
                     return 5;
-
-                case Road road:
-                    which_road = road.roadType;
-                    switch (which_road)
-                    {
-                        case RoadType.STRAIGHTNS:
-                            color_int = 401;
-                            break;
-                        case RoadType.STRAIGHTWE:
-                            color_int = 402;
-                            break;
-                        case RoadType.CROSSROAD:
-                            color_int = 444;
-                            break;
-                        case RoadType.TURNNW:
-                            color_int = 411;
-                            break;
-                        case RoadType.TURNNE:
-                            color_int = 412;
-                            break;
-                        case RoadType.TURNSW:
-                            color_int = 413;
-                            break;
-                        case RoadType.TURNSE:
-                            color_int = 414;
-                            break;
-                        case RoadType.TN:
-                            color_int = 421;
-                            break;
-                        case RoadType.TE:
-                            color_int = 422;
-                            break;
-                        case RoadType.TW:
-                            color_int = 423;
-                            break;
-                        case RoadType.TS:
-                            color_int = 424;
-                            break;
-                    }
-                    break;
 
                 case Grass:
                     switch (z)
