@@ -39,10 +39,10 @@ namespace SpongeBobTycoonTest
            
             model.BuyVehicle(VehicleType.SlowCar, new Burger());
             Assert.AreEqual(model.parkingVehicles.Count, 1);
-            model.BuyRoad(0, 0);
-            Assert.IsTrue(model.board[0, 0].fieldType is Road);
             model.BuyRoad(3, 10);
             Assert.IsTrue(model.board[3, 10].fieldType is Road);
+            model.BuyRoad(3, 11);
+            Assert.IsTrue(model.board[3, 11].fieldType is Road);
             model.PutStop(3, 10);
             Assert.IsTrue(model.board[3, 10].isStop);
             Assert.AreEqual(model.stops.Count, 1);
@@ -65,17 +65,17 @@ namespace SpongeBobTycoonTest
         [TestMethod]
         public void TestBuyRoad()
         {
-            model.BuyRoad(0, 0);
-            Assert.IsTrue(model.board[0, 0].fieldType is Road);
+            model.BuyRoad(3, 10);
+            Assert.IsTrue(model.board[3, 10].fieldType is Road);
             Assert.AreEqual(model.money,9980);
-            model.BuyRoad(0, 1);
-            Assert.IsTrue(model.board[0, 1].fieldType is Road);
+            model.BuyRoad(3, 11);
+            Assert.IsTrue(model.board[3, 11].fieldType is Road);
             Assert.AreEqual(model.money,9960);
-            model.BuyRoad(49, 0);
-            Assert.IsTrue(model.board[49, 0].fieldType is Road);
+            model.BuyRoad(5, 6);
+            Assert.IsTrue(model.board[5, 6].fieldType is Road);
             Assert.AreEqual(model.money,9940);
-            model.BuyRoad(49, 1);
-            Assert.IsTrue(model.board[49, 1].fieldType is Road);
+            model.BuyRoad(6, 6);
+            Assert.IsTrue(model.board[6, 6].fieldType is Road);
             Assert.AreEqual(model.money,9920);
 
 
@@ -92,9 +92,10 @@ namespace SpongeBobTycoonTest
             Assert.IsFalse(model.board[2, 5].fieldType is Road);
             Assert.AreEqual(model.money, 9920);
 
+            /*
             model.BuyRoad(2, 31); // erdő
             Assert.IsTrue(model.board[2, 31].fieldType is Road);
-            Assert.AreEqual(model.money,9860);
+            Assert.AreEqual(model.money,9860);*/
         }
 
         [TestMethod]

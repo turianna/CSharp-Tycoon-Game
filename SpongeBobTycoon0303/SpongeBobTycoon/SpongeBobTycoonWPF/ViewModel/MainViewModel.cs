@@ -520,6 +520,7 @@ namespace SpongeBobTycoonWPF.ViewModel
         private int DecideColor_int(FieldType? ft, Industry? ind, int z, int id) 
         {
             int color_int=6;
+            RoadType which_road = RoadType.NONE;
 
             switch (ft)
             {
@@ -616,8 +617,45 @@ namespace SpongeBobTycoonWPF.ViewModel
                 case Bridge:
                     return 5;
 
-                case Road:
-                    return 4;
+                case Road road:
+                    which_road = road.roadType;
+                    switch (which_road)
+                    {
+                        case RoadType.STRAIGHTNS:
+                            color_int = 401;
+                            break;
+                        case RoadType.STRAIGHTWE:
+                            color_int = 402;
+                            break;
+                        case RoadType.CROSSROAD:
+                            color_int = 444;
+                            break;
+                        case RoadType.TURNNW:
+                            color_int = 411;
+                            break;
+                        case RoadType.TURNNE:
+                            color_int = 412;
+                            break;
+                        case RoadType.TURNSW:
+                            color_int = 413;
+                            break;
+                        case RoadType.TURNSE:
+                            color_int = 414;
+                            break;
+                        case RoadType.TN:
+                            color_int = 421;
+                            break;
+                        case RoadType.TE:
+                            color_int = 422;
+                            break;
+                        case RoadType.TW:
+                            color_int = 423;
+                            break;
+                        case RoadType.TS:
+                            color_int = 424;
+                            break;
+                    }
+                    break;
 
                 case Grass:
                     switch (z)

@@ -841,14 +841,32 @@
                                         <Setter Property="Background" Value="LightBlue" />
                                         <Setter Property="BorderBrush" Value="LightBlue" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Color}" Value="60">
+
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Color}" Value="60"/>
+                                            <!--<Condition Binding="{Binding Road}" Value="1"/>-->
+                                            <!--<Condition Binding="{Binding Vehicle}" Value="true"/>-->
+                                            <!--<Condition Binding="{Binding Stop}" Value="true"/>-->
+                                        </MultiDataTrigger.Conditions>
+
                                         <Setter Property="Background" >
                                             <Setter.Value>
-                                                <ImageBrush ImageSource="Images/homok_0.png" Stretch="Fill"/>
+                                                <ImageBrush ImageSource="Images/homok_1.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="BorderThickness" Value="0" />
-                                    </DataTrigger>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/homok_1.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/homok_1.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger>
+
                                     <DataTrigger Binding="{Binding Color}" Value="61">
                                         <Setter Property="Background" >
                                             <Setter.Value>
