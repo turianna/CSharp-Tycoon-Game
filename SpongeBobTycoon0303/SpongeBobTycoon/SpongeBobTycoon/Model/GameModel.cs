@@ -145,7 +145,7 @@ namespace SpongeBobTycoon.Model
                 board[x, y].fieldType = new Road();
                 ChangeBalance(-20);
                 OnFieldChanged(x, y, board[x, y].fieldType!);
-            }else if (board[x, y].fieldType is Forest && board[x, y].industry.product is not Citizen && AdjacentRoad(x, y))
+            }else if (board[x, y].fieldType is Forest && board[x, y].industry.product is not Citizen && AdjacentRoad(x, y)) 
             {
                 Field? forestToRemove = null;
                 foreach (Field f in forests)
@@ -223,7 +223,7 @@ namespace SpongeBobTycoon.Model
                 if (nx >= 0 && nx < board.GetLength(0) &&
                     ny >= 0 && ny < board.GetLength(1))
                 {
-                    if (board[nx, ny].fieldType is Road || board[nx, ny].fieldType is Bridge)
+                    if ((board[nx, ny].fieldType is Road || board[nx, ny].fieldType is Bridge) && Math.Abs(board[nx,ny].Z - board[x,y].Z)<2)
                     {
                         return true;
                     }

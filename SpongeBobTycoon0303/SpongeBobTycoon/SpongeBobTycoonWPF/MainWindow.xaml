@@ -441,7 +441,7 @@
                                     <DataTrigger Binding="{Binding Color}" Value="0">
                                         <Setter Property="Background">
                                             <Setter.Value>
-                                                <ImageBrush ImageSource="Images/lava3.png" Stretch="Fill"/>
+                                                <ImageBrush ImageSource="Images/lava.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
                                         <Setter Property="BorderThickness" Value="0" />

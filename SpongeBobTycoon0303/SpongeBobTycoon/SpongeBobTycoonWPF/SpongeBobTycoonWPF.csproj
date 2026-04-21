@@ -70,6 +70,7 @@
     <None Remove="Images\korall4_3.png" />
     <None Remove="Images\korall4_4.png" />
     <None Remove="Images\lake.png" />
+    <None Remove="Images\lava.png" />
     <None Remove="Images\lava2.png" />
     <None Remove="Images\lava3.png" />
     <None Remove="Images\modernbridge.png" />
@@ -187,6 +188,7 @@
     <Resource Include="Images\lake.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\lava.png" />
     <Resource Include="Images\lava3.png" />
     <Resource Include="Images\modernbridge.png" />
     <Resource Include="Images\movingcar.png" />
