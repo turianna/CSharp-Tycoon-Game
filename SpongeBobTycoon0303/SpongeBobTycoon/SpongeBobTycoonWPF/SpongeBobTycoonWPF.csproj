@@ -9,6 +9,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\algee1.png" />
+    <None Remove="Images\algee10.png" />
+    <None Remove="Images\algee11png.png" />
+    <None Remove="Images\algee12.png" />
+    <None Remove="Images\algee13.png" />
+    <None Remove="Images\algee14.png" />
+    <None Remove="Images\algee15.png" />
+    <None Remove="Images\algee2.png" />
+    <None Remove="Images\algee3.png" />
+    <None Remove="Images\algee4.png" />
+    <None Remove="Images\algee5.png" />
+    <None Remove="Images\algee6.png" />
+    <None Remove="Images\algee7.png" />
+    <None Remove="Images\algee8.png" />
+    <None Remove="Images\algee9.png" />
     <None Remove="Images\background.jpg" />
     <None Remove="Images\bridge.png" />
     <None Remove="Images\bridge_small.png" />
@@ -130,6 +145,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\algee1.png" />
+    <Resource Include="Images\algee10.png" />
+    <Resource Include="Images\algee11png.png" />
+    <Resource Include="Images\algee12.png" />
+    <Resource Include="Images\algee13.png" />
+    <Resource Include="Images\algee14.png" />
+    <Resource Include="Images\algee15.png" />
+    <Resource Include="Images\algee2.png" />
+    <Resource Include="Images\algee3.png" />
+    <Resource Include="Images\algee4.png" />
+    <Resource Include="Images\algee5.png" />
+    <Resource Include="Images\algee6.png" />
+    <Resource Include="Images\algee7.png" />
+    <Resource Include="Images\algee8.png" />
+    <Resource Include="Images\algee9.png" />
     <Resource Include="Images\burger18.png" />
   </ItemGroup>
 
