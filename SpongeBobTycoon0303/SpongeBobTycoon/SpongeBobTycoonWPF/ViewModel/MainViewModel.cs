@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
 
 namespace SpongeBobTycoonWPF.ViewModel
 {
@@ -23,7 +24,7 @@ namespace SpongeBobTycoonWPF.ViewModel
         public GameModel model;
         public int color_int;
         public int vehiclePicture;
-        public int routePicture;
+        public int roadPicture;
         public int stopPicture;
         public int MovingVehicleListSize;
         public int ParkingVehicleListSize;
@@ -190,9 +191,9 @@ namespace SpongeBobTycoonWPF.ViewModel
                 {
                     int color_int = DecideColor_int(model.Board(i, j).fieldType, model.Board(i, j).industry, model.Board(i,j).Z, model.Board(i,j).id);
                     int roadPicture = DecideRoadPicture(model.Board(i,j).fieldType);
-                    int vehiclePicture = DecideVehiclePicture(model.Board(i,j).fieldType);
+                    int vehiclePicture = 0;
                     int stopPicture = 0;
-                    if (model.Board(i, j).isStop) { 
+                    if (model.Board(i, j).isStop) { //perzisztenciához
                         stopPicture = 1;
                     }
                         Board.Add(new GameField
@@ -434,9 +435,10 @@ namespace SpongeBobTycoonWPF.ViewModel
         }
         private void UpdateField(FieldChangedEventArgs e)
         {
+            int roadPicture = DecideRoadPicture(model.Board(e.x, e.y).fieldType);
             int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry, model.Board(e.x, e.y).Z, model.Board(e.x,e.y).id);
-
             Board[e.x * 100 + e.y].Color = color_int;
+            Board[e.x * 100 + e.y].RoadPicture = roadPicture;
         }
 
         private void Model_Refresh(object? sender, EventArgs e)
@@ -514,87 +516,132 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
             
         }
-
+        /*
         public void Model_CarStepped(object sender, (int, int,Vehicle)coord)
         {
-            if (model.board[coord.Item1, coord.Item2].isVehicle == true && model.board[coord.Item1, coord.Item2].areTwoVehicles == false && coord.Item3.dir == 1)
+            if (coord.Item3.dir == 1)
             {
                 vehiclePicture = 1;
-            }else if(model.board[coord.Item1, coord.Item2].isVehicle == true && model.board[coord.Item1, coord.Item2].areTwoVehicles == false && coord.Item3.dir == 2)
+            }else if( coord.Item3.dir == 2)
             {
                 vehiclePicture = 2;
-            }else if(model.board[coord.Item1, coord.Item2].isVehicle == true && model.board[coord.Item1, coord.Item2].areTwoVehicles == false && coord.Item3.dir == 3)
+            }else if(coord.Item3.dir == 3)
             {
                 vehiclePicture = 3;
-            }else if(model.board[coord.Item1, coord.Item2].isVehicle == true && model.board[coord.Item1, coord.Item2].areTwoVehicles == false && coord.Item3.dir == 4)
+            }else if(coord.Item3.dir == 4)
             {
                 vehiclePicture = 4;
             }
+            else if (coord.Item3.dir == 5)
+            {
+                vehiclePicture = 5;
+            }
+            else if (coord.Item3.dir == 6)
+            {
+                vehiclePicture = 6;
+            }
+
 
         }
 
-        private int DecideVehiclePicture(FieldType? ft)
+        private int DecideVehiclePicture(Vehicle v)
         {
-            int vehicle_dir = 0; //0-empty, 1 -up, 2-down, 3-right, 4-left, 5-2NS, 6-2WE
-            switch (ft)
+             //0-empty, 1 -up, 2-down, 3-right, 4-left, 5-2NS, 6-2WE
+            switch (v.dir)
             {
-                case Road road:
-                    vehicle_dir = road.vehicle_dir;
-                    switch (vehicle_dir)
-                    {
-                        
-                    }
+                case 0:
+                    vehiclePicture = 0; 
                     break;
+                case 1: 
+                    vehiclePicture = 1; break;
+                case 2: 
+                    vehiclePicture = 2; break;
+                    case 3: vehiclePicture = 3; break;
+                    case 4: vehiclePicture = 4; break;
                  
             }
-            return 1;
+            return vehiclePicture;
+        }*/
+
+        public void Model_CarStepped(object sender, (int x, int y, Vehicle v) coord)
+        {
+            // Your board is a 1D array representing a 2D grid (x * 100 + y)
+            int index = coord.x * 100 + coord.y;
+
+            // Check the model to see if a vehicle is currently on this specific tile
+            if (model.board[coord.x, coord.y].isVehicle)
+            {
+                // Draw the vehicle
+                Board[index].VehiclePicture = DecideVehiclePicture(coord.v);
+            }
+            else
+            {
+                // Clear the vehicle from the tile (0 = empty)
+                Board[index].VehiclePicture = 0;
+            }
         }
+
+        private int DecideVehiclePicture(Vehicle v)
+        {
+            // Return the correct int directly based on direction
+            switch (v.dir)
+            {
+                case 1: return 1;
+                case 2: return 2;
+                case 3: return 3;
+                case 4: return 4;
+                case 5: return 5;
+                case 6: return 6;
+                default: return 0;
+            }
+        }
+
         private int DecideRoadPicture(FieldType? ft)
         {
-            RoadType which_road = RoadType.NONE;
+            int curroad = 0;
             switch (ft)
             {
                 case Road road:
-                    which_road = road.roadType;
-                    switch (which_road)
+                    switch (road.roadType)
                     {
                         case RoadType.STRAIGHTNS:
-                            color_int = 401;
+                            curroad = 401;
                             break;
                         case RoadType.STRAIGHTWE:
-                            color_int = 402;
+                            curroad = 402;
                             break;
+                        /*
                         case RoadType.CROSSROAD:
-                            color_int = 444;
+                            roadPicture = 444;
                             break;
                         case RoadType.TURNNW:
-                            color_int = 401;
+                            roadPicture = 401;
                             break;
                         case RoadType.TURNNE:
-                            color_int = 401;
+                            roadPicture = 401;
                             break;
                         case RoadType.TURNSW:
-                            color_int = 402;
+                            roadPicture = 402;
                             break;
                         case RoadType.TURNSE:
-                            color_int = 402;
+                            roadPicture = 402;
                             break;
                         case RoadType.TN:
-                            color_int = 401;
+                            roadPicture = 401;
                             break;
                         case RoadType.TE:
-                            color_int = 402;
+                            roadPicture = 402;
                             break;
                         case RoadType.TW:
-                            color_int = 402;
+                            roadPicture = 402;
                             break;
                         case RoadType.TS:
-                            color_int = 401;
-                            break;
+                            roadPicture = 401;
+                            break;*/
                     }
                     break;
                 }
-            return color_int;
+            return curroad;
         }
         private int DecideColor_int(FieldType? ft, Industry? ind, int z, int id) 
         {

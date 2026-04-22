@@ -34,11 +34,11 @@ namespace SpongeBobTycoonWPF.ViewModel
         }
         public int VehiclePicture
         {
-            get => VehiclePicture;
+            get => vehiclePicture;
             set
             {
                 vehiclePicture = value;
-                OnPropertyChanged(nameof(vehiclePicture));
+                OnPropertyChanged(nameof(VehiclePicture));
             }
         }
         public int StopPicture

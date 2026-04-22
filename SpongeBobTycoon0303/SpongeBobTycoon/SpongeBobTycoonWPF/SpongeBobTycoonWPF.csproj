@@ -86,6 +86,7 @@
     <None Remove="Images\route.png" />
     <None Remove="Images\stop.png" />
     <None Remove="Images\stop2.png" />
+    <None Remove="Images\StopPicture.png" />
     <None Remove="Images\terraform.png" />
     <None Remove="Images\truck.png" />
     <None Remove="Images\up-arrow.png" />
@@ -212,6 +213,7 @@
     <Resource Include="Images\route.png" />
     <Resource Include="Images\stop.png" />
     <Resource Include="Images\stop2.png" />
+    <Resource Include="Images\StopPicture.png" />
     <Resource Include="Images\terraform.png" />
     <Resource Include="Images\truck.png" />
     <Resource Include="Images\up-arrow.png" />

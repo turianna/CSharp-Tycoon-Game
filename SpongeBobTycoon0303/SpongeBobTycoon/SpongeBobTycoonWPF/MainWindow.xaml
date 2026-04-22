@@ -874,12 +874,14 @@
                                         </MultiDataTrigger.Conditions>
                                         <Setter Property="Background" >
                                             <Setter.Value>
-                                                <ImageBrush ImageSource="Images/RoadNS.jpg" Stretch="Fill"/>
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Setter Property="Background" >
-                                            <Setter.Value>
-                                                <ImageBrush ImageSource="Images/VehicleUp.png" Stretch="Fill"/> 
+                                                <DrawingBrush Stretch="Fill">
+                                                    <DrawingBrush.Drawing>
+                                                        <DrawingGroup>
+                                                            <ImageDrawing ImageSource="Images/RoadNS.jpg" Rect="0,0,100,100"/>
+                                                            <ImageDrawing ImageSource="Images/VehicleUp.png" Rect="0,0,100,100"  />
+                                                        </DrawingGroup>
+                                                    </DrawingBrush.Drawing>
+                                                </DrawingBrush>
                                             </Setter.Value>
                                         </Setter>
                                     </MultiDataTrigger>
@@ -891,12 +893,14 @@
                                         </MultiDataTrigger.Conditions>
                                         <Setter Property="Background" >
                                             <Setter.Value>
-                                                <ImageBrush ImageSource="Images/RoadNS.jpg" Stretch="Fill"/>
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Setter Property="Background" >
-                                            <Setter.Value>
-                                                <ImageBrush ImageSource="Images/VehicleDown.png" Stretch="Fill"/>
+                                                <DrawingBrush Stretch="Fill">
+                                                    <DrawingBrush.Drawing>
+                                                        <DrawingGroup>
+                                                            <ImageDrawing ImageSource="Images/RoadNS.jpg" Rect="0,0,100,100"/>
+                                                            <ImageDrawing ImageSource="Images/VehicleDown.png"  Rect="0,0,100,100"/>
+                                                        </DrawingGroup>
+                                                    </DrawingBrush.Drawing>
+                                                </DrawingBrush>
                                             </Setter.Value>
                                         </Setter>
                                     </MultiDataTrigger>
@@ -908,12 +912,14 @@
                                         </MultiDataTrigger.Conditions>
                                         <Setter Property="Background" >
                                             <Setter.Value>
-                                                <ImageBrush ImageSource="Images/RoadWE.jpg" Stretch="Fill"/>
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Setter Property="Background" >
-                                            <Setter.Value>
-                                                <ImageBrush ImageSource="Images/VehicleRight.png" Stretch="Fill"/>
+                                                <DrawingBrush Stretch="Fill">
+                                                    <DrawingBrush.Drawing>
+                                                        <DrawingGroup>
+                                                            <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                            <ImageDrawing ImageSource="Images/VehicleRight.png" Rect="0,0,100,100" />
+                                                        </DrawingGroup>
+                                                    </DrawingBrush.Drawing>
+                                                </DrawingBrush>
                                             </Setter.Value>
                                         </Setter>
                                     </MultiDataTrigger>
@@ -925,12 +931,14 @@
                                         </MultiDataTrigger.Conditions>
                                         <Setter Property="Background" >
                                             <Setter.Value>
-                                                <ImageBrush ImageSource="Images/RoadWE.jpg" Stretch="Fill"/>
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Setter Property="Background" >
-                                            <Setter.Value>
-                                                <ImageBrush ImageSource="Images/VehicleLeft.png" Stretch="Fill"/>
+                                                <DrawingBrush Stretch="Fill">
+                                                    <DrawingBrush.Drawing>
+                                                        <DrawingGroup>
+                                                            <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                            <ImageDrawing ImageSource="Images/VehicleLeft.png"  Rect="0,0,100,100"/>
+                                                        </DrawingGroup>
+                                                    </DrawingBrush.Drawing>
+                                                </DrawingBrush>
                                             </Setter.Value>
                                         </Setter>
                                     </MultiDataTrigger>
@@ -1139,7 +1147,14 @@
 
 
 
-
+                                    <DataTrigger Binding="{Binding Color}" Value="60">
+                                        <Setter Property="Background" >
+                                            <Setter.Value>
+                                                <ImageBrush ImageSource="Images/homok_0.png" Stretch="Fill"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="61">
                                         <Setter Property="Background" >
                                             <Setter.Value>

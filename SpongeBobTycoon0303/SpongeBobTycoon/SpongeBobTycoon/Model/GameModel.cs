@@ -145,8 +145,9 @@ namespace SpongeBobTycoon.Model
             if (board[x,y].fieldType is Grass && board[x,y].industry.product is not Citizen && AdjacentRoad(x, y))
             {           
                 board[x, y].fieldType = new Road();
-                if (news[0]==1 && news[1]==0 && news[2] == 0 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
-                else if(news[0] == 0 && news[1] == 1 && news[2] == 1 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
+                if ((news[0]==1 || news[3] == 1) && news[1]==0 && news[2] == 0 ) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
+                else if(news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
+                /*
                 else if(news[0] == 1 && news[1] == 1 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.CROSSROAD;
                 else if(news[0] == 1 && news[1] == 0 && news[2] == 1 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TURNNW;
                 else if(news[0] == 1 && news[1] == 1 && news[2] == 0 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TURNNE;
@@ -155,7 +156,7 @@ namespace SpongeBobTycoon.Model
                 else if(news[0] == 1 && news[1] == 1 && news[2] == 1 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TN;
                 else if(news[0] == 1 && news[1] == 1 && news[2] == 0 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TE;
                 else if(news[0] == 1 && news[1] == 0 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TW;
-                else if(news[0] == 0 && news[1] == 1 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TS;
+                else if(news[0] == 0 && news[1] == 1 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TS;*/
                 ChangeBalance(-20);
                 OnFieldChanged(x, y, board[x, y].fieldType!);
             }else if (board[x, y].fieldType is Forest && board[x, y].industry.product is not Citizen && AdjacentRoad(x, y)) 
@@ -170,8 +171,9 @@ namespace SpongeBobTycoon.Model
                 }
                 if(forestToRemove != null) forests.Remove(forestToRemove);
                 board[x, y].fieldType = new Road();
-                if (news[0] == 1 && news[1] == 0 && news[2] == 0 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
-                else if (news[0] == 0 && news[1] == 1 && news[2] == 1 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
+                if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
+                else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
+                /*
                 else if (news[0] == 1 && news[1] == 1 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.CROSSROAD;
                 else if (news[0] == 1 && news[1] == 0 && news[2] == 1 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TURNNW;
                 else if (news[0] == 1 && news[1] == 1 && news[2] == 0 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TURNNE;
@@ -180,7 +182,7 @@ namespace SpongeBobTycoon.Model
                 else if (news[0] == 1 && news[1] == 1 && news[2] == 1 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TN;
                 else if (news[0] == 1 && news[1] == 1 && news[2] == 0 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TE;
                 else if (news[0] == 1 && news[1] == 0 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TW;
-                else if (news[0] == 0 && news[1] == 1 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TS;
+                else if (news[0] == 0 && news[1] == 1 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TS;*/
                 ChangeBalance(-60);
                 OnFieldChanged(x, y, board[x, y].fieldType!);
             }
@@ -654,28 +656,33 @@ namespace SpongeBobTycoon.Model
             localRoute = v.route.ToArray();
 
             //before changing routeIndex
+            
             board[v.x, v.y].isVehicle = false;
+            OnCarStepped((v.x, v.y, v));
+
             //int oldX = v.x;
             //int oldY = v.y;
 
             //change routeIndex, set new x and y for vehicle
+            
             v.route_index++;
-            OnCarStepped((v.x, v.y, v));
             v.x = localRoute[v.route_index % (localRoute.Length - 1)].Item1;
             v.y = localRoute[v.route_index % (localRoute.Length - 1)].Item2;
-            board[v.x, v.y].isVehicle = true;
-            
+
+            // board[v.x, v.y].isVehicle = true;
+
+
             //look for next tile, to see if it's an incline
             int nextX = localRoute[(v.route_index + 1) % (localRoute.Length - 1)].Item1;
             int nextY = localRoute[(v.route_index + 1) % (localRoute.Length - 1)].Item2;
             if (board[nextX, nextY].Z > board[v.x, v.y].Z) v.timeUntilMoves += 1;
 
-            if (v.x == nextX && v.y < nextY && board[v.x, v.y].areTwoVehicles == false)
+            if (v.x == nextX && v.y > nextY && board[v.x, v.y].areTwoVehicles == false)
             {
                 v.dir = 1;
                 board[v.x, v.y].direction = Direction.UP;
             }
-            else if (v.x == nextX && v.y > nextY && board[v.x, v.y].areTwoVehicles == false)
+            else if (v.x == nextX && v.y < nextY && board[v.x, v.y].areTwoVehicles == false)
             {
                 v.dir = 2;
                 board[v.x, v.y].direction = Direction.DOWN;
@@ -700,16 +707,20 @@ namespace SpongeBobTycoon.Model
                 v.dir = 6;
                 board[nextX, nextY].areTwoVehicles = true;
             }
-
+            board[v.x, v.y].isVehicle = true;
+            //OnCarStepped((v.x, v.y, v));
 
             //determine which direction the car is going, by the previous and current tile
             //v.direction = v.DecideDirection(nextX, nextX, v.x, v.y);
 
+            /*
             //if we arrived at a stop, handle transactions
             if (board[v.x, v.y].isStop)
             {
                 Stop stop = findStopAt(v.x, v.y);
             }
+            */
+            /*
             else
             {
                 if (board[v.x, v.y].areTwoVehicles)
@@ -719,13 +730,14 @@ namespace SpongeBobTycoon.Model
                 else
                 {
                     board[v.x, v.y].isVehicle = false;
+                    OnCarStepped((v.x, v.y, v));
                 }
-
-                OnCarStepped((v.x, v.y, v));
+            */
+                /*
                 v.route_index++;
                 v.x = localRoute[v.route_index].Item1;
                 v.y = localRoute[v.route_index].Item2;
-                board[v.x, v.y].isVehicle = true;
+                board[v.x, v.y].isVehicle = true;*/
 
                 if (board[v.x, v.y].isStop)
                 {
@@ -742,7 +754,6 @@ namespace SpongeBobTycoon.Model
                 OnCarStepped((v.x, v.y, v));
                 v.brokness--;
                 CheckVehicleBrokness(v);
-            }
 
             /*
             for (int i = 0; i < (localRoute.Length); i++)
