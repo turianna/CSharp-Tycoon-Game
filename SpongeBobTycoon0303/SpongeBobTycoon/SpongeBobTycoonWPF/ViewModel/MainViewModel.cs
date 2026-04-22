@@ -1,3 +1,4 @@
+
 using SpongeBobTycoon.Model;
 using SpongeBobTycoon.Model.FieldTypes;
 using SpongeBobTycoon.Model.Industries;
@@ -14,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
 
 namespace SpongeBobTycoonWPF.ViewModel
 {
@@ -21,6 +23,9 @@ namespace SpongeBobTycoonWPF.ViewModel
     {
         public GameModel model;
         public int color_int;
+        public int vehiclePicture;
+        public int roadPicture;
+        public int stopPicture;
         public int MovingVehicleListSize;
         public int ParkingVehicleListSize;
         private string VMvehicleType;
@@ -185,21 +190,29 @@ namespace SpongeBobTycoonWPF.ViewModel
                 for (int j = 0; j < 100; j++) //j = x
                 {
                     int color_int = DecideColor_int(model.Board(i, j).fieldType, model.Board(i, j).industry, model.Board(i,j).Z, model.Board(i,j).id);
-
-                    Board.Add(new GameField
-                    {
-                        x = i,
-                        y = j,
-                        Color = color_int,
-                        ClickCommand = new DelegateCommand(param =>
+                    int roadPicture = DecideRoadPicture(model.Board(i,j).fieldType);
+                    int vehiclePicture = 0;
+                    int stopPicture = 0;
+                    if (model.Board(i, j).isStop) { //perzisztenciához
+                        stopPicture = 1;
+                    }
+                        Board.Add(new GameField
                         {
-                            if (param is Tuple<int, int> pos)
+                            x = i,
+                            y = j,
+                            Color = color_int,
+                            RoadPicture = roadPicture,
+                            VehiclePicture = vehiclePicture,
+                            StopPicture = stopPicture,
+                            ClickCommand = new DelegateCommand(param =>
                             {
-                                HandleClick(pos.Item1, pos.Item2);
-                            }
-                        }),
-                        Content = ""
-                    });
+                                if (param is Tuple<int, int> pos)
+                                {
+                                    HandleClick(pos.Item1, pos.Item2);
+                                }
+                            }),
+                            Content = ""
+                        });
                     if (color_int == 1) Board[i * 100 + j].Content = ((Forest)model.Board(i, j).fieldType!).treeCount.ToString();
                 }
 
@@ -239,28 +252,6 @@ namespace SpongeBobTycoonWPF.ViewModel
             switch (param)
             {
                 case "Wood":
-                    model.BuyVehicle(VehicleType.SlowCar, new Wood());
-                    break;
-                case "Burger":
-                    model.BuyVehicle(VehicleType.SlowCar, new Burger());
-                    break;
-                case "Petfood":
-                    model.BuyVehicle(VehicleType.SlowCar, new Petfood());
-                    break;
-                case "Net":
-                    model.BuyVehicle(VehicleType.SlowCar, new Net());
-                    break;
-                case "Citizen":
-                    model.BuyVehicle(VehicleType.SlowCar, new Citizen());
-                    break;
-            }
-        }
-
-        private void BuyTruck(object param)
-        {
-            switch (param)
-            {
-                case "Wood":
                     model.BuyVehicle(VehicleType.FastCar, new Wood());
                     break;
                 case "Burger":
@@ -274,6 +265,28 @@ namespace SpongeBobTycoonWPF.ViewModel
                     break;
                 case "Citizen":
                     model.BuyVehicle(VehicleType.FastCar, new Citizen());
+                    break;
+            }
+        }
+
+        private void BuyTruck(object param)
+        {
+            switch (param)
+            {
+                case "Wood":
+                    model.BuyVehicle(VehicleType.SlowCar, new Wood());
+                    break;
+                case "Burger":
+                    model.BuyVehicle(VehicleType.SlowCar, new Burger());
+                    break;
+                case "Petfood":
+                    model.BuyVehicle(VehicleType.SlowCar, new Petfood());
+                    break;
+                case "Net":
+                    model.BuyVehicle(VehicleType.SlowCar, new Net());
+                    break;
+                case "Citizen":
+                    model.BuyVehicle(VehicleType.SlowCar, new Citizen());
                     break;
             }
         }
@@ -309,11 +322,11 @@ namespace SpongeBobTycoonWPF.ViewModel
 
             if (vehicle is FastCar)
             {
-                VMvehicleType = "Truck";
+                VMvehicleType = "Van";
             }
             else
             {
-                VMvehicleType = "Van";
+                VMvehicleType = "Truck";
             }
 
             ParkingVehicleList.Add(new VehicleButton
@@ -355,11 +368,11 @@ namespace SpongeBobTycoonWPF.ViewModel
 
             if (e is FastCar)
             {
-                VMvehicleType = "Truck";
+                VMvehicleType = "Van";
             }
             else
             {
-                VMvehicleType = "Van";
+                VMvehicleType = "Truck";
             }
            
             MovingVehicleList.Add(new VehicleButton
@@ -380,11 +393,11 @@ namespace SpongeBobTycoonWPF.ViewModel
         {
             if (e is FastCar)
             {
-                VMvehicleType = "Truck";
+                VMvehicleType = "Van";
             }
             else
             {
-                VMvehicleType= "Van";
+                VMvehicleType= "Truck";
             }
            
             ParkingVehicleList.Add(new VehicleButton
@@ -422,9 +435,10 @@ namespace SpongeBobTycoonWPF.ViewModel
         }
         private void UpdateField(FieldChangedEventArgs e)
         {
+            int roadPicture = DecideRoadPicture(model.Board(e.x, e.y).fieldType);
             int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry, model.Board(e.x, e.y).Z, model.Board(e.x,e.y).id);
-
             Board[e.x * 100 + e.y].Color = color_int;
+            Board[e.x * 100 + e.y].RoadPicture = roadPicture;
         }
 
         private void Model_Refresh(object? sender, EventArgs e)
@@ -443,22 +457,6 @@ namespace SpongeBobTycoonWPF.ViewModel
         {
             model.StartNewGame();
         }
-
-
-        public void ViewModelForest(FieldChangedEventArgs e)
-        {
-            if (model.Board(e.x, e.y).fieldType is Forest)
-            {
-                Forest forest = (Forest)model.Board(e.x, e.y).fieldType!;
-                Board[e.x * 100 + e.y].Content = forest.treeCount.ToString();
-            }
-            else
-            {
-                Board[e.x * 100 + e.y].Content = "";
-            }
-        }
-
-        
 
         public void HandleClick(int x, int y)
         {
@@ -518,26 +516,136 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
             
         }
-
-        public void Model_CarStepped(object sender, (int, int)coord)
+        /*
+        public void Model_CarStepped(object sender, (int, int,Vehicle)coord)
         {
-            if (model.board[coord.Item1, coord.Item2].isVehicle == true)
+            if (coord.Item3.dir == 1)
             {
-                Board[coord.Item1 * 100 + coord.Item2].Content = "C";
-            }
-            else
+                vehiclePicture = 1;
+            }else if( coord.Item3.dir == 2)
             {
-                Board[coord.Item1 * 100 + coord.Item2].Content = "";
+                vehiclePicture = 2;
+            }else if(coord.Item3.dir == 3)
+            {
+                vehiclePicture = 3;
+            }else if(coord.Item3.dir == 4)
+            {
+                vehiclePicture = 4;
             }
+            else if (coord.Item3.dir == 5)
+            {
+                vehiclePicture = 5;
+            }
+            else if (coord.Item3.dir == 6)
+            {
+                vehiclePicture = 6;
+            }
+
 
         }
 
+        private int DecideVehiclePicture(Vehicle v)
+        {
+             //0-empty, 1 -up, 2-down, 3-right, 4-left, 5-2NS, 6-2WE
+            switch (v.dir)
+            {
+                case 0:
+                    vehiclePicture = 0; 
+                    break;
+                case 1: 
+                    vehiclePicture = 1; break;
+                case 2: 
+                    vehiclePicture = 2; break;
+                    case 3: vehiclePicture = 3; break;
+                    case 4: vehiclePicture = 4; break;
+                 
+            }
+            return vehiclePicture;
+        }*/
 
+        public void Model_CarStepped(object sender, (int x, int y, Vehicle v) coord)
+        {
+            // Your board is a 1D array representing a 2D grid (x * 100 + y)
+            int index = coord.x * 100 + coord.y;
+
+            // Check the model to see if a vehicle is currently on this specific tile
+            if (model.board[coord.x, coord.y].isVehicle)
+            {
+                // Draw the vehicle
+                Board[index].VehiclePicture = DecideVehiclePicture(coord.v);
+            }
+            else
+            {
+                // Clear the vehicle from the tile (0 = empty)
+                Board[index].VehiclePicture = 0;
+            }
+        }
+
+        private int DecideVehiclePicture(Vehicle v)
+        {
+            // Return the correct int directly based on direction
+            switch (v.dir)
+            {
+                case 1: return 1;
+                case 2: return 2;
+                case 3: return 3;
+                case 4: return 4;
+                case 5: return 5;
+                case 6: return 6;
+                default: return 0;
+            }
+        }
+
+        private int DecideRoadPicture(FieldType? ft)
+        {
+            int curroad = 0;
+            switch (ft)
+            {
+                case Road road:
+                    switch (road.roadType)
+                    {
+                        case RoadType.STRAIGHTNS:
+                            curroad = 401;
+                            break;
+                        case RoadType.STRAIGHTWE:
+                            curroad = 402;
+                            break;
+                        /*
+                        case RoadType.CROSSROAD:
+                            roadPicture = 444;
+                            break;
+                        case RoadType.TURNNW:
+                            roadPicture = 401;
+                            break;
+                        case RoadType.TURNNE:
+                            roadPicture = 401;
+                            break;
+                        case RoadType.TURNSW:
+                            roadPicture = 402;
+                            break;
+                        case RoadType.TURNSE:
+                            roadPicture = 402;
+                            break;
+                        case RoadType.TN:
+                            roadPicture = 401;
+                            break;
+                        case RoadType.TE:
+                            roadPicture = 402;
+                            break;
+                        case RoadType.TW:
+                            roadPicture = 402;
+                            break;
+                        case RoadType.TS:
+                            roadPicture = 401;
+                            break;*/
+                    }
+                    break;
+                }
+            return curroad;
+        }
         private int DecideColor_int(FieldType? ft, Industry? ind, int z, int id) 
         {
             int color_int=6;
-            RoadType which_road = RoadType.NONE;
-
             switch (ft)
             {
                 case Forest forest:
@@ -632,46 +740,6 @@ namespace SpongeBobTycoonWPF.ViewModel
 
                 case Bridge:
                     return 5;
-
-                case Road road:
-                    which_road = road.roadType;
-                    switch (which_road)
-                    {
-                        case RoadType.STRAIGHTNS:
-                            color_int = 401;
-                            break;
-                        case RoadType.STRAIGHTWE:
-                            color_int = 402;
-                            break;
-                        case RoadType.CROSSROAD:
-                            color_int = 444;
-                            break;
-                        case RoadType.TURNNW:
-                            color_int = 411;
-                            break;
-                        case RoadType.TURNNE:
-                            color_int = 412;
-                            break;
-                        case RoadType.TURNSW:
-                            color_int = 413;
-                            break;
-                        case RoadType.TURNSE:
-                            color_int = 414;
-                            break;
-                        case RoadType.TN:
-                            color_int = 421;
-                            break;
-                        case RoadType.TE:
-                            color_int = 422;
-                            break;
-                        case RoadType.TW:
-                            color_int = 423;
-                            break;
-                        case RoadType.TS:
-                            color_int = 424;
-                            break;
-                    }
-                    break;
 
                 case Grass:
                     switch (z)

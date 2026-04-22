@@ -61,8 +61,9 @@ namespace SpongeBobTycoon.Persistence
                         FieldType fieldType;
                         Industry? industry;
                         bool isVehicle = false;
+                        bool areTwoVehicles = false;
                         bool isStop = false;
-                       
+                        Direction direction = Direction.NONE;
 
                         char height = field_data[0];
                         z = height - '0'; //converting char to int by exploiting unicode values
@@ -133,7 +134,7 @@ namespace SpongeBobTycoon.Persistence
 
                         if (i < 50 && j < 100)
                         {
-                            Field newField = new Field(x, y, z, industry, fieldType, isVehicle, isStop,id);
+                            Field newField = new Field(x, y, z, industry, fieldType, isVehicle, areTwoVehicles, isStop,id, direction);
                             fields[i, j] = newField;
 
                             if (fieldType is Forest) forests.Add(newField);

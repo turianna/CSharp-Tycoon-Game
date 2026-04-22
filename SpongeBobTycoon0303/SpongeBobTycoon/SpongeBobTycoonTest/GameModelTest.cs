@@ -106,22 +106,22 @@ namespace SpongeBobTycoonTest
             Assert.AreEqual(model.parkingVehicles.Count, 1);
             Assert.IsTrue(model.parkingVehicles.ElementAt(0).product is Burger);
             Assert.IsTrue(model.parkingVehicles.ElementAt(0) is SlowCar);
-            Assert.AreEqual(model.money, 9900);
+            Assert.AreEqual(model.money, 9800);
             model.BuyVehicle(VehicleType.SlowCar, new Citizen());
             Assert.AreEqual(model.parkingVehicles.Count, 2);
             Assert.IsTrue(model.parkingVehicles.ElementAt(1).product is Citizen);
             Assert.IsTrue(model.parkingVehicles.ElementAt(1) is SlowCar);
-            Assert.AreEqual(model.money, 9800);
+            Assert.AreEqual(model.money, 9600);
             model.BuyVehicle(VehicleType.FastCar, new Net());
             Assert.AreEqual(model.parkingVehicles.Count, 3);
             Assert.IsTrue(model.parkingVehicles.ElementAt(2).product is Net);
             Assert.IsTrue(model.parkingVehicles.ElementAt(2) is FastCar);
-            Assert.AreEqual(model.money, 9600);
+            Assert.AreEqual(model.money, 9400);
             model.BuyVehicle(VehicleType.FastCar, new Petfood());
             Assert.AreEqual(model.parkingVehicles.Count, 4);
             Assert.IsTrue(model.parkingVehicles.ElementAt(3).product is Petfood);
             Assert.IsTrue(model.parkingVehicles.ElementAt(3) is FastCar);
-            Assert.AreEqual(model.money, 9400);
+            Assert.AreEqual(model.money, 9200);
         }
 
 
