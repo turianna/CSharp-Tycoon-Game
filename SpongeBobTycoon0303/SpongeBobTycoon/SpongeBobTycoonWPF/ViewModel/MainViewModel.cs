@@ -435,9 +435,10 @@ namespace SpongeBobTycoonWPF.ViewModel
         }
         private void UpdateField(FieldChangedEventArgs e)
         {
-            int roadPicture = DecideRoadPicture(model.Board(e.x, e.y).fieldType);
+           
             int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry, model.Board(e.x, e.y).Z, model.Board(e.x,e.y).id);
             Board[e.x * 100 + e.y].Color = color_int;
+            int roadPicture = DecideRoadPicture(model.Board(e.x, e.y).fieldType);
             Board[e.x * 100 + e.y].RoadPicture = roadPicture;
         }
 
@@ -512,7 +513,11 @@ namespace SpongeBobTycoonWPF.ViewModel
         {
             if (model.board[x,y].isStop== true)
             {
-                Board[x * 100 + y].Content = "S";
+                Board[x * 100 + y].StopPicture = 1;
+            }
+            else
+            {
+                Board[x * 100 + y].StopPicture = 0;
             }
             
         }
@@ -563,7 +568,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             return vehiclePicture;
         }*/
 
-        public void Model_CarStepped(object sender, (int x, int y, Vehicle v) coord)
+        public void Model_CarStepped(object sender, (int x, int y, int v) coord)
         {
             // Your board is a 1D array representing a 2D grid (x * 100 + y)
             int index = coord.x * 100 + coord.y;
@@ -581,10 +586,10 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
         }
 
-        private int DecideVehiclePicture(Vehicle v)
+        private int DecideVehiclePicture(int v)
         {
             // Return the correct int directly based on direction
-            switch (v.dir)
+            switch (v)
             {
                 case 1: return 1;
                 case 2: return 2;
@@ -610,37 +615,60 @@ namespace SpongeBobTycoonWPF.ViewModel
                         case RoadType.STRAIGHTWE:
                             curroad = 402;
                             break;
-                        /*
-                        case RoadType.CROSSROAD:
-                            roadPicture = 444;
+                    } break;
+                case SlowBridge sb:
+                    switch (sb.roadType)
+                    {
+                        case RoadType.STRAIGHTNS:
+                            curroad = 401;
                             break;
-                        case RoadType.TURNNW:
-                            roadPicture = 401;
+                        case RoadType.STRAIGHTWE:
+                            curroad = 402;
                             break;
-                        case RoadType.TURNNE:
-                            roadPicture = 401;
+                    } break;
+
+                case FastBridge sb:
+                    switch (sb.roadType)
+                    {
+                        case RoadType.STRAIGHTNS:
+                            curroad = 401;
                             break;
-                        case RoadType.TURNSW:
-                            roadPicture = 402;
+                        case RoadType.STRAIGHTWE:
+                            curroad = 402;
                             break;
-                        case RoadType.TURNSE:
-                            roadPicture = 402;
-                            break;
-                        case RoadType.TN:
-                            roadPicture = 401;
-                            break;
-                        case RoadType.TE:
-                            roadPicture = 402;
-                            break;
-                        case RoadType.TW:
-                            roadPicture = 402;
-                            break;
-                        case RoadType.TS:
-                            roadPicture = 401;
-                            break;*/
                     }
                     break;
-                }
+                    /*
+                    case RoadType.CROSSROAD:
+                        roadPicture = 444;
+                        break;
+                    case RoadType.TURNNW:
+                        roadPicture = 401;
+                        break;
+                    case RoadType.TURNNE:
+                        roadPicture = 401;
+                        break;
+                    case RoadType.TURNSW:
+                        roadPicture = 402;
+                        break;
+                    case RoadType.TURNSE:
+                        roadPicture = 402;
+                        break;
+                    case RoadType.TN:
+                        roadPicture = 401;
+                        break;
+                    case RoadType.TE:
+                        roadPicture = 402;
+                        break;
+                    case RoadType.TW:
+                        roadPicture = 402;
+                        break;
+                    case RoadType.TS:
+                        roadPicture = 401;
+                        break;*/
+            
+             
+            }
             return curroad;
         }
         private int DecideColor_int(FieldType? ft, Industry? ind, int z, int id) 
@@ -738,8 +766,16 @@ namespace SpongeBobTycoonWPF.ViewModel
                     color_int = 0;
                     break;
 
-                case Bridge:
-                    return 5;
+                case SlowBridge:
+                    color_int = 51;
+                    break;
+
+                case FastBridge:
+                    color_int = 52;
+                    break;
+
+                case Road:
+                    return 402;
 
                 case Grass:
                     switch (z)
@@ -770,65 +806,8 @@ namespace SpongeBobTycoonWPF.ViewModel
                                 case 1:
                                    color_int = 2001;
                                    break;
-                                case 2:
-                                   color_int = 2002;
-                                   break;
-                                case 3:
-                                   color_int = 2003;
-                                   break;
-                                case 4:
-                                   color_int = 2004;
-                                   break;
-                                case 5:
-                                   color_int = 2005;
-                                   break;
-                                case 6:
-                                    color_int = 2006;
-                                    break;
-                                case 7:
-                                    color_int = 2007;
-                                    break;
-                                case 8:
-                                    color_int = 2008;
-                                    break;
-                                case 9:
-                                    color_int = 2009;
-                                    break;
-                                case 10:
-                                    color_int = 2010;
-                                    break;
-                                case 11:
-                                    color_int = 2011;
-                                    break;
-                                case 12:
-                                    color_int = 2012;
-                                    break;
-                                case 13:
-                                   color_int = 2013;
-                                   break;
-                                case 14:
-                                    color_int = 2014;
-                                    break;
-                                case 15:
-                                    color_int = 2015;
-                                    break;
-                                case 16:
-                                    color_int = 2016;
-                                    break;
-                                case 17:
-                                    color_int = 2017;
-                                    break;
-                                case 18:
-                                    color_int = 2018;
-                                    break;
-                                case 19:
-                                    color_int = 2019;
-                                    break;
-                                case 20:
-                                    color_int = 2020;
-                                    break;
-                                case 21:
-                                    color_int = 2021;
+                                default:
+                                    color_int = 2002;
                                     break;
                             }
                             break;
@@ -852,48 +831,9 @@ namespace SpongeBobTycoonWPF.ViewModel
                                 case 1:
                                     color_int = 2201;
                                     break;
-                                case 2:
+                                default:
                                     color_int = 2202;
-                                    break;
-                                case 3:
-                                    color_int = 2203;
-                                    break;
-                                case 4:
-                                    color_int = 2204;
-                                    break;
-                                case 5:
-                                    color_int = 2205;
-                                    break;
-                                case 6:
-                                    color_int = 2206;
-                                    break;
-                                case 7:
-                                    color_int = 2207;
-                                    break;
-                                case 8:
-                                    color_int = 2208;
-                                    break;
-                                case 9:
-                                    color_int = 2209;
-                                    break;
-                                case 10:
-                                    color_int = 2210;
-                                    break;
-                                case 11:
-                                    color_int = 2211;
-                                    break;
-                                case 12:
-                                    color_int = 2212;
-                                    break;
-                                case 13:
-                                    color_int = 2213;
-                                    break;
-                                case 14:
-                                    color_int = 2214;
-                                    break;
-                                case 15:
-                                    color_int = 2215;
-                                    break;
+                                    break;  
                             }
                             break;
 
