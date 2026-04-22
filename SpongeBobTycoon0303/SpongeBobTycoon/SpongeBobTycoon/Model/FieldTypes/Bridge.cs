@@ -11,6 +11,8 @@ namespace SpongeBobTycoon.Model.FieldTypes
         public int cost { get; set; }
         public int speed { get; set; }
         public bool isRiver { get; set; }
+        public RoadType roadType;
+
         public Bridge(bool isRiver) //amikor megvesszük a hidat ki kell választanunk azt is, hogy folyóra vagy tóra vesszük, majd onnan, hogy gyors vagy lassú
         {
             this.isRiver = isRiver;
