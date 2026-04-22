@@ -698,6 +698,7 @@ namespace SpongeBobTycoonWPF.ViewModel
                     case Burger:
                             switch (id) // burger 0. industry,burger,id
                             {
+
                                 case 1:
                                    color_int = 2001;
                                    break;
@@ -765,26 +766,121 @@ namespace SpongeBobTycoonWPF.ViewModel
                             break;
 
                         case Wood:
-                            color_int = 2;
-                            break;
+                            switch (id)
+                            {
+                                case 1:
+                                    color_int = 211;
+                                    break;
+                                default:
+                                    color_int = 212;
+                                    break;
+                            }
 
-                        case Algae:
-                            color_int = 2;
+                         break;
+
+                        case Algae: // ALgee: 2
+                            switch (id)
+                            {
+                                case 1:
+                                    color_int = 2201;
+                                    break;
+                                case 2:
+                                    color_int = 2202;
+                                    break;
+                                case 3:
+                                    color_int = 2203;
+                                    break;
+                                case 4:
+                                    color_int = 2204;
+                                    break;
+                                case 5:
+                                    color_int = 2205;
+                                    break;
+                                case 6:
+                                    color_int = 2206;
+                                    break;
+                                case 7:
+                                    color_int = 2207;
+                                    break;
+                                case 8:
+                                    color_int = 2208;
+                                    break;
+                                case 9:
+                                    color_int = 2209;
+                                    break;
+                                case 10:
+                                    color_int = 2210;
+                                    break;
+                                case 11:
+                                    color_int = 2211;
+                                    break;
+                                case 12:
+                                    color_int = 2212;
+                                    break;
+                                case 13:
+                                    color_int = 2213;
+                                    break;
+                                case 14:
+                                    color_int = 2214;
+                                    break;
+                                case 15:
+                                    color_int = 2215;
+                                    break;
+                            }
                             break;
 
                         case Net:
-                            color_int = 2;
+                            switch (id)
+                            {
+                                case 1:
+                                    color_int = 231;
+                                    break;
+                                default:
+                                    color_int = 232;
+                                    break;
+                            }
+
                             break;
 
                         case Spatula:
-                            color_int = 2;
-                            break;
+                            switch (id)
+                            {
+                                case 1:
+                                    color_int = 241;
+                                    break;
+                                default:
+                                    color_int = 242;
+                                    break;
+                            }
+
+                             break;
 
                         case Meat:
-                            color_int = 2;
+                            switch (id)
+                            {
+                                case 1:
+                                    color_int = 261;
+                                    break;
+                                default:
+                                    color_int = 262;
+                                    break;
+                            }
+
+                        break;
+                        case Petfood:
+                            switch (id)
+                            {
+                                case 1:
+                                    color_int = 251;
+                                    break;
+                                default:
+                                    color_int = 252;
+                                    break;
+                            }
+
                             break;
 
-                        case Citizen:
+                case Citizen:
                             switch (z)
                             {
                                 case 1:
