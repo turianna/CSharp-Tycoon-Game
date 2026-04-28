@@ -65,6 +65,7 @@ namespace SpongeBobTycoonTest
         [TestMethod]
         public void TestBuyRoad()
         {
+            model.StartNewGame();
             model.BuyRoad(3, 10);
             Assert.IsTrue(model.board[3, 10].fieldType is Road);
             Assert.AreEqual(model.money,9980);
@@ -92,6 +93,18 @@ namespace SpongeBobTycoonTest
             Assert.IsFalse(model.board[2, 5].fieldType is Road);
             Assert.AreEqual(model.money, 9920);
 
+            model.BuyRoad(9,27);
+            Assert.IsTrue(model.board[9, 27].fieldType is Road);
+            model.BuyRoad(8, 27);
+            model.BuyRoad(7, 27);
+            model.BuyRoad(6, 27);
+            model.BuyRoad(5, 27);
+            model.BuyRoad(4, 27);
+            model.BuyRoad(4, 28);
+            model.BuyRoad(4, 29);
+            model.BuyRoad(4, 30);
+            Assert.IsTrue(model.board[9, 27].fieldType is Road); // erdő
+            Assert.AreEqual(model.money, 9700);
             /*
             model.BuyRoad(2, 31); // erdő
             Assert.IsTrue(model.board[2, 31].fieldType is Road);
@@ -124,6 +137,69 @@ namespace SpongeBobTycoonTest
             Assert.AreEqual(model.money, 9200);
         }
 
+        [TestMethod]
+        public void TestBuyBridge()
+        {
+            //folyón tesztelés
+            model.StartNewGame();
+            model.BuyRoad(5, 6);
+            Assert.AreEqual(model.Board(6, 6).Z, 3);
+            model.Terraform(6, 6, false);
+            Assert.AreEqual(model.Board(6, 6).Z, 2);
+            model.BuyRoad(6, 6);
+            model.Terraform(6, 7, false);
+            model.Terraform(6, 7, false);
+            Assert.AreEqual(model.Board(6, 7).Z, 1);
+            model.BuyRoad(6, 7);
+            model.BuyBridge(7, 7, false, false);
+            Assert.IsFalse(model.board[7, 7].fieldType is Bridge);
+            Assert.AreEqual(model.money, 9190);
+            model.BuyBridge(7, 7, true, false);
+            Assert.IsFalse(model.board[7, 7].fieldType is Bridge);
+            Assert.AreEqual(model.money, 9190);
 
+            model.BuyBridge(7, 7, false, true);
+            Assert.IsTrue(model.board[7, 7].fieldType is SlowBridge);
+            Assert.AreEqual(model.money, 8990);
+
+            model.BuyBridge(8, 7, true, true);
+            Assert.IsTrue(model.board[8, 7].fieldType is FastBridge);
+            Assert.AreEqual(model.money, 8590);
+
+            //tavon tesztelés
+            model.BuyRoad(9, 27);
+            model.BuyRoad(9, 28);
+            model.BuyRoad(9, 29);
+            model.BuyRoad(9, 30);
+            model.BuyRoad(9, 31);
+            model.BuyRoad(9, 32);
+            model.BuyRoad(9, 33);
+            model.BuyRoad(9, 34);
+            model.BuyRoad(9, 35);
+            model.BuyRoad(9, 36);
+            model.BuyRoad(9, 37);
+            model.BuyRoad(9, 38);
+
+            model.BuyBridge(9, 39, false, true);
+            Assert.IsFalse(model.board[9, 39].fieldType is Bridge);
+            Assert.AreEqual(model.money, 8350);
+            model.BuyBridge(9, 39, true, true);
+            Assert.IsFalse(model.board[9, 39].fieldType is Bridge);
+            Assert.AreEqual(model.money, 8350);
+
+            model.BuyBridge(9, 39, false, false);
+            Assert.IsTrue(model.board[9, 39].fieldType is SlowBridge);
+            Assert.AreEqual(model.money, 8150);
+
+            model.BuyBridge(9, 40, true, false);
+            Assert.IsTrue(model.board[9, 40].fieldType is FastBridge);
+            Assert.AreEqual(model.money, 7750);
+
+        }
+        [TestMethod]
+        public void TestIsStopValid()
+        {
+
+        }
     }
 }
