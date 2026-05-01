@@ -22,5 +22,32 @@ namespace SpongeBobTycoonWPF
             InitializeComponent();
  
         }
+        private void GameScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            // Csak akkor zoomolunk, ha a bal vagy jobb Ctrl le van nyomva
+            if (Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                double zoomStep = 0.1; // Mennyivel nagyítson/kicsinyítsen egy görgetésre
+
+                if (e.Delta > 0)
+                {
+                    // Felfelé görgetés: Nagyítás
+                    BoardScaleTransform.ScaleX += zoomStep;
+                    BoardScaleTransform.ScaleY += zoomStep;
+                }
+                else
+                {
+                    // Lefelé görgetés: Kicsinyítés (ne engedjük, hogy 0 vagy negatív legyen!)
+                    if (BoardScaleTransform.ScaleX > 0.2)
+                    {
+                        BoardScaleTransform.ScaleX -= zoomStep;
+                        BoardScaleTransform.ScaleY -= zoomStep;
+                    }
+                }
+
+                // Ez megakadályozza, hogy a zoomolással egy időben görgessen is a ScrollViewer
+                e.Handled = true;
+            }
+        }
     }
 }

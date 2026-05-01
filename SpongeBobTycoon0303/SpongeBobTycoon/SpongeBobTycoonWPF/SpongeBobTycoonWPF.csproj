@@ -53,7 +53,10 @@
     <None Remove="Images\buy_vehicle.png" />
     <None Remove="Images\citizen.png" />
     <None Remove="Images\down-arrow.png" />
+    <None Remove="Images\factory.png" />
     <None Remove="Images\fast-forward.png" />
+    <None Remove="Images\hidfa.png" />
+    <None Remove="Images\hidko.png" />
     <None Remove="Images\homok.png" />
     <None Remove="Images\homok_0.png" />
     <None Remove="Images\homok_1.png" />
@@ -88,6 +91,7 @@
     <None Remove="Images\lava.png" />
     <None Remove="Images\lava2.png" />
     <None Remove="Images\lava3.png" />
+    <None Remove="Images\meat.png" />
     <None Remove="Images\modernbridge.png" />
     <None Remove="Images\movingcar.png" />
     <None Remove="Images\net.png" />
@@ -99,6 +103,8 @@
     <None Remove="Images\RoadNS.jpg" />
     <None Remove="Images\RoadWE.jpg" />
     <None Remove="Images\route.png" />
+    <None Remove="Images\seaweed.png" />
+    <None Remove="Images\spatula.png" />
     <None Remove="Images\stop.png" />
     <None Remove="Images\stop2.png" />
     <None Remove="Images\StopPicture.png" />
@@ -140,6 +146,7 @@
     <None Remove="Images\VehicleLeft.png" />
     <None Remove="Images\VehicleRight.png" />
     <None Remove="Images\VehicleUp.png" />
+    <None Remove="Images\wood-log %281%29.png" />
     <None Remove="Images\wood.png" />
     <None Remove="Images\woodbridge.png" />
   </ItemGroup>
@@ -184,6 +191,9 @@
     <Resource Include="Images\burger7.png" />
     <Resource Include="Images\burger8.png" />
     <Resource Include="Images\burger9.png" />
+    <Resource Include="Images\factory.png" />
+    <Resource Include="Images\hidfa.png" />
+    <Resource Include="Images\hidko.png" />
     <Resource Include="Images\korall3_2.png" />
   </ItemGroup>
 
@@ -229,6 +239,7 @@
     </Resource>
     <Resource Include="Images\lava.png" />
     <Resource Include="Images\lava3.png" />
+    <Resource Include="Images\meat.png" />
     <Resource Include="Images\modernbridge.png" />
     <Resource Include="Images\movingcar.png" />
     <Resource Include="Images\net.png" />
@@ -241,6 +252,8 @@
     <Resource Include="Images\RoadNS.jpg" />
     <Resource Include="Images\RoadWE.jpg" />
     <Resource Include="Images\route.png" />
+    <Resource Include="Images\seaweed.png" />
+    <Resource Include="Images\spatula.png" />
     <Resource Include="Images\stop.png" />
     <Resource Include="Images\stop2.png" />
     <Resource Include="Images\StopPicture.png" />
@@ -279,6 +292,7 @@
     <Resource Include="Images\VehicleLeft.png" />
     <Resource Include="Images\VehicleRight.png" />
     <Resource Include="Images\VehicleUp.png" />
+    <Resource Include="Images\wood-log (1).png" />
     <Resource Include="Images\wood.png" />
     <Resource Include="Images\woodbridge.png" />
   </ItemGroup>

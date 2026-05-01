@@ -40,7 +40,7 @@ namespace SpongeBobTycoon.Model
         public event EventHandler<FieldChangedEventArgs>? FieldChanged;
         public event EventHandler<Vehicle>? VehicleBought; //updatelni kell a parkoló autók listáját
         public event EventHandler Refresh;
-        public event EventHandler<(int,int, Vehicle)>? CarStepped;
+        public event EventHandler<(int,int, int)>? CarStepped;
         public event EventHandler<Vehicle>? AddMovingVehicle;
         public event EventHandler CreateRouteFailed;
 
@@ -276,12 +276,16 @@ namespace SpongeBobTycoon.Model
                     if (isFast)
                     {
                         board[x, y].fieldType = new FastBridge(isRiver);
+                        if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((FastBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
+                        else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((FastBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
                         ChangeBalance(-400);
                         OnFieldChanged(x, y, board[x, y].fieldType);
                     }
                     else
                     {
                         board[x, y].fieldType = new SlowBridge(isRiver);
+                        if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((SlowBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
+                        else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((SlowBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
                         ChangeBalance(-200);
                         OnFieldChanged(x, y, board[x, y].fieldType);
                     }
@@ -290,12 +294,16 @@ namespace SpongeBobTycoon.Model
                     if (isFast)
                     {
                         board[x, y].fieldType = new FastBridge(isRiver);
+                        if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((FastBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
+                        else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((FastBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
                         ChangeBalance(-400);
                         OnFieldChanged(x, y, board[x, y].fieldType);
                     }
                     else
                     {
                         board[x, y].fieldType = new SlowBridge(isRiver);
+                        if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((SlowBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
+                        else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((SlowBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
                         ChangeBalance(-200);
                         OnFieldChanged(x, y, board[x, y].fieldType);
                     }
@@ -398,7 +406,7 @@ namespace SpongeBobTycoon.Model
                 movingVehicles.Add(routemanager.vehicle);
                 OnAddMovingVehicle(VehicleForRoute);
                 board[VehicleForRoute.x,VehicleForRoute.y].isVehicle = true;
-                OnCarStepped((VehicleForRoute.x, VehicleForRoute.y, VehicleForRoute));
+                OnCarStepped((VehicleForRoute.x, VehicleForRoute.y, VehicleForRoute.dir));
             }
             else
             {
@@ -417,7 +425,7 @@ namespace SpongeBobTycoon.Model
             }
             if (j != -1) movingVehicles.RemoveAt(j);
             board[vehicle.x, vehicle.y].isVehicle = false;
-            OnCarStepped((vehicle.x, vehicle.y, vehicle));
+            OnCarStepped((vehicle.x, vehicle.y, vehicle.dir));
             vehicle.route_index = 0;
             vehicle.route.Clear();
             parkingVehicles.Add(vehicle);
@@ -484,7 +492,7 @@ namespace SpongeBobTycoon.Model
             CreateRouteFailed?.Invoke(this, EventArgs.Empty);
         }
 
-        public void OnCarStepped((int,int,Vehicle) tuple)
+        public void OnCarStepped((int,int,int) tuple)
         {
             CarStepped?.Invoke(this, tuple);
         }
@@ -656,9 +664,38 @@ namespace SpongeBobTycoon.Model
             localRoute = v.route.ToArray();
 
             //before changing routeIndex
+            if(board[v.x, v.y].areTwoVehicles)
+            {
+                board[v.x, v.y].areTwoVehicles = false;
+                if(v.dir == 1)
+                {
+                    board[v.x, v.y].isVehicle = true;
+                    OnCarStepped((v.x, v.y, 2));
+                }
+                else if(v.dir == 2)
+                {
+                    board[v.x, v.y].isVehicle = true;
+                    OnCarStepped((v.x, v.y, 1));
+                }
+                else if(v.dir == 3)
+                {
+                    board[v.x, v.y].isVehicle = true;
+                    OnCarStepped((v.x, v.y, 4));
+                }
+                else
+                {
+                    board[v.x, v.y].isVehicle = true;
+                    OnCarStepped((v.x, v.y, 3));
+                }
+                
+            }
+            else
+            {
+                board[v.x, v.y].isVehicle = false;
+                OnCarStepped((v.x, v.y, v.dir));
+            }
             
-            board[v.x, v.y].isVehicle = false;
-            OnCarStepped((v.x, v.y, v));
+           
 
             //int oldX = v.x;
             //int oldY = v.y;
@@ -669,45 +706,49 @@ namespace SpongeBobTycoon.Model
             v.x = localRoute[v.route_index % (localRoute.Length - 1)].Item1;
             v.y = localRoute[v.route_index % (localRoute.Length - 1)].Item2;
 
-            // board[v.x, v.y].isVehicle = true;
-
+            //board[v.x, v.y].isVehicle = true;
+            //OnCarStepped((v.x, v.y, v));
 
             //look for next tile, to see if it's an incline
             int nextX = localRoute[(v.route_index + 1) % (localRoute.Length - 1)].Item1;
             int nextY = localRoute[(v.route_index + 1) % (localRoute.Length - 1)].Item2;
+            
             if (board[nextX, nextY].Z > board[v.x, v.y].Z) v.timeUntilMoves += 1;
 
-            if (v.x == nextX && v.y > nextY && board[v.x, v.y].areTwoVehicles == false)
+            if (v.x != nextX && v.y == nextY && board[v.x, v.y].isVehicle)
             {
-                v.dir = 1;
-                board[v.x, v.y].direction = Direction.UP;
+                v.dir = 5;
+                board[v.x, v.y].areTwoVehicles = true;
+            }
+            else if (v.x == nextX && v.y != nextY && board[v.x, v.y].isVehicle)
+            {
+                v.dir = 6;
+                board[v.x, v.y].areTwoVehicles = true;
+            }
+            else if (v.x == nextX && v.y > nextY && board[v.x, v.y].areTwoVehicles == false)
+            {
+                v.dir = 4;
+                board[v.x, v.y].isVehicle = true;
+
             }
             else if (v.x == nextX && v.y < nextY && board[v.x, v.y].areTwoVehicles == false)
             {
-                v.dir = 2;
-                board[v.x, v.y].direction = Direction.DOWN;
+                v.dir = 3;
+                board[v.x, v.y].isVehicle = true;
             }
             else if (v.x < nextX && v.y == nextY && board[v.x, v.y].areTwoVehicles == false)
             {
-                v.dir = 3;
-                board[v.x, v.y].direction = Direction.RIGHT;
+                v.dir = 2;
+                board[v.x, v.y].isVehicle = true;
             }
             else if (v.x > nextX && v.y == nextY && board[v.x, v.y].areTwoVehicles == false)
             {
-                v.dir = 4;
-                board[v.x, v.y].direction = Direction.LEFT;
+                v.dir = 1;
+                board[v.x, v.y].isVehicle = true;
             }
-            else if (v.x != nextX && v.y == nextY && board[nextX, nextY].isVehicle)
-            {
-                v.dir = 5;
-                board[nextX, nextY].areTwoVehicles = true;
-            }
-            else if (v.x == nextX && v.y != nextY && board[nextX, nextY].isVehicle)
-            {
-                v.dir = 6;
-                board[nextX, nextY].areTwoVehicles = true;
-            }
-            board[v.x, v.y].isVehicle = true;
+           
+            
+           
             //OnCarStepped((v.x, v.y, v));
 
             //determine which direction the car is going, by the previous and current tile
@@ -751,7 +792,7 @@ namespace SpongeBobTycoon.Model
                     v.Transaction(stop);
                 }
 
-                OnCarStepped((v.x, v.y, v));
+                OnCarStepped((v.x, v.y, v.dir));
                 v.brokness--;
                 CheckVehicleBrokness(v);
 
