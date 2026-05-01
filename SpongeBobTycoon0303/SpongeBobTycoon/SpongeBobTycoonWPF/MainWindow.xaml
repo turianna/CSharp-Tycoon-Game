@@ -453,7 +453,7 @@
                                                 <ImageBrush ImageSource="Images/korall1_0.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="ToolTip" Value="1" />
+                                        <Setter Property="ToolTip" Value="0" />
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="120">
@@ -462,7 +462,7 @@
                                                 <ImageBrush ImageSource="Images/korall2_0.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="ToolTip" Value="2" />
+                                        <Setter Property="ToolTip" Value="0" />
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="130">
@@ -471,7 +471,7 @@
                                                 <ImageBrush ImageSource="Images/korall3_0.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="ToolTip" Value="3" />
+                                        <Setter Property="ToolTip" Value="0" />
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="140">
@@ -480,7 +480,7 @@
                                                 <ImageBrush ImageSource="Images/korall4_0.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="ToolTip" Value="4" />
+                                        <Setter Property="ToolTip" Value="0" />
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
 
@@ -500,7 +500,7 @@
                                                 <ImageBrush ImageSource="Images/korall2_1.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="ToolTip" Value="2" />
+                                        <Setter Property="ToolTip" Value="1" />
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="131">
@@ -509,7 +509,7 @@
                                                 <ImageBrush ImageSource="Images/korall3_1.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="ToolTip" Value="3" />
+                                        <Setter Property="ToolTip" Value="1" />
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="141">
@@ -518,7 +518,7 @@
                                                 <ImageBrush ImageSource="Images/korall4_1.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="ToolTip" Value="4" />
+                                        <Setter Property="ToolTip" Value="1" />
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
 
@@ -529,7 +529,7 @@
                                                 <ImageBrush ImageSource="Images/korall1_2.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="ToolTip" Value="1" />
+                                        <Setter Property="ToolTip" Value="2" />
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="122">
@@ -547,7 +547,7 @@
                                                 <ImageBrush ImageSource="Images/korall3_2.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="ToolTip" Value="3" />
+                                        <Setter Property="ToolTip" Value="2" />
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="142">
@@ -556,7 +556,7 @@
                                                 <ImageBrush ImageSource="Images/korall4_2.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="ToolTip" Value="4" />
+                                        <Setter Property="ToolTip" Value="2" />
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
 
@@ -567,7 +567,7 @@
                                                 <ImageBrush ImageSource="Images/korall1_3.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="ToolTip" Value="1" />
+                                        <Setter Property="ToolTip" Value="3" />
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="123">
@@ -576,7 +576,7 @@
                                                 <ImageBrush ImageSource="Images/korall2_3.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="ToolTip" Value="2" />
+                                        <Setter Property="ToolTip" Value="3" />
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="133">
@@ -594,7 +594,7 @@
                                                 <ImageBrush ImageSource="Images/korall4_3.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="ToolTip" Value="4" />
+                                        <Setter Property="ToolTip" Value="3" />
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
 
@@ -605,7 +605,7 @@
                                                 <ImageBrush ImageSource="Images/korall1_4.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="ToolTip" Value="1" />
+                                        <Setter Property="ToolTip" Value="4" />
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="124">
@@ -614,7 +614,7 @@
                                                 <ImageBrush ImageSource="Images/korall2_4.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="ToolTip" Value="2" />
+                                        <Setter Property="ToolTip" Value="4" />
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="134">
@@ -623,7 +623,7 @@
                                                 <ImageBrush ImageSource="Images/korall3_4.png" Stretch="Fill"/>
                                             </Setter.Value>
                                         </Setter>
-                                        <Setter Property="ToolTip" Value="3" />
+                                        <Setter Property="ToolTip" Value="4" />
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Color}" Value="144">
@@ -636,11 +636,6 @@
                                         <Setter Property="BorderThickness" Value="0" />
                                     </DataTrigger>
 
-                                    <DataTrigger Binding="{Binding Color}" Value="2">
-                                        <Setter Property="Background" Value="Red" />
-                                        <Setter Property="BorderBrush" Value="Red" />
-                                    </DataTrigger>
-                                    
                                     <DataTrigger Binding="{Binding Color}" Value="2001">
                                         <Setter Property="Background" >
                                             <Setter.Value>
