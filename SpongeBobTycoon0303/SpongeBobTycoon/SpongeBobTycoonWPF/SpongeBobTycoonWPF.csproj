@@ -111,6 +111,7 @@
     <None Remove="Images\terraform.png" />
     <None Remove="Images\truck.png" />
     <None Remove="Images\up-arrow.png" />
+    <None Remove="Images\ut.png" />
     <None Remove="Images\ut_egyenes_0.png" />
     <None Remove="Images\ut_egyenes_1.png" />
     <None Remove="Images\ut_egyenes_2.png" />
@@ -260,6 +261,7 @@
     <Resource Include="Images\terraform.png" />
     <Resource Include="Images\truck.png" />
     <Resource Include="Images\up-arrow.png" />
+    <Resource Include="Images\ut.png" />
     <Resource Include="Images\ut_egyenes_0.png" />
     <Resource Include="Images\ut_egyenes_1.png" />
     <Resource Include="Images\ut_egyenes_2.png" />

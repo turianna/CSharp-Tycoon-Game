@@ -886,7 +886,7 @@
                                         <DataTrigger Binding="{Binding Color}" Value="402">
                                             <Setter Property="Background" >
                                                 <Setter.Value>
-                                                    <ImageBrush ImageSource="Images/RoadWE.jpg" Stretch="Fill"/>
+                                                    <ImageBrush ImageSource="Images/ut.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
                                             <Setter Property="BorderThickness" Value="0" />
@@ -899,7 +899,7 @@
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Background" >
                                                 <Setter.Value>
-                                                    <ImageBrush ImageSource="Images/RoadWE.jpg" Stretch="Fill"/>
+                                                    <ImageBrush ImageSource="Images/ut.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
                                         </MultiDataTrigger>
@@ -913,7 +913,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleUp.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -931,7 +931,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleDown.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -949,7 +949,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleRight.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -967,7 +967,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleLeft.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -985,7 +985,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleBothNS.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -1003,7 +1003,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleBothWE.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -1024,7 +1024,7 @@
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Background" >
                                                 <Setter.Value>
-                                                    <ImageBrush ImageSource="Images/RoadNS.jpg" Stretch="Fill"/>
+                                                    <ImageBrush ImageSource="Images/ut.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
                                         </MultiDataTrigger>
@@ -1036,7 +1036,7 @@
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Background" >
                                                 <Setter.Value>
-                                                    <ImageBrush ImageSource="Images/RoadWE.jpg" Stretch="Fill"/>
+                                                    <ImageBrush ImageSource="Images/ut.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
                                         </MultiDataTrigger>
@@ -1051,7 +1051,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadNS.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleUp.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -1070,7 +1070,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadNS.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleDown.png"  Rect="0,0,100,100"/>
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -1089,7 +1089,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadNS.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleRight.png" Rect="0,0,100,100" />
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -1108,7 +1108,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadNS.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleLeft.png"  Rect="0,0,100,100"/>
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -1127,7 +1127,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadNS.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleBothNS.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -1146,7 +1146,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadNS.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleBothWE.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -1166,7 +1166,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleUp.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -1185,7 +1185,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleDown.png"  Rect="0,0,100,100"/>
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -1204,7 +1204,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleRight.png" Rect="0,0,100,100" />
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -1223,7 +1223,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleLeft.png"  Rect="0,0,100,100"/>
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -1242,7 +1242,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleBothNS.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -1261,7 +1261,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleBothWE.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -1282,7 +1282,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadNS.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/StopPicture.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -1301,7 +1301,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/StopPicture.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
                                                         </DrawingBrush.Drawing>
@@ -1320,7 +1320,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadNS.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleUp.png" Rect="0,0,100,100"  />
                                                                 <ImageDrawing ImageSource="Images/StopPicture.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
@@ -1340,7 +1340,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadNS.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleDown.png"  Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/StopPicture.png"  Rect="0,0,100,100"/>
                                                             </DrawingGroup>
@@ -1360,7 +1360,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadNS.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleRight.png" Rect="0,0,100,100" />
                                                                 <ImageDrawing ImageSource="Images/StopPicture.png" Rect="0,0,100,100" />
                                                             </DrawingGroup>
@@ -1380,7 +1380,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadNS.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleLeft.png"  Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/StopPicture.png"  Rect="0,0,100,100"/>
                                                             </DrawingGroup>
@@ -1400,7 +1400,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadNS.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleBothNS.png" Rect="0,0,100,100"  />
                                                                 <ImageDrawing ImageSource="Images/StopPicture.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
@@ -1420,7 +1420,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadNS.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleBothWE.png" Rect="0,0,100,100"  />
                                                                 <ImageDrawing ImageSource="Images/StopPicture.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
@@ -1441,7 +1441,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleUp.png" Rect="0,0,100,100"  />
                                                                 <ImageDrawing ImageSource="Images/StopPicture.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
@@ -1461,7 +1461,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleDown.png"  Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/StopPicture.png"  Rect="0,0,100,100"/>
                                                             </DrawingGroup>
@@ -1481,7 +1481,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleRight.png" Rect="0,0,100,100" />
                                                                 <ImageDrawing ImageSource="Images/StopPicture.png" Rect="0,0,100,100" />
                                                             </DrawingGroup>
@@ -1501,7 +1501,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleLeft.png"  Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/StopPicture.png"  Rect="0,0,100,100"/>
                                                             </DrawingGroup>
@@ -1521,7 +1521,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleBothNS.png" Rect="0,0,100,100"  />
                                                                 <ImageDrawing ImageSource="Images/StopPicture.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
@@ -1541,7 +1541,7 @@
                                                     <DrawingBrush Stretch="Fill">
                                                         <DrawingBrush.Drawing>
                                                             <DrawingGroup>
-                                                                <ImageDrawing ImageSource="Images/RoadWE.jpg" Rect="0,0,100,100"/>
+                                                                <ImageDrawing ImageSource="Images/ut.png" Rect="0,0,100,100"/>
                                                                 <ImageDrawing ImageSource="Images/VehicleBothWE.png" Rect="0,0,100,100"  />
                                                                 <ImageDrawing ImageSource="Images/StopPicture.png" Rect="0,0,100,100"  />
                                                             </DrawingGroup>
