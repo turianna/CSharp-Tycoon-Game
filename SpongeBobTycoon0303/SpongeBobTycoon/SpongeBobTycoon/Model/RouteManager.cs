@@ -12,40 +12,40 @@ namespace SpongeBobTycoon.Model
 {
     public class RouteManager
     {
-        public Vehicle vehicle {  get; set; }
-        public List<Stop> stops { get; set; }
-        public List<((int,int),(int,int),int)> route { get; set; }
-        public List<(int,int)> partRouteFinal { get; set; }
-        public List<(int,int)> routeFinal { get; set; }
-        public Queue<(int, int)> queue { get; set; }
+        private readonly Vehicle _vehicle;
+        private List<Stop> _stops = new();
+        private List<RouteData> _route = new();
+        private List<(int, int)> _partRouteFinal = new();
+        private List<(int, int)> _routeFinal = new();
+        private Queue<(int, int)> queue = new();
 
-
+        public IReadOnlyList<Stop> Stops => _stops.AsReadOnly();
+        public Vehicle Vehicle => _vehicle;
 
         public RouteManager(Vehicle v) 
         { 
-            vehicle = v;
-            stops = new List<Stop>();
-            route = new List<((int, int), (int, int), int)>();
-            routeFinal = new List<(int, int)>();
-            partRouteFinal = new List<(int, int)>();
-            
+            _vehicle = v;
 
         }
 
+        public void AddStop(Stop stop)
+        {
+            _stops.Add(stop);
+        }
         public bool ValidRoute()
         {
-            if(stops.Count == 0) return false;
+            if(_stops.Count == 0) return false;
             
-            switch (vehicle.product)
+            switch (_vehicle.product)
             {
                
                 case Burger:
-                    if(stops.Count <4) return false;
+                    if(_stops.Count <4) return false;
                     bool burger = false;
                     bool meat = false;
                     bool spatula = false;
                     bool city = false;
-                    foreach (Stop stop in stops)
+                    foreach (Stop stop in _stops)
                     {
                         switch (stop.industry.product)
                         {
@@ -71,10 +71,10 @@ namespace SpongeBobTycoon.Model
                     }
                     break;
                 case Net:
-                    if (stops.Count < 2) { return false; }
+                    if (_stops.Count < 2) { return false; }
                     bool net = false;
                     city = false;
-                    foreach (Stop stop in stops)
+                    foreach (Stop stop in _stops)
                     {
                         if(stop.industry.product is Net)
                         {
@@ -91,11 +91,11 @@ namespace SpongeBobTycoon.Model
                     }
                     break;
                 case Petfood:
-                    if (stops.Count < 3) return false;
+                    if (_stops.Count < 3) return false;
                     bool petfood = false;
                     bool algee = false;
                     city = false;
-                    foreach (Stop stop in stops)
+                    foreach (Stop stop in _stops)
                     {
                         if (stop.industry.product is Petfood)
                         {
@@ -117,10 +117,10 @@ namespace SpongeBobTycoon.Model
                     }
                     break;
                 case Wood:
-                    if (stops.Count < 2) { return false; }
+                    if (_stops.Count < 2) { return false; }
                     bool wood = false;
                     city = false;
-                    foreach (Stop stop in stops)
+                    foreach (Stop stop in _stops)
                     {
                         if(stop.industry.product is Wood)
                         {
@@ -137,10 +137,10 @@ namespace SpongeBobTycoon.Model
                     }
                     break;
                 case Citizen:
-                    if (stops.Count < 2) { return false; }
+                    if (_stops.Count < 2) { return false; }
                     bool city1 = false;
                     bool city2 = false;
-                    foreach (Stop stop in stops)
+                    foreach (Stop stop in _stops)
                     {
                         if (stop.industry.product is Citizen && !city1)
                         {
@@ -166,7 +166,7 @@ namespace SpongeBobTycoon.Model
             //min 2 és muszáj érintenie azt a megállót amit szállít az autó és körút-e és jó irányba megy-e az útvonal
         }
 
-        private List<(int,int)> BFS(GameModel model, Stop cs, Stop ns)
+        private List<(int,int)> BFS(GameModel model, Stop currentStop, Stop nextStop)
         {
             queue = new Queue<(int, int)>();
             bool[,] visitedArray = new bool[model.board.GetLength(0), model.board.GetLength(1)];
@@ -177,11 +177,11 @@ namespace SpongeBobTycoon.Model
                     visitedArray[i, j] = false;
                 }
             }
-            int crx = cs.X;
-            int cry = cs.Y;
+            int currentRouteX = currentStop.X;
+            int currentRouteY = currentStop.Y;
             int d = 0;
-            partRouteFinal.Clear();
-            route.Clear();
+            _partRouteFinal.Clear();
+            _route.Clear();
 
             (int dx, int dy)[] directions =
                 {
@@ -189,49 +189,50 @@ namespace SpongeBobTycoon.Model
                     (0,-1),           (0,1),
                              (1,0)
                 };
-            queue.Enqueue((crx, cry));
-            visitedArray[crx, cry] = true;
+            queue.Enqueue((currentRouteX, currentRouteY));
+            visitedArray[currentRouteX, currentRouteY] = true;
 
-            while ((crx != ns.X || cry != ns.Y) && queue.Count != 0)
+            while ((currentRouteX != nextStop.X || currentRouteY != nextStop.Y) && queue.Count != 0)
             {
                 var current = queue.Dequeue();
-                crx = current.Item1;
-                cry = current.Item2;
+                currentRouteX = current.Item1;
+                currentRouteY = current.Item2;
                 d++;
                 foreach (var (dx, dy) in directions)
                 {
-                    int nx = crx + dx;
-                    int ny = cry + dy;
+                    int nextX = currentRouteX + dx;
+                    int nextY = currentRouteY + dy;
 
-                    if (nx >= 0 && nx < model.board.GetLength(0) &&
-                        ny >= 0 && ny < model.board.GetLength(1))
+                    if (nextX >= 0 && nextX < model.board.GetLength(0) &&
+                        nextY >= 0 && nextY < model.board.GetLength(1))
                     {
-                        if ((model.board[nx, ny].fieldType is Road || model.board[nx, ny].fieldType is Bridge) && !visitedArray[nx,ny])
+                        if ((model.board[nextX, nextY].fieldType is Road || model.board[nextX, nextY].fieldType is Bridge) && !visitedArray[nextX, nextY])
                         {
-                            route.Add(((crx, cry), (nx, ny),d));
-                            visitedArray[nx,ny] = true;
-                            queue.Enqueue((nx, ny));
+                            RouteData newRouteData = new RouteData((currentRouteX, currentRouteY), (nextX, nextY), d);
+                            _route.Add(newRouteData);
+                            visitedArray[nextX,nextY] = true;
+                            queue.Enqueue((nextX, nextY));
                         }
 
                     }
                 }
             }
             
-            if (crx != ns.X || cry != ns.Y) //supposed to return empty list if route isn't a closed circle, doesn't really work though
+            if (currentRouteX != nextStop.X || currentRouteY != nextStop.Y) //supposed to return empty list if route isn't a closed circle, doesn't really work though
             {
-                return partRouteFinal;
+                return _partRouteFinal;
             }
               
-            route.Reverse();
-            (int,int) start = (ns.X,ns.Y);
+            _route.Reverse();
+            (int,int) start = (nextStop.X,nextStop.Y);
 
             int min = 5001;
-            while (cs.X != start.Item1 || cs.Y != start.Item2)
+            while (currentStop.X != start.Item1 || currentStop.Y != start.Item2)
             {
-                foreach(((int x, int y) prev, (int x, int y) cur, int d)r in route)
+                foreach(RouteData r in _route)
                 {
                     
-                    if(start.Item1 == r.cur.x && start.Item2 == r.cur.y)
+                    if(start.Item1 == r.Current.x && start.Item2 == r.Current.y)
                     {
                         if(d < min)
                         {
@@ -239,20 +240,20 @@ namespace SpongeBobTycoon.Model
                         }
                     }
                 }
-                foreach (((int x, int y) prev, (int x, int y) cur, int d) r in route)
+                foreach (RouteData r in _route)
                 {
 
-                    if (start.Item1 == r.cur.x && start.Item2 == r.cur.y && d == min)
+                    if (start.Item1 == r.Current.x && start.Item2 == r.Current.y && d == min)
                     {
-                        partRouteFinal.Add((r.cur.x,r.cur.y));
-                        start = (r.prev.x,r.prev.y);
+                        _partRouteFinal.Add((r.Current.x,r.Current.y));
+                        start = (r.Previous.x,r.Previous.y);
                         break;
                     }
                 }
             }
 
-            partRouteFinal.Reverse();
-            return partRouteFinal;
+            _partRouteFinal.Reverse();
+            return _partRouteFinal;
         }
 
 
@@ -264,54 +265,53 @@ namespace SpongeBobTycoon.Model
 
             if (ValidRoute() == true)
             {
-                for (int i = 0; i < (stops!.Count - 1); i++)
+                for (int i = 0; i < (_stops!.Count - 1); i++)
                 {
-                    current_stop = stops[i];
-                    next_stop = stops[i + 1];
+                    current_stop = _stops[i];
+                    next_stop = _stops[i + 1];
                     routeCurrent = BFS(model, current_stop, next_stop);
                     if (routeCurrent.Count == 0)
                     {
-                        stops.Clear();
+                        _stops.Clear();
                         return false;
                     }
 
-                    if (routeFinal.Count == 0)
+                    if (_routeFinal.Count == 0)
                     {
-                        routeFinal.AddRange(routeCurrent);
+                        _routeFinal.AddRange(routeCurrent);
                     }
                     else{
                         //routeCurrent.RemoveAt(0);                    
                         foreach((int,int)coord in routeCurrent)
                         {
-                            routeFinal.Add(coord);
+                            _routeFinal.Add(coord);
                         }
                     }
                     
                 }
                 
-                if(stops.Count > 1)
+                if(_stops.Count > 1)
                 {
-                    routeCurrent = BFS(model, stops[stops.Count - 1], stops[0]);
+                    routeCurrent = BFS(model, _stops[_stops.Count - 1], _stops[0]);
                     if (routeCurrent.Count == 0)
                     {
-                        stops.Clear();
+                        _stops.Clear();
                         return false;
                     }
                     //routeCurrent.RemoveAt(0);
                     foreach ((int, int) coord in routeCurrent)
                     {
-                        routeFinal.Add(coord);
+                        _routeFinal.Add(coord);
                     }
                 }
-                
-                vehicle.route.AddRange(routeFinal);
-                vehicle.x = routeFinal.First().Item1;
-                vehicle.y = routeFinal.First().Item2;
+                _vehicle.AssignRoute(_routeFinal);
+                _vehicle.x = _routeFinal.First().Item1;
+                _vehicle.y = _routeFinal.First().Item2;
                 return true;
             }
             else
             {
-                stops.Clear();
+                _stops.Clear();
                 return false;
             }
             

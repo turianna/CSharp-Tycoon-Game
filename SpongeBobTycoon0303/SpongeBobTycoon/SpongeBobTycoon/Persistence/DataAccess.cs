@@ -59,7 +59,7 @@ namespace SpongeBobTycoon.Persistence
                         int y = j;
                         int z;
                         FieldType fieldType;
-                        Industry? industry;
+                        Industry industry;
                         bool isVehicle = false;
                         bool areTwoVehicles = false;
                         bool isStop = false;
@@ -188,23 +188,23 @@ namespace SpongeBobTycoon.Persistence
             else return false;
         }
 
-        private (FieldType, Industry?) DecideFieldTypeAndIndustry(char fieldType, char factoryType) //helper method to keep clean code
+        private (FieldType, Industry) DecideFieldTypeAndIndustry(char fieldType, char factoryType) //helper method to keep clean code
         {
             
             switch (fieldType)
             {
                 case 'E':
-                    return (new Grass(), new Industry(null));
+                    return (new Grass(), new Industry(new Product()));
                 case 'R':
-                    return (new Lava(true), new Industry(null));
+                    return (new Lava(true), new Industry(new Product()));
                 case 'L':
-                    return (new Lava(false), new Industry(null));
+                    return (new Lava(false), new Industry(new Product()));
                 case 'C':
                     return (new Grass(), new Farm(new Citizen())); 
                 case 'D':
                     return (new Road(), new Farm(new Citizen()));
                 case 'T':
-                    return (new Forest(), new Industry(null));
+                    return (new Forest(), new Industry(new Product()));
                 case 'F':
                     switch (factoryType)
                     {

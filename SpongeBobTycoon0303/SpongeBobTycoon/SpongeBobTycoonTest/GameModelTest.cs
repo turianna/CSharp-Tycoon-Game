@@ -12,12 +12,18 @@ namespace SpongeBobTycoonTest
         private DataAccess dataAccess;
         private GameModel model;
 
+        public GameModelTest()
+        {
+            this.dataAccess = new DataAccess();
+            this.model = new GameModel(dataAccess);
+        }
+        /*
         [TestInitialize]
         public void Setup()
         {
             dataAccess = new DataAccess();
             model = new GameModel(dataAccess);
-        }
+        }*/
 
         [TestMethod]
 
