@@ -22,11 +22,11 @@ namespace SpongeBobTycoon.Model
         private List<int> _ingredientCapacities = new();
         public IReadOnlyList<int> IngredientCapacities => _ingredientCapacities.AsReadOnly();
 
-        public Product product { get; private set; }
+        public Product product { get;  set; }
         public string productName { get; private set; }
         public string typeName { get; private set; }
         public int productAmount { get; private set; }
-        public int capacity { get; private set; }
+        public int capacity { get; set; }
 
 
         public int ID { get;  set; }
@@ -34,13 +34,13 @@ namespace SpongeBobTycoon.Model
         
         public Direction direction { get; set; }
         public int dir { get; set; }
-        public int time { get; private set; }
+        public int time { get; protected set; }
         protected int baseTime;
         public int timeUntilMoves { get; set; }
-        public int stepsUntilBroken { get; private set; }
-        public int repairCost { get; private set; } 
+        public int stepsUntilBroken { get; protected set; }
+        public int repairCost { get; protected set; } 
         
-        public int cost { get; private set; }
+        public int cost { get;protected set; }
         
         public int x;
         public int y;

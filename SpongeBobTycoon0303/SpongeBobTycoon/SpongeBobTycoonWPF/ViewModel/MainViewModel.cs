@@ -55,7 +55,7 @@ namespace SpongeBobTycoonWPF.ViewModel
         public DelegateCommand TerraformDownCommand { get; private set; }
 
         public DelegateCommand CreateRouteCommand { get; private set; }
-        public DelegateCommand SelectVehicleCommand { get; private set; }
+        //public DelegateCommand SelectVehicleCommand { get; private set; }
 
         public DelegateCommand BuyRoadCommand { get; private set; }
         public DelegateCommand PutStopCommand { get; private set; }
@@ -131,7 +131,6 @@ namespace SpongeBobTycoonWPF.ViewModel
             TerraformUpCommand = new DelegateCommand(param => structure = BuildMode.TERRAFORM_UP);
             TerraformDownCommand = new DelegateCommand(param => structure = BuildMode.TERRAFORM_DOWN);
 
-            //SelectVehicleCommand = new DelegateCommand(param => VehicleForRoute(param));
             //ExitBuildCommand = new DelegateCommand(param => structure = BuildMode.NONE);
 
             MovingVehicleList = new ObservableCollection<VehicleButton>();
@@ -139,38 +138,6 @@ namespace SpongeBobTycoonWPF.ViewModel
             MovingVehicleListSize = MovingVehicleList.Count;
             ParkingVehicleListSize = ParkingVehicleList.Count;
             structure = BuildMode.NONE;
-
-            /*
-            foreach (Vehicle v in model.movingVehicles)
-            {
-                MovingVehicleList.Add(new VehicleButton
-                {
-                    vehicle = v,
-                    ClickCommand = new DelegateCommand(param =>
-                    {
-                        if (param is Vehicle v)
-                        {
-                            VehicleClick(v);
-                        }
-                    })
-                });
-            }
-
-            foreach (Vehicle v in model.parkingVehicles)
-            {
-                ParkingVehicleList.Add(new VehicleButton
-                {
-                    vehicle = v,
-                    ClickCommand = new DelegateCommand(param =>
-                    {
-                       if (param is Vehicle v)
-                       {
-                           VehicleClick(v);
-                       }
-                    })
-                });
-            }
-            */
             Board = new ObservableCollection<GameField>();
             Create();
         }
