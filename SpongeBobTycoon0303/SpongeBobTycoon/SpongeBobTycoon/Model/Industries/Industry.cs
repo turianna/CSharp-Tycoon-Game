@@ -17,6 +17,7 @@ namespace SpongeBobTycoon.Model.Industries
         protected int productionTime;
 
         protected int productionTimeLeft;
+        public int getProductionTimeLeft => productionTimeLeft;
 
         protected int productCapacity;
         protected int productPerProduce;

@@ -13,6 +13,10 @@ namespace SpongeBobTycoon.Model.Industries
         private List<int> ingredientAmounts;
         private List<int> ingredientsForProduction;
 
+        public List<int> getIngredientAmounts => ingredientAmounts;
+        public List<int> getIngredientsForProduction => ingredientsForProduction;
+        public List<Product> getIngredients => ingredients;
+
         bool producing;
 
         public Factory(Product product) : base(product)

@@ -70,6 +70,9 @@ namespace SpongeBobTycoon.Model
         private List<Field> forests;
         private List<Industry> industries;
 
+        public List<Field> GetForests() => forests;
+        public List<Industry> GetIndustries() => industries;
+
         public GameModel(DataAccess dataAccess)
         {
             stops = new List<Stop>();
@@ -78,7 +81,6 @@ namespace SpongeBobTycoon.Model
             movingVehicles = new List<Vehicle>();
             StopsForRoute = new List<Stop>();
 
-            GameData = new GameData();
             DataAccess = dataAccess;
             board = DataAccess.LoadMap();
             forests = DataAccess.GetForests();

@@ -18,8 +18,8 @@ namespace SpongeBobTycoon.Persistence
         private List<Industry> industries = new List<Industry>();
 
 
-        public async Task<GameData> Load(String path) { return new GameData(); }
-        public async Task Save(String path, GameModel model) { }
+        //public async Task<GameData> Load(String path) { return new GameData(); }
+        //public async Task Save(String path, GameModel model) { }
 
         public Field[,] LoadMap()
         {
@@ -259,6 +259,11 @@ namespace SpongeBobTycoon.Persistence
         public List<Industry> GetIndustries()
         {
             return industries;
+
+        }
+
+        public void SaveToFile(GameData data)
+        {
 
         }
     }
