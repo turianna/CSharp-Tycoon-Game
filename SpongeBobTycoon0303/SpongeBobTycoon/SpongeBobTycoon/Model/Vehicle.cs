@@ -2,7 +2,7 @@
 using SpongeBobTycoon.Model.Industries;
 using SpongeBobTycoon.Model.Products;
 using System;
-using System.Collections.Generic;
+//using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Security.Permissions;
@@ -13,30 +13,34 @@ namespace SpongeBobTycoon.Model
 {
     public class Vehicle 
     {
-        public List<(int, int)>? route {  get; set; }
-        public List<Product>? ingredients;
-        public List<int>? ingredientAmounts;
-        public List<int>? ingredientCapacities;
+        private List<(int, int)> _route = new();
+        public IReadOnlyList<(int, int)> Route => _route.AsReadOnly();
+        private List<Product> _ingredients = new();
+        public IReadOnlyList<Product> Ingredients => _ingredients.AsReadOnly();
+        private List<int> _ingredientAmounts = new();
+        public IReadOnlyList<int> IngredientAmounts => _ingredientAmounts.AsReadOnly();
+        private List<int> _ingredientCapacities = new();
+        public IReadOnlyList<int> IngredientCapacities => _ingredientCapacities.AsReadOnly();
 
-        public Product product;
-        public string productName;
-        public string typeName;
-        public int productAmount;
-        public int capacity;
+        public Product product { get;  set; }
+        public string productName { get; private set; }
+        public string typeName { get; private set; }
+        public int productAmount { get; private set; }
+        public int capacity { get; set; }
 
-        //public string productName;
-        public int ID;
-        public int route_index;
+
+        public int ID { get;  set; }
+        public int route_index { get;set; }
         
         public Direction direction { get; set; }
         public int dir { get; set; }
-        public int time;
+        public int time { get; protected set; }
         protected int baseTime;
-        public int timeUntilMoves;
-        public int stepsUntilBroken;
-        public int repairCost;
+        public int timeUntilMoves { get; set; }
+        public int stepsUntilBroken { get; protected set; }
+        public int repairCost { get; protected set; } 
         
-        public int cost;
+        public int cost { get;protected set; }
         
         public int x;
         public int y;
@@ -48,33 +52,34 @@ namespace SpongeBobTycoon.Model
         {
             this.product = product;
             productAmount = 0;
-            this.route = new List<(int, int)>();
-
+            this._route = new List<(int, int)>();
+            productName = "";
+            typeName = "";
             switch (product)
             {
                 case Petfood:
-                    ingredients = new List<Product>();
-                    ingredientAmounts = new List<int>();
-                    ingredientCapacities = new List<int>();
+                    _ingredients = new List<Product>();
+                    _ingredientAmounts = new List<int>();
+                    _ingredientCapacities = new List<int>();
 
-                    ingredients.Add(new Algae());
-                    ingredientAmounts.Add(0);
-                    ingredientCapacities.Add(10);
+                    _ingredients.Add(new Algae());
+                    _ingredientAmounts.Add(0);
+                    _ingredientCapacities.Add(10);
                     break;
 
                 case Burger:
-                    ingredients = new List<Product>();
-                    ingredientAmounts = new List<int>();
-                    ingredientCapacities = new List<int>();
+                    _ingredients = new List<Product>();
+                    _ingredientAmounts = new List<int>();
+                    _ingredientCapacities = new List<int>();
 
-                    ingredients.Add(new Spatula());
-                    ingredients.Add(new Meat());
+                    _ingredients.Add(new Spatula());
+                    _ingredients.Add(new Meat());
                     
-                    ingredientAmounts.Add(0);
-                    ingredientAmounts.Add(0);
+                    _ingredientAmounts.Add(0);
+                    _ingredientAmounts.Add(0);
 
-                    ingredientCapacities.Add(5);
-                    ingredientCapacities.Add(20);
+                    _ingredientCapacities.Add(5);
+                    _ingredientCapacities.Add(20);
                     break;
                 case Net:
                     break;
@@ -107,7 +112,7 @@ namespace SpongeBobTycoon.Model
                     productName = "Petfood";
                     break;
                 case Spatula:
-                    productName = "Spatula";
+                     productName = "Spatula";
                     break;
                 case Wood:
                     productName = "Wood";
@@ -117,6 +122,15 @@ namespace SpongeBobTycoon.Model
 
         }
        
+        public void AssignRoute(IEnumerable<(int,int)> routeFinal)
+        {
+            _route.AddRange(routeFinal);
+        }
+
+        public void ClearRoute()
+        {
+            _route.Clear();
+        }
 
         public void Transaction(Stop currentStop)
         {
@@ -138,31 +152,31 @@ namespace SpongeBobTycoon.Model
                 if (!(currentStop.industry.product is Burger || currentStop.industry.product is Petfood)) return;
 
                 //ingredientek leadasa
-                for (int i = 0; i < ingredients!.Count; i++)
+                for (int i = 0; i < _ingredients!.Count; i++)
                 {
                     Factory stopFactory = (Factory)currentStop.industry;
-                    stopFactory.ReceiveIngredient(ingredients[i], ingredientAmounts![i]);
+                    stopFactory.ReceiveIngredient(_ingredients[i], _ingredientAmounts![i]);
                 }
             }
 
             //ha a jarmu nem szallit ingredientet, akkor vegzett a metodus
-            if (ingredients is null) return;
+            if (_ingredients is null) return;
 
             //ha a megallonal a jarmu ingredientjet lehet felvenni
-            foreach (Product ingredient in ingredients)
+            foreach (Product ingredient in _ingredients)
             {
                 if (ingredient.GetType() == stopProduct.GetType())
                 {
-                    int index = ingredients.IndexOf(ingredient);
-                    int ingredientAmount = ingredientAmounts![index];
-                    int ingredientCapacity = ingredientCapacities![index];
+                    int index = _ingredients.IndexOf(ingredient);
+                    int ingredientAmount = _ingredientAmounts![index];
+                    int ingredientCapacity = _ingredientCapacities![index];
 
                     int productToGive = Math.Min(ingredientCapacity - ingredientAmount, stopAmount);
 
-                    ingredientAmounts[index] += productToGive;
+                    _ingredientAmounts[index] += productToGive;
                     currentStop.industry.productAmount -= productToGive;
 
-                    System.Diagnostics.Debug.WriteLine($"Vehicle with id {ID} received {productToGive} of {ingredients[index].GetType().Name}. New amount: {ingredientAmounts[index]}/{ingredientCapacities[index]}");
+                    System.Diagnostics.Debug.WriteLine($"Vehicle with id {ID} received {productToGive} of {_ingredients[index].GetType().Name}. New amount: {_ingredientAmounts[index]}/{_ingredientCapacities[index]}");
                 }
             }
         }
@@ -202,8 +216,8 @@ namespace SpongeBobTycoon.Model
 
         public bool CanVehicleMove(Field[,] board, List<Vehicle> allVehicles)
         {
-            int nextX = route![(route_index+1) % (route.Count - 1)].Item1;
-            int nextY = route[(route_index+1) % (route.Count - 1)].Item2;
+            int nextX = _route![(route_index+1) % (_route.Count - 1)].Item1;
+            int nextY = _route[(route_index+1) % (_route.Count - 1)].Item2;
             this.direction = DecideDirection(nextX, nextY, this.x, this.y);
 
             Vehicle? vehicleInTheWay = null;

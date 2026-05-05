@@ -11,32 +11,11 @@ namespace SpongeBobTycoonWPF.ViewModel
 {
     public class VehicleButton : ViewModelBase
     {
-        private Vehicle v;
-        private string vt;
-        private string product;
-        public Vehicle Vehicle
-        {
-            get { return v; }
-            set
-            {
-                v = value;
-            }
-        }
-
-        public string VehicleType
-        {
-            get { return vt; }
-            set
-            {
-                vt = value;
-            }
-        }
-        public string Product
-        {
-            get { return product; }
-            set { product = value; }
-        }
-
+        public required Vehicle Vehicle { get; set; }
+        public required string VehicleType { get; set; }
+        public required string Product { get; set; }
+        
         public DelegateCommand? ClickCommand { get; set; }
+
     }
 }

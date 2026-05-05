@@ -22,17 +22,10 @@ namespace SpongeBobTycoonWPF.ViewModel
     public class MainViewModel : ViewModelBase
     {
         public GameModel model;
-        public int color_int;
-        public int vehiclePicture;
-        public int roadPicture;
-        public int stopPicture;
         public int MovingVehicleListSize;
         public int ParkingVehicleListSize;
-        private string VMvehicleType;
-        private string VMProduct;
+        //private string VMvehicleType;
         
-       
-
         private int time=0;
 
         private int money;
@@ -62,7 +55,7 @@ namespace SpongeBobTycoonWPF.ViewModel
         public DelegateCommand TerraformDownCommand { get; private set; }
 
         public DelegateCommand CreateRouteCommand { get; private set; }
-        public DelegateCommand SelectVehicleCommand { get; private set; }
+        //public DelegateCommand SelectVehicleCommand { get; private set; }
 
         public DelegateCommand BuyRoadCommand { get; private set; }
         public DelegateCommand PutStopCommand { get; private set; }
@@ -70,7 +63,6 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         public DelegateCommand BuyTruckCommand { get; private set; }
         public DelegateCommand BuyVanCommand { get; private set; }
-        public DelegateCommand BuyBridgeCommand { get; private set; }
         
         public DelegateCommand BuyRiverFastBridgeCommand { get; private set; }
         public DelegateCommand BuyRiverSlowBridgeCommand { get; private set; }
@@ -139,7 +131,6 @@ namespace SpongeBobTycoonWPF.ViewModel
             TerraformUpCommand = new DelegateCommand(param => structure = BuildMode.TERRAFORM_UP);
             TerraformDownCommand = new DelegateCommand(param => structure = BuildMode.TERRAFORM_DOWN);
 
-            //SelectVehicleCommand = new DelegateCommand(param => VehicleForRoute(param));
             //ExitBuildCommand = new DelegateCommand(param => structure = BuildMode.NONE);
 
             MovingVehicleList = new ObservableCollection<VehicleButton>();
@@ -147,38 +138,6 @@ namespace SpongeBobTycoonWPF.ViewModel
             MovingVehicleListSize = MovingVehicleList.Count;
             ParkingVehicleListSize = ParkingVehicleList.Count;
             structure = BuildMode.NONE;
-
-            /*
-            foreach (Vehicle v in model.movingVehicles)
-            {
-                MovingVehicleList.Add(new VehicleButton
-                {
-                    vehicle = v,
-                    ClickCommand = new DelegateCommand(param =>
-                    {
-                        if (param is Vehicle v)
-                        {
-                            VehicleClick(v);
-                        }
-                    })
-                });
-            }
-
-            foreach (Vehicle v in model.parkingVehicles)
-            {
-                ParkingVehicleList.Add(new VehicleButton
-                {
-                    vehicle = v,
-                    ClickCommand = new DelegateCommand(param =>
-                    {
-                       if (param is Vehicle v)
-                       {
-                           VehicleClick(v);
-                       }
-                    })
-                });
-            }
-            */
             Board = new ObservableCollection<GameField>();
             Create();
         }
@@ -319,15 +278,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
             model.RemoveVehicleFromRoute(vehicle);
 
-
-            if (vehicle is FastCar)
-            {
-                VMvehicleType = "Van";
-            }
-            else
-            {
-                VMvehicleType = "Truck";
-            }
+            string VMvehicleType = v is FastCar ? "Van" : "Truck";
 
             ParkingVehicleList.Add(new VehicleButton
             {
@@ -352,6 +303,7 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         private void Model_AddMovingVehicle(object? sender, Vehicle e)
         {
+            string VMvehicleType;
             int j = -1;
             for (int i = 0; i < ParkingVehicleList.Count; i++)
             {
@@ -391,6 +343,7 @@ namespace SpongeBobTycoonWPF.ViewModel
         }
         private void Model_VehicleBought(object? sender, Vehicle e)
         {
+            string VMvehicleType;
             if (e is FastCar)
             {
                 VMvehicleType = "Van";
@@ -671,7 +624,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
             return curroad;
         }
-        private int DecideColor_int(FieldType? ft, Industry? ind, int z, int id) 
+        private int DecideColor_int(FieldType? ft, Industry ind, int z, int id) 
         {
             int color_int=6;
             switch (ft)

@@ -13,8 +13,8 @@ namespace SpongeBobTycoon.Model
     {
         public int X; public int Y; public int Z;
 
-        public FieldType? fieldType;
-        public Industry? industry; 
+        public FieldType fieldType;
+        public Industry industry; 
         public bool isVehicle;
         public bool areTwoVehicles;
         public Direction direction;

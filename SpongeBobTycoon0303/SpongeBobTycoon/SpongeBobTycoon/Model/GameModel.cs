@@ -14,6 +14,12 @@ namespace SpongeBobTycoon.Model
 {
     public class GameModel
     {
+        #region Constants
+        private const int GAMETIME_BASE = 4;
+        private const int GAMETIME_FAST = 2;
+        private const int GAMETIME_FASTEST = 1;
+        #endregion
+
         #region Properties
         public List<Stop> stops { get; set; }
 
@@ -22,9 +28,9 @@ namespace SpongeBobTycoon.Model
         public List<Vehicle> movingVehicles { get; set; }
         
 
-        private Vehicle VehicleForRoute { get; set; }
+        private Vehicle? VehicleForRoute { get; set; }
         private List<Stop> StopsForRoute { get; set; }
-        public int money { get; set; }
+        public int money { get; private set; }
         #endregion
 
         #region Instances of other classes
@@ -34,15 +40,14 @@ namespace SpongeBobTycoon.Model
         #endregion
 
         #region Events
-        public event EventHandler GameOver;
+        public event EventHandler? GameOver;
         public event EventHandler<int>? MoneyChanged;
-        public event EventHandler? InsufficientFunds;
         public event EventHandler<FieldChangedEventArgs>? FieldChanged;
         public event EventHandler<Vehicle>? VehicleBought; //updatelni kell a parkoló autók listáját
-        public event EventHandler Refresh;
+        public event EventHandler? Refresh;
         public event EventHandler<(int,int, int)>? CarStepped;
         public event EventHandler<Vehicle>? AddMovingVehicle;
-        public event EventHandler CreateRouteFailed;
+        public event EventHandler? CreateRouteFailed;
 
         public event EventHandler<int>? TimerTick;
         int[] news;
@@ -51,14 +56,13 @@ namespace SpongeBobTycoon.Model
 
         public ITimer timer;
         public int gameTime;
-        public int fastCarTime;
-        public int slowCarTime;
-        public TimeStatus timeStatus;
+        
+        public TimeStatus timeStatus { get;  private set; }
         public int gameTimer;
-        public int biggestVehicleID;
+        private int biggestVehicleID;
 
 
-        public Field[,] board;
+        public Field[,] board { get; private set; }
         private List<Field> forests;
         private List<Industry> industries;
 
@@ -80,9 +84,7 @@ namespace SpongeBobTycoon.Model
             timer.Interval = 250;
             timer.Elapsed += new EventHandler(Timer_Elapsed);
 
-            gameTime = 4;
-            fastCarTime = 1;
-            slowCarTime = 3;
+            gameTime = GAMETIME_BASE;
             gameTimer = 0;
             timeStatus = TimeStatus.BASE;
             money = 10000;
@@ -92,10 +94,12 @@ namespace SpongeBobTycoon.Model
 
             timer.Start();
         }
+        
         public Field Board(int i, int j)
         {
             return board[i, j];
         }
+
 
         #region Initialization
         public void StartNewGame()
@@ -114,9 +118,7 @@ namespace SpongeBobTycoon.Model
                 }
             }
             
-            gameTime = 4;
-            fastCarTime = 1;
-            slowCarTime = 3;
+            gameTime = GAMETIME_BASE;
 
             gameTimer = 0;
             timeStatus = TimeStatus.BASE;
@@ -147,16 +149,6 @@ namespace SpongeBobTycoon.Model
                 board[x, y].fieldType = new Road();
                 if ((news[0]==1 || news[3] == 1) && news[1]==0 && news[2] == 0 ) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
                 else if(news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
-                /*
-                else if(news[0] == 1 && news[1] == 1 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.CROSSROAD;
-                else if(news[0] == 1 && news[1] == 0 && news[2] == 1 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TURNNW;
-                else if(news[0] == 1 && news[1] == 1 && news[2] == 0 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TURNNE;
-                else if(news[0] == 0 && news[1] == 0 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TURNSW;
-                else if(news[0] == 0 && news[1] == 1 && news[2] == 0 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TURNSE;
-                else if(news[0] == 1 && news[1] == 1 && news[2] == 1 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TN;
-                else if(news[0] == 1 && news[1] == 1 && news[2] == 0 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TE;
-                else if(news[0] == 1 && news[1] == 0 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TW;
-                else if(news[0] == 0 && news[1] == 1 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TS;*/
                 ChangeBalance(-20);
                 OnFieldChanged(x, y, board[x, y].fieldType!);
             }else if (board[x, y].fieldType is Forest && board[x, y].industry.product is not Citizen && AdjacentRoad(x, y)) 
@@ -173,16 +165,6 @@ namespace SpongeBobTycoon.Model
                 board[x, y].fieldType = new Road();
                 if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
                 else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
-                /*
-                else if (news[0] == 1 && news[1] == 1 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.CROSSROAD;
-                else if (news[0] == 1 && news[1] == 0 && news[2] == 1 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TURNNW;
-                else if (news[0] == 1 && news[1] == 1 && news[2] == 0 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TURNNE;
-                else if (news[0] == 0 && news[1] == 0 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TURNSW;
-                else if (news[0] == 0 && news[1] == 1 && news[2] == 0 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TURNSE;
-                else if (news[0] == 1 && news[1] == 1 && news[2] == 1 && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.TN;
-                else if (news[0] == 1 && news[1] == 1 && news[2] == 0 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TE;
-                else if (news[0] == 1 && news[1] == 0 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TW;
-                else if (news[0] == 0 && news[1] == 1 && news[2] == 1 && news[3] == 1) ((Road)board[x, y].fieldType).roadType = RoadType.TS;*/
                 ChangeBalance(-60);
                 OnFieldChanged(x, y, board[x, y].fieldType!);
             }
@@ -212,12 +194,12 @@ namespace SpongeBobTycoon.Model
 
             parkingVehicles.Add(vehicle);
             System.Diagnostics.Debug.WriteLine($"Bought a {vehicleType} with ID {vehicle.ID} for product {product.GetType().Name}");
-            if(vehicle.ingredients != null)
+            if(vehicle.Ingredients != null)
             {
-                System.Diagnostics.Debug.WriteLine($"Vehicle has {vehicle.ingredients.Count} ingredients:");
-                for (int i = 0; i < vehicle.ingredients.Count; i++)
+                System.Diagnostics.Debug.WriteLine($"Vehicle has {vehicle.Ingredients.Count} ingredients:");
+                for (int i = 0; i < vehicle.Ingredients.Count; i++)
                 {
-                    System.Diagnostics.Debug.WriteLine($"Ingredient: {vehicle.ingredients[i].GetType().Name}, amount: {vehicle.ingredientAmounts[i]}, capacity: {vehicle.ingredientCapacities[i]}");
+                    System.Diagnostics.Debug.WriteLine($"Ingredient: {vehicle.Ingredients[i].GetType().Name}, amount: {vehicle.IngredientAmounts[i]}, capacity: {vehicle.IngredientCapacities[i]}");
                 }
             }
             OnVehicleBought(vehicle);
@@ -225,8 +207,6 @@ namespace SpongeBobTycoon.Model
 
         public void ChosenVehicle(Vehicle v)
         {
-            
-             // ennek is a routemanagerbe kell kerülnie
             VehicleForRoute = v;
         }
         
@@ -317,14 +297,16 @@ namespace SpongeBobTycoon.Model
 
 
         }
+
         #endregion
 
         #region Routes & Stops
         public void PutStop(int x, int y) {
 
             bool isValid;
-            Industry? industry;
+            Industry industry;
 
+            //if(industry is null)
             (isValid, industry) = IsStopValid(x, y);
 
             if (board[x, y].fieldType is Road && isValid && board[x, y].industry!.product is not Citizen)
@@ -354,7 +336,7 @@ namespace SpongeBobTycoon.Model
             }
         }
 
-        public (bool, Industry?) IsStopValid(int x, int y)
+        public (bool, Industry) IsStopValid(int x, int y)
         {
             (int dx, int dy)[] directions =
                 {
@@ -378,17 +360,18 @@ namespace SpongeBobTycoon.Model
 
                 }
             }
-            return (false, null);
+            return (false, new Industry(new Product()));
         }
 
         
 
         public void CreateRoute()
         {
+            if (VehicleForRoute is null) return;
             RouteManager routemanager = new RouteManager(VehicleForRoute);
             foreach(Stop stop in StopsForRoute)
             {
-                routemanager.stops.Add(stop);
+                routemanager.AddStop(stop);
             }
             StopsForRoute.Clear();
             if (routemanager.DesignRoute(this))
@@ -403,7 +386,7 @@ namespace SpongeBobTycoon.Model
                 }
                 if (j != -1) parkingVehicles.RemoveAt(j);
 
-                movingVehicles.Add(routemanager.vehicle);
+                movingVehicles.Add(routemanager.Vehicle);
                 OnAddMovingVehicle(VehicleForRoute);
                 board[VehicleForRoute.x,VehicleForRoute.y].isVehicle = true;
                 OnCarStepped((VehicleForRoute.x, VehicleForRoute.y, VehicleForRoute.dir));
@@ -427,7 +410,7 @@ namespace SpongeBobTycoon.Model
             board[vehicle.x, vehicle.y].isVehicle = false;
             OnCarStepped((vehicle.x, vehicle.y, vehicle.dir));
             vehicle.route_index = 0;
-            vehicle.route.Clear();
+            vehicle.ClearRoute();
             parkingVehicles.Add(vehicle);
         }
 
@@ -465,7 +448,6 @@ namespace SpongeBobTycoon.Model
         public async Task LoadGame(String path) { }
         public async Task SaveGame(String path) { }
 
-        public void Produce() { }
 
         #region Events
         public void OnGameOver()
@@ -517,19 +499,19 @@ namespace SpongeBobTycoon.Model
         #region Timer & Ticks
         public void BaseTime()
         {
-            gameTime = 4;
+            gameTime = GAMETIME_BASE;
             timeStatus = TimeStatus.BASE;
         }
         public void FastTime()
         {
-            gameTime = 2;
+            gameTime = GAMETIME_FAST;
             timeStatus = TimeStatus.FAST;
 
         }
 
         public void FastestTime()
         {
-            gameTime = 1;
+            gameTime = GAMETIME_FASTEST;
             timeStatus = TimeStatus.FASTEST;
         }
 
@@ -557,13 +539,13 @@ namespace SpongeBobTycoon.Model
                 switch (timeStatus)
                 {
                     case TimeStatus.BASE:
-                        gameTime = 4;
+                        gameTime = GAMETIME_BASE;
                         break;
                     case TimeStatus.FAST:
-                        gameTime = 2;
+                        gameTime = GAMETIME_FAST;
                         break;
                     case TimeStatus.FASTEST:
-                        gameTime = 1;
+                        gameTime = GAMETIME_FASTEST;
                         break;
                 }
             }
@@ -660,8 +642,8 @@ namespace SpongeBobTycoon.Model
         private void CarStep(Vehicle v)
         {
 
-            (int,int)[] localRoute = new (int,int)[v.route.Count];
-            localRoute = v.route.ToArray();
+            (int,int)[] localRoute = new (int,int)[v.Route.Count];
+            localRoute = v.Route.ToArray();
 
             //before changing routeIndex
             if(board[v.x, v.y].areTwoVehicles)
@@ -707,7 +689,8 @@ namespace SpongeBobTycoon.Model
             v.y = localRoute[v.route_index % (localRoute.Length - 1)].Item2;
 
             //board[v.x, v.y].isVehicle = true;
-            //OnCarStepped((v.x, v.y, v));
+            //On
+            //((v.x, v.y, v));
 
             //look for next tile, to see if it's an incline
             int nextX = localRoute[(v.route_index + 1) % (localRoute.Length - 1)].Item1;
