@@ -158,7 +158,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             {
                 for (int j = 0; j < 100; j++) //j = x
                 {
-                    int color_int = DecideColor_int(model.Board(i, j).fieldType, model.Board(i, j).industry, model.Board(i,j).Z, model.Board(i,j).id);
+                    int color_int = DecideColor_int(model.Board(i, j).fieldType, model.Board(i, j).industry!, model.Board(i,j).Z, model.Board(i,j).id);
                     int roadPicture = DecideRoadPicture(model.Board(i,j).fieldType);
                     int vehiclePicture = 0;
                     int stopPicture = 0;
