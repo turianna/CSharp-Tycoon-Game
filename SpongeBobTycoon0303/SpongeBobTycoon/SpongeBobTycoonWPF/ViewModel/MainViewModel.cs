@@ -24,6 +24,7 @@ namespace SpongeBobTycoonWPF.ViewModel
         public GameModel model;
         public int MovingVehicleListSize;
         public int ParkingVehicleListSize;
+        public bool infoIsOpen;
         //private string VMvehicleType;
         
         private int time=0;
@@ -41,6 +42,12 @@ namespace SpongeBobTycoonWPF.ViewModel
             set { route_ison = value; OnPropertyChanged(); }
         }
 
+        public bool InfoIsOpen
+        {
+            get => infoIsOpen;
+            set { infoIsOpen = value; OnPropertyChanged(); }
+        }
+
         public DelegateCommand StartCommand { get; private set; }
         public DelegateCommand NewGameCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
@@ -49,7 +56,8 @@ namespace SpongeBobTycoonWPF.ViewModel
         public DelegateCommand StopTimeCommand { get; private set; }
         public DelegateCommand StartTimeCommand { get; private set; }
         public DelegateCommand SpeedUpTimeCommand { get; private set; }
-
+        public DelegateCommand InfoCommand { get; private set; }
+        public DelegateCommand CloseInfoCommand { get; private set; }
 
         public DelegateCommand TerraformUpCommand { get; private set; }
         public DelegateCommand TerraformDownCommand { get; private set; }
@@ -120,6 +128,8 @@ namespace SpongeBobTycoonWPF.ViewModel
             SpeedUpTimeCommand = new DelegateCommand(_ => SpeedUpTime());
             CreateRouteCommand = new DelegateCommand(_ => CreateRoute());
             QuitCommand = new DelegateCommand(_ => QuitGame());
+            InfoCommand = new DelegateCommand(_ => OpenInfo());
+            CloseInfoCommand = new DelegateCommand(_ => CloseInfo());
             BuyVanCommand = new DelegateCommand(param => BuyVan(param));
             BuyTruckCommand = new DelegateCommand(param => BuyTruck(param));
             BuyRoadCommand = new DelegateCommand(param => structure = BuildMode.ROAD);
@@ -206,6 +216,17 @@ namespace SpongeBobTycoonWPF.ViewModel
         {
             System.Windows.Application.Current.Shutdown();
         }
+
+        private void OpenInfo()
+        {
+            InfoIsOpen = true;
+        }
+
+        private void CloseInfo()
+        {
+            InfoIsOpen = false;
+        }
+
         private void BuyVan(object param)
         {
             switch (param)
