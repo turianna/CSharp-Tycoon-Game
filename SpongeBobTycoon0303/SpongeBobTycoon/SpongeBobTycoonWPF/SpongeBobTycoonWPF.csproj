@@ -24,6 +24,7 @@
     <None Remove="Images\algee7.png" />
     <None Remove="Images\algee8.png" />
     <None Remove="Images\algee9.png" />
+    <None Remove="Images\autovasar.png" />
     <None Remove="Images\background.jpg" />
     <None Remove="Images\bridge.png" />
     <None Remove="Images\bridge_small.png" />
@@ -53,8 +54,11 @@
     <None Remove="Images\buy_vehicle.png" />
     <None Remove="Images\citizen.png" />
     <None Remove="Images\down-arrow.png" />
+    <None Remove="Images\erdo.png" />
+    <None Remove="Images\erdő.png" />
     <None Remove="Images\factory.png" />
     <None Remove="Images\fast-forward.png" />
+    <None Remove="Images\gyar.png" />
     <None Remove="Images\hidfa.png" />
     <None Remove="Images\hidko.png" />
     <None Remove="Images\homok.png" />
@@ -91,7 +95,13 @@
     <None Remove="Images\lava.png" />
     <None Remove="Images\lava2.png" />
     <None Remove="Images\lava3.png" />
+    <None Remove="Images\lavakep.png" />
+    <None Remove="Images\lavato.png" />
+    <None Remove="Images\lavatokep.png" />
+    <None Remove="Images\magassag.png" />
     <None Remove="Images\meat.png" />
+    <None Remove="Images\megfeleloutepitese.png" />
+    <None Remove="Images\megvettauto.png" />
     <None Remove="Images\modernbridge.png" />
     <None Remove="Images\movingcar.png" />
     <None Remove="Images\net.png" />
@@ -102,16 +112,20 @@
     <None Remove="Images\road.png" />
     <None Remove="Images\RoadNS.jpg" />
     <None Remove="Images\RoadWE.jpg" />
+    <None Remove="Images\rosszutvonal.png" />
     <None Remove="Images\route.png" />
     <None Remove="Images\seaweed.png" />
     <None Remove="Images\spatula.png" />
     <None Remove="Images\stop.png" />
     <None Remove="Images\stop2.png" />
+    <None Remove="Images\stoplerakas.png" />
     <None Remove="Images\StopPicture.png" />
     <None Remove="Images\terraform.png" />
+    <None Remove="Images\terraformalas.png" />
     <None Remove="Images\truck.png" />
     <None Remove="Images\up-arrow.png" />
     <None Remove="Images\ut.png" />
+    <None Remove="Images\utvegleg.png" />
     <None Remove="Images\ut_egyenes_0.png" />
     <None Remove="Images\ut_egyenes_1.png" />
     <None Remove="Images\ut_egyenes_2.png" />
@@ -133,6 +147,7 @@
     <None Remove="Images\ut_kanyar_3.png" />
     <None Remove="Images\ut_kanyar_4.png" />
     <None Remove="Images\van.png" />
+    <None Remove="Images\varos.png" />
     <None Remove="Images\varos1_1.png" />
     <None Remove="Images\varos1_2.png" />
     <None Remove="Images\varos1_3.png" />
@@ -141,6 +156,8 @@
     <None Remove="Images\varos_2.png" />
     <None Remove="Images\varos_3.png" />
     <None Remove="Images\varos_4.png" />
+    <None Remove="Images\vasarlas.png" />
+    <None Remove="Images\vasaroltstop.png" />
     <None Remove="Images\VehicleBothNS.png" />
     <None Remove="Images\VehicleBothWE.png" />
     <None Remove="Images\VehicleDown.png" />
@@ -168,6 +185,7 @@
     <Resource Include="Images\algee7.png" />
     <Resource Include="Images\algee8.png" />
     <Resource Include="Images\algee9.png" />
+    <Resource Include="Images\autovasar.png" />
     <Resource Include="Images\burger18.png" />
   </ItemGroup>
 
@@ -192,7 +210,9 @@
     <Resource Include="Images\burger7.png" />
     <Resource Include="Images\burger8.png" />
     <Resource Include="Images\burger9.png" />
+    <Resource Include="Images\erdo.png" />
     <Resource Include="Images\factory.png" />
+    <Resource Include="Images\gyar.png" />
     <Resource Include="Images\hidfa.png" />
     <Resource Include="Images\hidko.png" />
     <Resource Include="Images\korall3_2.png" />
@@ -240,7 +260,13 @@
     </Resource>
     <Resource Include="Images\lava.png" />
     <Resource Include="Images\lava3.png" />
+    <Resource Include="Images\lavakep.png" />
+    <Resource Include="Images\lavato.png" />
+    <Resource Include="Images\lavatokep.png" />
+    <Resource Include="Images\magassag.png" />
     <Resource Include="Images\meat.png" />
+    <Resource Include="Images\megfeleloutepitese.png" />
+    <Resource Include="Images\megvettauto.png" />
     <Resource Include="Images\modernbridge.png" />
     <Resource Include="Images\movingcar.png" />
     <Resource Include="Images\net.png" />
@@ -252,16 +278,20 @@
     <Resource Include="Images\road.png" />
     <Resource Include="Images\RoadNS.jpg" />
     <Resource Include="Images\RoadWE.jpg" />
+    <Resource Include="Images\rosszutvonal.png" />
     <Resource Include="Images\route.png" />
     <Resource Include="Images\seaweed.png" />
     <Resource Include="Images\spatula.png" />
     <Resource Include="Images\stop.png" />
     <Resource Include="Images\stop2.png" />
+    <Resource Include="Images\stoplerakas.png" />
     <Resource Include="Images\StopPicture.png" />
     <Resource Include="Images\terraform.png" />
+    <Resource Include="Images\terraformalas.png" />
     <Resource Include="Images\truck.png" />
     <Resource Include="Images\up-arrow.png" />
     <Resource Include="Images\ut.png" />
+    <Resource Include="Images\utvegleg.png" />
     <Resource Include="Images\ut_egyenes_0.png" />
     <Resource Include="Images\ut_egyenes_1.png" />
     <Resource Include="Images\ut_egyenes_2.png" />
@@ -283,11 +313,14 @@
     <Resource Include="Images\ut_kanyar_3.png" />
     <Resource Include="Images\ut_kanyar_4.png" />
     <Resource Include="Images\van.png" />
+    <Resource Include="Images\varos.png" />
     <Resource Include="Images\varos_0.png" />
     <Resource Include="Images\varos_1.png" />
     <Resource Include="Images\varos_2.png" />
     <Resource Include="Images\varos_3.png" />
     <Resource Include="Images\varos_4.png" />
+    <Resource Include="Images\vasarlas.png" />
+    <Resource Include="Images\vasaroltstop.png" />
     <Resource Include="Images\VehicleBothNS.png" />
     <Resource Include="Images\VehicleBothWE.png" />
     <Resource Include="Images\VehicleDown.png" />
