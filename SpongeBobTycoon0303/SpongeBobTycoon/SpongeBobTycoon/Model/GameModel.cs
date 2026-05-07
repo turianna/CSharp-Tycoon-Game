@@ -18,6 +18,7 @@ namespace SpongeBobTycoon.Model
         private const int GAMETIME_BASE = 4;
         private const int GAMETIME_FAST = 2;
         private const int GAMETIME_FASTEST = 1;
+        
         #endregion
 
         #region Properties
@@ -31,6 +32,8 @@ namespace SpongeBobTycoon.Model
         private Vehicle? VehicleForRoute { get; set; }
         private List<Stop> StopsForRoute { get; set; }
         public int money { get; private set; }
+        public int RoadPrice = 20;
+        public int TerraformPrice = 250;
         #endregion
 
         #region Instances of other classes
@@ -149,7 +152,7 @@ namespace SpongeBobTycoon.Model
                 board[x, y].fieldType = new Road();
                 if ((news[0]==1 || news[3] == 1) && news[1]==0 && news[2] == 0 ) ((Road)board[x, y].fieldType!).roadType = RoadType.STRAIGHTNS;
                 else if(news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((Road)board[x, y].fieldType!).roadType = RoadType.STRAIGHTWE;
-                ChangeBalance(-20);
+                ChangeBalance(-RoadPrice);
                 OnFieldChanged(x, y, board[x, y].fieldType!);
             }else if (board[x, y].fieldType is Forest && board[x, y].industry!.product is not Citizen && AdjacentRoad(x, y)) 
             {
@@ -165,7 +168,7 @@ namespace SpongeBobTycoon.Model
                 board[x, y].fieldType = new Road();
                 if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((Road)board[x, y].fieldType!).roadType = RoadType.STRAIGHTNS;
                 else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((Road)board[x, y].fieldType!).roadType = RoadType.STRAIGHTWE;
-                ChangeBalance(-60);
+                ChangeBalance(-RoadPrice*3);
                 OnFieldChanged(x, y, board[x, y].fieldType!);
             }
 
@@ -424,7 +427,7 @@ namespace SpongeBobTycoon.Model
             }
 
             System.Diagnostics.Debug.WriteLine($"Successful terraform at ({x}, {y}), isUp: {isUp}, new Z: {board[x, y].Z}");
-            ChangeBalance(-250);
+            ChangeBalance(-TerraformPrice);
             OnFieldChanged(x, y, board[x, y].fieldType!);
         }
 

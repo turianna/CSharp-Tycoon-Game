@@ -180,7 +180,7 @@
                         <MenuItem.Icon>
                             <Image Source="Images/road.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                 <Image.ToolTip>
-                                    Road
+                                    <ToolTip Content="{Binding RoadPrice}" ContentStringFormat="Road - {0} Dollars" />
                                 </Image.ToolTip>
                             </Image>
                         </MenuItem.Icon>
@@ -212,7 +212,7 @@
                                 <MenuItem.Icon>
                                     <Image Source="Images/truck.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                         <Image.ToolTip>
-                                            Truck
+                                            <ToolTip Content="{Binding TruckPrice}" ContentStringFormat="Truck - {0} Dollars" />
                                         </Image.ToolTip>
                                     </Image>
                                 </MenuItem.Icon>
@@ -274,7 +274,7 @@
                                 <MenuItem.Icon>
                                     <Image Source="Images/van.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                         <Image.ToolTip>
-                                            Van
+                                            <ToolTip Content="{Binding VanPrice}" ContentStringFormat="Van - {0} Dollars" />
                                         </Image.ToolTip>
                                     </Image>
                                 </MenuItem.Icon>
@@ -365,7 +365,8 @@
                                         <MenuItem.Icon>
                                             <Image Source="Images/woodbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
-                                                    Wood bridge for lake
+
+                                                    <ToolTip Content="{Binding WoodBridgeLakePrice}" ContentStringFormat="Wood bridge for lake - {0} Dollars" />
                                                 </Image.ToolTip>
                                             </Image>
                                         </MenuItem.Icon>
@@ -374,7 +375,8 @@
                                         <MenuItem.Icon>
                                             <Image Source="Images/modernbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
-                                                    Modern bridge for lake
+
+                                                    <ToolTip Content="{Binding ModernBridgeLakePrice}" ContentStringFormat="Modern bridge for lake - {0} Dollars" />
                                                 </Image.ToolTip>
                                             </Image>
                                         </MenuItem.Icon>
@@ -385,7 +387,7 @@
                                 <MenuItem.Icon>
                                     <Image Source="Images/river.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                         <Image.ToolTip>
-                                            Bridges for lake
+                                            Bridges for river
                                         </Image.ToolTip>
                                     </Image>
                                 </MenuItem.Icon>
@@ -399,7 +401,8 @@
                                         <MenuItem.Icon>
                                             <Image Source="Images/woodbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
-                                                    Wood bridge for river
+
+                                                    <ToolTip Content="{Binding WoodBridgeRiverPrice}" ContentStringFormat="Wood bridge for river - {0} Dollars" />
                                                 </Image.ToolTip>
                                             </Image>
                                         </MenuItem.Icon>
@@ -408,7 +411,8 @@
                                         <MenuItem.Icon>
                                             <Image Source="Images/modernbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
-                                                    Modern bridge for river
+
+                                                    <ToolTip Content="{Binding ModernBridgeRiverPrice}" ContentStringFormat="Modern bridge for river - {0} Dollars" />
                                                 </Image.ToolTip>
                                             </Image>
                                         </MenuItem.Icon>
@@ -437,7 +441,8 @@
                         <MenuItem.Icon>
                             <Image Source="Images/up-arrow.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                 <Image.ToolTip>
-                                    Upward terraformation
+
+                                    <ToolTip Content="{Binding TerraformPrice}" ContentStringFormat="Upward terraformation - {0} Dollars" />
                                 </Image.ToolTip>
                             </Image>
                         </MenuItem.Icon>
@@ -446,7 +451,8 @@
                         <MenuItem.Icon>
                             <Image Source="Images/down-arrow.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                 <Image.ToolTip>
-                                    Downward terrafarmation
+
+                                    <ToolTip Content="{Binding TerraformPrice}" ContentStringFormat="Downward terrafarmation - {0} Dollars" />
                                 </Image.ToolTip>
                             </Image>
                         </MenuItem.Icon>
@@ -803,7 +809,12 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
-                                            <Setter Property="ToolTip" Value="Burger factory"/>
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip Content="{Binding BurgerFactoryInfo}" ContentStringFormat="Burger factory -  Available burger: {0}" />
+                                                </Setter.Value>
+                                            </Setter>
+
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
 
@@ -815,12 +826,22 @@
                                                     <ImageBrush ImageSource="Images/varos_0.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip Content="{Binding CityInfo}" ContentStringFormat="City - Citizens waiting for the bus: {0}" />
+                                                </Setter.Value>
+                                            </Setter>
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Color}" Value="31">
                                             <Setter Property="Background" >
                                                 <Setter.Value>
                                                     <ImageBrush ImageSource="Images/varos_1.png" Stretch="Fill"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip Content="{Binding CityInfo}" ContentStringFormat="City - Citizens waiting for the bus: {0}" />
                                                 </Setter.Value>
                                             </Setter>
                                             <Setter Property="BorderThickness" Value="0" />
@@ -831,6 +852,11 @@
                                                     <ImageBrush ImageSource="Images/varos_2.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip Content="{Binding CityInfo}" ContentStringFormat="City - Citizens waiting for the bus: {0}" />
+                                                </Setter.Value>
+                                            </Setter>
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Color}" Value="33">
@@ -839,12 +865,22 @@
                                                     <ImageBrush ImageSource="Images/varos_3.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip Content="{Binding CityInfo}" ContentStringFormat="City - Citizens waiting for the bus: {0}" />
+                                                </Setter.Value>
+                                            </Setter>
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Color}" Value="34">
                                             <Setter Property="Background" >
                                                 <Setter.Value>
                                                     <ImageBrush ImageSource="Images/varos_4.png" Stretch="Fill"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip Content="{Binding CityInfo}" ContentStringFormat="City - Citizens waiting for the bus: {0}" />
                                                 </Setter.Value>
                                             </Setter>
                                             <Setter Property="BorderThickness" Value="0" />
@@ -871,6 +907,11 @@
                                             <Setter Property="Background" >
                                                 <Setter.Value>
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip Content="{Binding AlgaeFactoryInfo}" ContentStringFormat="Algae factory -  Available algae: {0}" />
                                                 </Setter.Value>
                                             </Setter>
                                             <Setter Property="ToolTip" Value="Algae factory"/>
@@ -902,6 +943,11 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip Content="{Binding WoodFactoryInfo}" ContentStringFormat="Wood factory -  Available wood: {0}" />
+                                                </Setter.Value>
+                                            </Setter>
                                             <Setter Property="ToolTip" Value="Wood factory"/>
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
@@ -927,6 +973,11 @@
                                             <Setter Property="Background" >
                                                 <Setter.Value>
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip Content="{Binding NetFactoryInfo}" ContentStringFormat="Net factory -  Available net: {0}" />
                                                 </Setter.Value>
                                             </Setter>
                                             <Setter Property="ToolTip" Value="Net factory"/>
@@ -955,6 +1006,11 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip Content="{Binding SpatulaFactoryInfo}" ContentStringFormat="Spatula factory -  Available spatula: {0}" />
+                                                </Setter.Value>
+                                            </Setter>
                                             <Setter Property="ToolTip" Value="Spatula factory"/>
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
@@ -981,6 +1037,11 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip Content="{Binding PetfoodFactoryInfo}" ContentStringFormat="Petfood factory -  Available petfood: {0}" />
+                                                </Setter.Value>
+                                            </Setter>
                                             <Setter Property="ToolTip" Value="Petfood factory"/>
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
@@ -1005,6 +1066,11 @@
                                             <Setter Property="Background" >
                                                 <Setter.Value>
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip Content="{Binding MeatFactoryInfo}" ContentStringFormat="Meat factory -  Available meat: {0}" />
                                                 </Setter.Value>
                                             </Setter>
                                             <Setter Property="ToolTip" Value="Meat factory"/>

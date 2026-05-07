@@ -11,7 +11,7 @@ namespace SpongeBobTycoon.Model.FieldTypes
         public FastBridge(bool isRiver) : base(isRiver)
         {
             speed = 3;
-            cost = 50;
+            cost = 400;
         }
     }
 }
