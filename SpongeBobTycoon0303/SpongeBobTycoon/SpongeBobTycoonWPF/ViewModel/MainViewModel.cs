@@ -25,11 +25,31 @@ namespace SpongeBobTycoonWPF.ViewModel
         public int MovingVehicleListSize;
         public int ParkingVehicleListSize;
         public bool infoIsOpen;
+       
         //private string VMvehicleType;
         
         private int time=0;
 
         private int money;
+
+        private int roadPrice;
+        private int truckPrice;
+        private int vanPrice;
+        private int woodBridgeLakePrice;
+        private int woodBridgeRiverPrice;
+        private int modernBridgeLakePrice;
+        private int modernBridgeRiverPrice;
+        private int terraformPrice;
+
+        private int algaeFactoryInfo;
+        private int petfoodFactoryInfo;
+        private int meatFactoryInfo;
+        private int burgerFactoryInfo;
+        private int spatulaFactoryInfo;
+        private int netFactoryInfo;
+        private int woodFactoryInfo;
+        private int cityInfo;
+
         private bool route_ison;
         public int Money
         {
@@ -47,7 +67,88 @@ namespace SpongeBobTycoonWPF.ViewModel
             get => infoIsOpen;
             set { infoIsOpen = value; OnPropertyChanged(); }
         }
+        public int RoadPrice
+        {
+            get => roadPrice;
+            set { roadPrice = value; OnPropertyChanged(); }
+        }
+        public int TruckPrice
+        {
+            get => truckPrice;
+            set { truckPrice = value; OnPropertyChanged(); }
+        }
+        public int VanPrice
+        {
+            get => vanPrice;
+            set { vanPrice = value; OnPropertyChanged(); }
+        }
+        public int WoodBridgeLakePrice
+        {
+            get => woodBridgeLakePrice;
+            set { woodBridgeLakePrice = value; OnPropertyChanged(); }
+        }
+        public int WoodBridgeRiverPrice
+        {
+            get => woodBridgeRiverPrice;
+            set { woodBridgeRiverPrice = value; OnPropertyChanged(); }
+        }
+        public int ModernBridgeLakePrice
+        {
+            get => modernBridgeLakePrice;
+            set { modernBridgeLakePrice = value; OnPropertyChanged(); }
+        }
+        public int ModernBridgeRiverPrice
+        {
+            get => modernBridgeRiverPrice;
+            set { modernBridgeRiverPrice = value; OnPropertyChanged(); }
+        }
+        public int TerraformPrice
+        {
+            get => terraformPrice;
+            set { terraformPrice = value; OnPropertyChanged(); }
+        }
 
+        public int AlgaeFactoryInfo
+        {
+            get => algaeFactoryInfo;
+            set { algaeFactoryInfo = value; OnPropertyChanged(); }
+        }
+
+        public int PetfoodFactoryInfo
+        {
+            get => petfoodFactoryInfo;
+            set { petfoodFactoryInfo = value; OnPropertyChanged(); }
+        }
+        public int MeatFactoryInfo
+        {
+            get => meatFactoryInfo;
+            set { meatFactoryInfo = value; OnPropertyChanged(); }
+        }
+        public int BurgerFactoryInfo
+        {
+            get => burgerFactoryInfo;
+            set { burgerFactoryInfo = value; OnPropertyChanged(); }
+        }
+        public int SpatulaFactoryInfo
+        {
+            get => spatulaFactoryInfo;
+            set { spatulaFactoryInfo = value; OnPropertyChanged(); }
+        }
+        public int NetFactoryInfo
+        {
+            get => netFactoryInfo;
+            set { netFactoryInfo = value; OnPropertyChanged(); }
+        }
+        public int WoodFactoryInfo
+        {
+            get => woodFactoryInfo;
+            set { woodFactoryInfo = value; OnPropertyChanged(); }
+        }
+        public int CityInfo
+        {
+            get => cityInfo;
+            set { cityInfo = value; OnPropertyChanged(); }
+        }
         public DelegateCommand StartCommand { get; private set; }
         public DelegateCommand NewGameCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
@@ -110,9 +211,32 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         public MainViewModel(GameModel model)
         {
+            Vehicle fastvehicle = new FastCar(new Wood());
+            Vehicle slowvehicle = new SlowCar(new Wood());
+            Bridge slowbridge = new SlowBridge(true);
+            Bridge fastbridge = new FastBridge(true);
+
             this.model = model;
             Money = model.money;
+            RoadPrice = model.RoadPrice;
+            TruckPrice = fastvehicle.cost;
+            VanPrice = slowvehicle.cost;
+            WoodBridgeLakePrice = slowbridge.cost;
+            WoodBridgeRiverPrice = slowbridge.cost;
+            ModernBridgeLakePrice = fastbridge.cost;
+            ModernBridgeRiverPrice = fastbridge.cost;
+            TerraformPrice = model.TerraformPrice;
 
+            /*
+            AlgaeFactoryInfo = model.Board(2,5).industry!.productAmount;
+            PetfoodFactoryInfo = model.Board(2, 5).industry!.productAmount;
+            MeatFactoryInfo = model.Board(2, 5).industry!.productAmount;
+            BurgerFactoryInfo = model.Board(1, 53).industry!.productAmount;
+            SpatulaFactoryInfo = model.Board(2, 5).industry!.productAmount;
+            NetFactoryInfo = model.Board(2, 5).industry!.productAmount;
+            WoodFactoryInfo = model.Board(2, 5).industry!.productAmount;
+            CityInfo = model.Board(2, 5).industry!.productAmount;
+            */
             this.model.FieldChanged += Model_FieldChanged;
             this.model.TimerTick += Model_TimerTick;
             this.model.MoneyChanged += Model_MoneyChanged;
