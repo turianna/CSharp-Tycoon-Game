@@ -777,16 +777,6 @@
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
 
-
-                                        <DataTrigger Binding="{Binding Color}" Value="2001">
-                                            <Setter Property="Background" >
-                                                <Setter.Value>
-                                                    <ImageBrush ImageSource="Images/burger1.png" Stretch="Fill"/>
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Setter Property="ToolTip" Value="Burger factory"/>
-                                            <Setter Property="BorderThickness" Value="0" />
-                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding Color}" Value="2001">
                                             <Setter Property="Background" >
                                                 <Setter.Value>
@@ -809,11 +799,7 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
-                                            <Setter Property="ToolTip">
-                                                <Setter.Value>
-                                                    <ToolTip Content="{Binding BurgerFactoryInfo}" ContentStringFormat="Burger factory -  Available burger: {0}" />
-                                                </Setter.Value>
-                                            </Setter>
+                                            <Setter Property="ToolTip" Value="{Binding DataContext.BurgerFactoryText, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
 
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
@@ -909,12 +895,7 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
-                                            <Setter Property="ToolTip">
-                                                <Setter.Value>
-                                                    <ToolTip Content="{Binding AlgaeFactoryInfo}" ContentStringFormat="Algae factory -  Available algae: {0}" />
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Setter Property="ToolTip" Value="Algae factory"/>
+                                            <Setter Property="ToolTip" Value="{Binding DataContext.AlgaeFactoryText, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
 
@@ -943,12 +924,7 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
-                                            <Setter Property="ToolTip">
-                                                <Setter.Value>
-                                                    <ToolTip Content="{Binding WoodFactoryInfo}" ContentStringFormat="Wood factory -  Available wood: {0}" />
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Setter Property="ToolTip" Value="Wood factory"/>
+                                            <Setter Property="ToolTip" Value="{Binding DataContext.WoodFactoryText, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
 
@@ -975,12 +951,7 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
-                                            <Setter Property="ToolTip">
-                                                <Setter.Value>
-                                                    <ToolTip Content="{Binding NetFactoryInfo}" ContentStringFormat="Net factory -  Available net: {0}" />
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Setter Property="ToolTip" Value="Net factory"/>
+                                            <Setter Property="ToolTip" Value="{Binding DataContext.NetFactoryText, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
 
@@ -1006,12 +977,7 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
-                                            <Setter Property="ToolTip">
-                                                <Setter.Value>
-                                                    <ToolTip Content="{Binding SpatulaFactoryInfo}" ContentStringFormat="Spatula factory -  Available spatula: {0}" />
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Setter Property="ToolTip" Value="Spatula factory"/>
+                                            <Setter Property="ToolTip" Value="{Binding DataContext.SpatulaFactoryText, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
 
@@ -1037,12 +1003,7 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
-                                            <Setter Property="ToolTip">
-                                                <Setter.Value>
-                                                    <ToolTip Content="{Binding PetfoodFactoryInfo}" ContentStringFormat="Petfood factory -  Available petfood: {0}" />
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Setter Property="ToolTip" Value="Petfood factory"/>
+                                            <Setter Property="ToolTip" Value="{Binding DataContext.PetfoodFactoryText, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
 
@@ -1068,12 +1029,7 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
-                                            <Setter Property="ToolTip">
-                                                <Setter.Value>
-                                                    <ToolTip Content="{Binding MeatFactoryInfo}" ContentStringFormat="Meat factory -  Available meat: {0}" />
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Setter Property="ToolTip" Value="Meat factory"/>
+                                            <Setter Property="ToolTip" Value="{Binding DataContext.MeatFactoryText, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
 
