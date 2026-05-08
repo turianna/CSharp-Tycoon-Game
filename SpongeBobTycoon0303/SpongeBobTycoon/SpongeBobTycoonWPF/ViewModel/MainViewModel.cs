@@ -41,14 +41,13 @@ namespace SpongeBobTycoonWPF.ViewModel
         private int modernBridgeRiverPrice;
         private int terraformPrice;
 
-        private int algaeFactoryInfo;
-        private int petfoodFactoryInfo;
-        private int meatFactoryInfo;
-        private int burgerFactoryInfo;
-        private int spatulaFactoryInfo;
-        private int netFactoryInfo;
-        private int woodFactoryInfo;
-        private int cityInfo;
+        private string algaeFactoryInfo;
+        private string petfoodFactoryInfo;
+        private string meatFactoryInfo;
+        private string burgerFactoryInfo;
+        private string spatulaFactoryInfo;
+        private string netFactoryInfo;
+        private string woodFactoryInfo;
 
         private bool route_ison;
         public int Money
@@ -108,47 +107,72 @@ namespace SpongeBobTycoonWPF.ViewModel
             set { terraformPrice = value; OnPropertyChanged(); }
         }
 
-        public int AlgaeFactoryInfo
+        public string AlgaeFactoryInfo
         {
             get => algaeFactoryInfo;
             set { algaeFactoryInfo = value; OnPropertyChanged(); }
         }
 
-        public int PetfoodFactoryInfo
+        public string PetfoodFactoryInfo
         {
             get => petfoodFactoryInfo;
             set { petfoodFactoryInfo = value; OnPropertyChanged(); }
         }
-        public int MeatFactoryInfo
+        public string MeatFactoryInfo
         {
             get => meatFactoryInfo;
             set { meatFactoryInfo = value; OnPropertyChanged(); }
         }
-        public int BurgerFactoryInfo
+        public string BurgerFactoryInfo
         {
             get => burgerFactoryInfo;
             set { burgerFactoryInfo = value; OnPropertyChanged(); }
         }
-        public int SpatulaFactoryInfo
+        public string SpatulaFactoryInfo
         {
             get => spatulaFactoryInfo;
             set { spatulaFactoryInfo = value; OnPropertyChanged(); }
         }
-        public int NetFactoryInfo
+        public string NetFactoryInfo
         {
             get => netFactoryInfo;
             set { netFactoryInfo = value; OnPropertyChanged(); }
         }
-        public int WoodFactoryInfo
+        public string WoodFactoryInfo
         {
             get => woodFactoryInfo;
             set { woodFactoryInfo = value; OnPropertyChanged(); }
         }
-        public int CityInfo
+        public string NetFactoryText
         {
-            get => cityInfo;
-            set { cityInfo = value; OnPropertyChanged(); }
+            get { return $"Net factory - Available net: {NetFactoryInfo}"; }
         }
+        public string AlgaeFactoryText
+        {
+            get { return $"Algae factory - Available algae: {NetFactoryInfo}"; }
+        }
+        public string PetfoodFactoryText
+        {
+            get { return $"Petfood factory - Available petfood: {NetFactoryInfo}"; }
+        }
+        public string BurgerFactoryText
+        {
+            get { return $"Burger factory - Available burger: {NetFactoryInfo}"; }
+        }
+        public string SpatulaFactoryText
+        {
+            get { return $"Spatula factory - Available spatula: {NetFactoryInfo}"; }
+        }
+
+        public string MeatFactoryText
+        {
+            get { return $"Meat factory - Available meat: {NetFactoryInfo}"; }
+        }
+        public string WoodFactoryText
+        {
+            get { return $"Wood factory - Available wood: {NetFactoryInfo}"; }
+        }
+
         public DelegateCommand StartCommand { get; private set; }
         public DelegateCommand NewGameCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
@@ -227,16 +251,16 @@ namespace SpongeBobTycoonWPF.ViewModel
             ModernBridgeRiverPrice = fastbridge.cost;
             TerraformPrice = model.TerraformPrice;
 
-            /*
-            AlgaeFactoryInfo = model.Board(2,5).industry!.productAmount;
-            PetfoodFactoryInfo = model.Board(2, 5).industry!.productAmount;
-            MeatFactoryInfo = model.Board(2, 5).industry!.productAmount;
-            BurgerFactoryInfo = model.Board(1, 53).industry!.productAmount;
-            SpatulaFactoryInfo = model.Board(2, 5).industry!.productAmount;
-            NetFactoryInfo = model.Board(2, 5).industry!.productAmount;
-            WoodFactoryInfo = model.Board(2, 5).industry!.productAmount;
-            CityInfo = model.Board(2, 5).industry!.productAmount;
-            */
+            
+            AlgaeFactoryInfo = model.Board(30,27).industry!.productAmount.ToString();
+            PetfoodFactoryInfo = model.Board(30, 93).industry!.productAmount.ToString();
+            MeatFactoryInfo = model.Board(24, 66).industry!.productAmount.ToString();
+            BurgerFactoryInfo = model.Board(1, 53).industry!.productAmount.ToString();
+            SpatulaFactoryInfo = model.Board(4, 91).industry!.productAmount.ToString();
+            NetFactoryInfo = model.Board(14, 3).industry!.productAmount.ToString();
+            WoodFactoryInfo = model.Board(48, 70).industry!.productAmount.ToString();
+            //CityInfo = model.Board(2, 5).industry!.productAmount;
+            
             this.model.FieldChanged += Model_FieldChanged;
             this.model.TimerTick += Model_TimerTick;
             this.model.MoneyChanged += Model_MoneyChanged;
@@ -245,6 +269,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             this.model.Refresh += Model_Refresh;
             this.model.AddMovingVehicle += Model_AddMovingVehicle;
             this.model.CarStepped += Model_CarStepped;
+            this.model.Produce += Model_Produce;
 
             StartCommand = new DelegateCommand(param => StartGame(param));
             StopTimeCommand = new DelegateCommand(_ => StopTime());
@@ -513,7 +538,43 @@ namespace SpongeBobTycoonWPF.ViewModel
             });
         }
 
+        private void Model_Produce(object? sender, Industry industry)
+        {
+            switch (industry.product)
+            {
+                case Net:
+                    NetFactoryInfo = industry.productAmount.ToString();
+                    OnPropertyChanged(nameof(NetFactoryText));
+                    break;
+                case Petfood:
+                    PetfoodFactoryInfo = industry.productAmount.ToString();
+                    OnPropertyChanged(nameof(PetfoodFactoryText));
+                    break;
+                case Algae:
+                    AlgaeFactoryInfo = industry.productAmount.ToString();
+                    OnPropertyChanged(nameof(AlgaeFactoryText));
+                    break;
+                case Burger:
+                    BurgerFactoryInfo = industry.productAmount.ToString();
+                    OnPropertyChanged(nameof(BurgerFactoryText));
+                    break;
+                case Meat:
+                    MeatFactoryInfo = industry.productAmount.ToString();
+                    OnPropertyChanged(nameof(MeatFactoryText));
+                    break;
+                case Spatula:
+                    SpatulaFactoryInfo = industry.productAmount.ToString();
+                    OnPropertyChanged(nameof(SpatulaFactoryText));
+                    break;
+                case Wood:
+                    WoodFactoryInfo = industry.productAmount.ToString();
+                    OnPropertyChanged(nameof(WoodFactoryText));
+                    break;
 
+                default:
+                    break;
+            }
+        }
         
         private void Model_TimerTick(object? sender, int e)
         {

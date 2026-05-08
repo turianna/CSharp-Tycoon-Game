@@ -51,6 +51,7 @@ namespace SpongeBobTycoon.Model
         public event EventHandler<(int,int, int)>? CarStepped;
         public event EventHandler<Vehicle>? AddMovingVehicle;
         public event EventHandler? CreateRouteFailed;
+        public event EventHandler<Industry>? Produce;
 
         public event EventHandler<int>? TimerTick;
         int[] news;
@@ -488,6 +489,11 @@ namespace SpongeBobTycoon.Model
             FieldChanged?.Invoke(this, new FieldChangedEventArgs(x,y,type));
         }
 
+        public void OnProduce(Industry industry)
+        {
+            Produce?.Invoke(this, industry);
+        }
+
         private void OnTimerTick(int gameTimer)
         {
             TimerTick?.Invoke(this, gameTimer);
@@ -599,11 +605,13 @@ namespace SpongeBobTycoon.Model
                 {
                     Farm farm = (Farm)industry;
                     farm.Produce();
+                    OnProduce(farm);
                 }
                 else if (industry is Factory)
                 {
                     Factory factory = (Factory)industry;
                     factory.Produce();
+                    OnProduce(factory);
 
                 }
             }
