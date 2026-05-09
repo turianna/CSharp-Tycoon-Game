@@ -205,6 +205,164 @@ namespace SpongeBobTycoonTest
         [TestMethod]
         public void TestIsStopValid()
         {
+            model.StartNewGame();
+            model.BuyRoad(13, 22);
+            model.BuyRoad(13, 21);
+            model.BuyRoad(13, 20);
+            model.BuyRoad(13, 19);
+            model.BuyRoad(13, 18);
+            model.BuyRoad(13, 17);
+            model.BuyRoad(13, 16);
+            model.BuyRoad(13, 15);
+            model.BuyRoad(13, 14);
+            model.BuyRoad(13, 13);
+            model.BuyRoad(13, 12);
+            model.BuyBridge(13, 11,true,true);
+            model.BuyBridge(13, 10, true, true);
+            model.BuyRoad(13, 9);
+            model.BuyRoad(13, 8);
+            model.BuyRoad(13, 7);
+            Assert.IsTrue(model.board[13, 22].fieldType is Road);
+            Assert.IsTrue(model.board[13, 7].fieldType is Road);
+
+            //Homokon
+            Assert.IsFalse(model.IsStopValid(0,0).Item1);
+            //Lavan
+            Assert.IsFalse(model.IsStopValid(7, 0).Item1);
+            //Erdőn
+            Assert.IsFalse(model.IsStopValid(9, 27).Item1);
+            //Varoson
+            Assert.IsFalse(model.IsStopValid(12, 21).Item1);
+            //Iparon
+            Assert.IsFalse(model.IsStopValid(13, 6).Item1);
+            //Olyan úton ami mellett nincs város vagy ipar
+            Assert.IsFalse(model.IsStopValid(13, 18).Item1);
+
+            Assert.IsTrue(model.IsStopValid(13, 22).Item1);
+            Assert.IsTrue(model.IsStopValid(13, 7).Item1);
+        }
+
+        [TestMethod]
+        public void TestPutStop()
+        {
+            model.BuyRoad(13, 22);
+            model.BuyRoad(13, 21);
+            model.BuyRoad(13, 20);
+            model.BuyRoad(13, 19);
+            model.BuyRoad(13, 18);
+            model.BuyRoad(13, 17);
+            model.BuyRoad(13, 16);
+            model.BuyRoad(13, 15);
+            model.BuyRoad(13, 14);
+            model.BuyRoad(13, 13);
+            model.BuyRoad(13, 12);
+            model.BuyBridge(13, 11, true, true);
+            model.BuyBridge(13, 10, true, true);
+            model.BuyRoad(13, 9);
+            model.BuyRoad(13, 8);
+            model.BuyRoad(13, 7);
+
+            model.PutStop(0, 0);
+            Assert.IsFalse(model.Board(0, 0).isStop);
+            model.PutStop(7, 0);
+            Assert.IsFalse(model.Board(7, 0).isStop);
+            model.PutStop(9, 27);
+            Assert.IsFalse(model.Board(9, 27).isStop);
+            model.PutStop(12, 21);
+            Assert.IsFalse(model.Board(12, 21).isStop);
+            model.PutStop(13, 6);
+            Assert.IsFalse(model.Board(13, 6).isStop);
+            model.PutStop(13, 18);
+            Assert.IsFalse(model.Board(13, 18).isStop);
+
+            Assert.IsTrue(model.board[13, 22].fieldType is Road);
+            Assert.IsTrue(model.board[13, 7].fieldType is Road);
+            model.PutStop(13, 22);
+            Assert.IsTrue(model.Board(13, 22).isStop);
+            model.PutStop(13, 7);
+            Assert.IsTrue(model.Board(13, 7).isStop);
+
+        }
+
+
+        [TestMethod]
+        public void TestSelectStop()
+        {
+            model.BuyRoad(13, 22);
+            model.BuyRoad(13, 21);
+            model.BuyRoad(13, 20);
+            model.BuyRoad(13, 19);
+            model.BuyRoad(13, 18);
+            model.BuyRoad(13, 17);
+            model.BuyRoad(13, 16);
+            model.BuyRoad(13, 15);
+            model.BuyRoad(13, 14);
+            model.BuyRoad(13, 13);
+            model.BuyRoad(13, 12);
+            model.BuyBridge(13, 11, true, true);
+            model.BuyBridge(13, 10, true, true);
+            model.BuyRoad(13, 9);
+            model.BuyRoad(13, 8);
+            model.BuyRoad(13, 7);
+
+            Assert.IsTrue(model.board[13, 22].fieldType is Road);
+            Assert.IsTrue(model.board[13, 7].fieldType is Road);
+            model.PutStop(13, 22);
+            Assert.IsTrue(model.Board(13, 22).isStop);
+            model.PutStop(13, 7);
+            Assert.IsTrue(model.Board(13, 7).isStop);
+
+            model.SelectStop(0, 0);
+            model.SelectStop(0, 1);
+            Assert.AreEqual(model.StopsForRoute.Count, 0);
+            model.SelectStop(13,22);
+            Assert.AreEqual(model.StopsForRoute.Count, 1);
+            model.SelectStop(13, 7);
+            Assert.AreEqual(model.StopsForRoute.Count, 2);
+        }
+
+
+        [TestMethod]
+        public void TestRemoveFromRoute()
+        {
+            model.StartNewGame();
+            Vehicle vehicle1 = new SlowCar(new Burger());
+            Vehicle vehicle2 = new SlowCar(new Citizen());
+            Vehicle vehicle3 = new FastCar(new Net());
+            
+            model.movingVehicles.Add(vehicle1);
+            model.movingVehicles.Add(vehicle2);
+            model.movingVehicles.Add(vehicle3);
+            Assert.AreEqual(model.movingVehicles.Count, 3);
+            Assert.AreEqual(model.parkingVehicles.Count, 0);
+
+            model.RemoveVehicleFromRoute(vehicle1);
+            Assert.AreEqual(model.movingVehicles.Count, 2);
+            Assert.AreEqual(model.parkingVehicles.Count, 1);
+
+            model.RemoveVehicleFromRoute(vehicle2);
+            Assert.AreEqual(model.movingVehicles.Count, 1);
+            Assert.AreEqual(model.parkingVehicles.Count, 2);
+
+            model.RemoveVehicleFromRoute(vehicle3);
+            Assert.AreEqual(model.movingVehicles.Count, 0);
+            Assert.AreEqual(model.parkingVehicles.Count, 3);
+
+        }
+
+        [TestMethod]
+        public void TestChangeBalance()
+        {
+            model.StartNewGame();
+            Assert.AreEqual(model.money, 10000);
+            model.ChangeBalance(100);
+            Assert.AreEqual(model.money, 10100);
+            model.ChangeBalance(-200);
+            Assert.AreEqual(model.money, 9900);
+            model.ChangeBalance(-250);
+            Assert.AreEqual(model.money, 9650);
+            model.ChangeBalance(150);
+            Assert.AreEqual(model.money, 9800);
 
         }
     }

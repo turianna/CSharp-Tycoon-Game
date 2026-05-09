@@ -259,8 +259,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             SpatulaFactoryInfo = model.Board(4, 91).industry!.productAmount.ToString();
             NetFactoryInfo = model.Board(14, 3).industry!.productAmount.ToString();
             WoodFactoryInfo = model.Board(48, 70).industry!.productAmount.ToString();
-            //CityInfo = model.Board(2, 5).industry!.productAmount;
-            
+
             this.model.FieldChanged += Model_FieldChanged;
             this.model.TimerTick += Model_TimerTick;
             this.model.MoneyChanged += Model_MoneyChanged;
