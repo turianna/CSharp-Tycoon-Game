@@ -59,7 +59,7 @@ namespace SpongeBobTycoon.Persistence
                         int y = j;
                         int z;
                         FieldType fieldType;
-                        Industry industry;
+                        Industry? industry;
                         bool isVehicle = false;
                         bool areTwoVehicles = false;
                         bool isStop = false;
@@ -84,41 +84,45 @@ namespace SpongeBobTycoon.Persistence
 
                         (fieldType, industry) = DecideFieldTypeAndIndustry(fieldType_char, factoryType_char);
 
-                        switch (industry.product)
-                        {
-                            case Burger:
-                                burger_id++;
-                                id = burger_id;
-                                break;
-                            case Meat:
-                                meat_id++;
-                                id = meat_id;
-                                break;
-                            case Algae:
-                                algee_id++;
-                                id = algee_id;
-                                break;
-                            case Net:
-                                net_id++;
-                                id = net_id;
-                                break;
-                            case Petfood:
-                                petfood_id++;
-                                id = petfood_id;
-                                break;
-                            case Spatula:
-                                spatula_id++;
-                                id = spatula_id;
-                                break;
-                            case Wood:
-                                wood_id++;
-                                id = wood_id;
-                                break;
-                            default:
-                                id = 0; 
-                                break;
+                            switch (industry!.product)
+                            {
+                                case null:
+                                    break;
+                                case Burger:
+                                    burger_id++;
+                                    id = burger_id;
+                                    break;
+                                case Meat:
+                                    meat_id++;
+                                    id = meat_id;
+                                    break;
+                                case Algae:
+                                    algee_id++;
+                                    id = algee_id;
+                                    break;
+                                case Net:
+                                    net_id++;
+                                    id = net_id;
+                                    break;
+                                case Petfood:
+                                    petfood_id++;
+                                    id = petfood_id;
+                                    break;
+                                case Spatula:
+                                    spatula_id++;
+                                    id = spatula_id;
+                                    break;
+                                case Wood:
+                                    wood_id++;
+                                    id = wood_id;
+                                    break;
+                                default:
+                                    id = 0;
+                                    break;
 
-                        }
+                            }
+                        
+                        
 
                         //ha uj industry-hoz ertunk a feldolgozasban, akkor hozzaadjuk az industry listahoz
                         //uj industry = a folotte, es tole balra levo mezo nem ugyanaz, mint a mostani industry
@@ -194,17 +198,17 @@ namespace SpongeBobTycoon.Persistence
             switch (fieldType)
             {
                 case 'E':
-                    return (new Grass(), new Industry(new Product()));
+                    return (new Grass(), new Empty());
                 case 'R':
-                    return (new Lava(true), new Industry(new Product()));
+                    return (new Lava(true), null);
                 case 'L':
-                    return (new Lava(false), new Industry(new Product()));
+                    return (new Lava(false), null);
                 case 'C':
                     return (new Grass(), new Farm(new Citizen())); 
                 case 'D':
                     return (new Road(), new Farm(new Citizen()));
                 case 'T':
-                    return (new Forest(), new Industry(new Product()));
+                    return (new Forest(), null);
                 case 'F':
                     switch (factoryType)
                     {

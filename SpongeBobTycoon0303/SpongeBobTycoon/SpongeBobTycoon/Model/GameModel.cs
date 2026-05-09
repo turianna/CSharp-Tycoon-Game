@@ -255,10 +255,10 @@ namespace SpongeBobTycoon.Model
                 {
                     if (isFast)
                     {
-                        board[x, y].fieldType = new FastBridge(isRiver);
+                        board[x, y].fieldType =  new FastBridge(isRiver);
                         if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((FastBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
                         else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((FastBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
-                        ChangeBalance(-400);
+                        ChangeBalance(-((FastBridge)board[x,y].fieldType).cost);
                         OnFieldChanged(x, y, board[x, y].fieldType);
                     }
                     else
@@ -266,7 +266,7 @@ namespace SpongeBobTycoon.Model
                         board[x, y].fieldType = new SlowBridge(isRiver);
                         if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((SlowBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
                         else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((SlowBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
-                        ChangeBalance(-200);
+                        ChangeBalance(-((SlowBridge)board[x, y].fieldType).cost);
                         OnFieldChanged(x, y, board[x, y].fieldType);
                     }
                 }else if(lavaField.isRiver == false && isRiver == false && AdjacentRoad(x, y))
@@ -276,7 +276,7 @@ namespace SpongeBobTycoon.Model
                         board[x, y].fieldType = new FastBridge(isRiver);
                         if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((FastBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
                         else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((FastBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
-                        ChangeBalance(-400);
+                        ChangeBalance(-((FastBridge)board[x, y].fieldType).cost);
                         OnFieldChanged(x, y, board[x, y].fieldType);
                     }
                     else
@@ -284,7 +284,7 @@ namespace SpongeBobTycoon.Model
                         board[x, y].fieldType = new SlowBridge(isRiver);
                         if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((SlowBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
                         else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((SlowBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
-                        ChangeBalance(-200);
+                        ChangeBalance(-((SlowBridge)board[x, y].fieldType).cost);
                         OnFieldChanged(x, y, board[x, y].fieldType);
                     }
                 }
@@ -308,6 +308,7 @@ namespace SpongeBobTycoon.Model
 
             //if(industry is null)
             (isValid, industry) = IsStopValid(x, y);
+
 
             if (board[x, y].fieldType is Road && isValid && board[x, y].industry!.product is not Citizen)
             {
@@ -353,9 +354,9 @@ namespace SpongeBobTycoon.Model
                 if (nx >= 0 && nx < board.GetLength(0) &&
                     ny >= 0 && ny < board.GetLength(1))
                 {
-                    if (board[nx, ny].industry.product is not null)
+                    if (board[nx, ny].industry is not null)
                     {
-                        return (true, board[nx, ny].industry);
+                        return (true, board[nx, ny].industry!);
                     }
 
                 }

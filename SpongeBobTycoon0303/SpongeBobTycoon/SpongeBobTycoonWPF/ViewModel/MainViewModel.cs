@@ -751,7 +751,9 @@ namespace SpongeBobTycoonWPF.ViewModel
                     }
                     break;
             }
-                switch(ind.product){
+
+                
+            switch(ind.product){
                     case Burger:
                             switch (id) // burger 0. industry,burger,id
                             {

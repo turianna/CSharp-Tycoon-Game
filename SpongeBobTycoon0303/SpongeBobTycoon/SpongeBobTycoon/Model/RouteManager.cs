@@ -234,16 +234,16 @@ namespace SpongeBobTycoon.Model
                     
                     if(start.Item1 == r.Current.x && start.Item2 == r.Current.y)
                     {
-                        if(d < min)
+                        if(r.DistanceFromStart < min)
                         {
-                            min = d;
+                            min = r.DistanceFromStart;
                         }
                     }
                 }
                 foreach (RouteData r in _route)
                 {
 
-                    if (start.Item1 == r.Current.x && start.Item2 == r.Current.y && d == min)
+                    if (start.Item1 == r.Current.x && start.Item2 == r.Current.y && r.DistanceFromStart == min)
                     {
                         _partRouteFinal.Add((r.Current.x,r.Current.y));
                         start = (r.Previous.x,r.Previous.y);
