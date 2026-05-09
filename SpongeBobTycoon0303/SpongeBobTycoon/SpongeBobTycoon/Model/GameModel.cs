@@ -30,7 +30,7 @@ namespace SpongeBobTycoon.Model
         
 
         private Vehicle? VehicleForRoute { get; set; }
-        private List<Stop> StopsForRoute { get; set; }
+        public List<Stop> StopsForRoute { get; set; }
         public int money { get; private set; }
         public int RoadPrice = 20;
         public int TerraformPrice = 250;
@@ -313,7 +313,7 @@ namespace SpongeBobTycoon.Model
             //if(industry is null)
             (isValid, industry) = IsStopValid(x, y);
 
-            if (board[x, y].fieldType is Road && isValid && board[x, y].industry!.product is not Citizen)
+            if (isValid)
             {
                 board[x, y].isStop = true;
                 //board[x,y].industry = industry;
@@ -357,7 +357,7 @@ namespace SpongeBobTycoon.Model
                 if (nx >= 0 && nx < board.GetLength(0) &&
                     ny >= 0 && ny < board.GetLength(1))
                 {
-                    if (board[nx, ny].industry!.product is not null)
+                    if (board[nx, ny].industry!.product is not null && board[x, y].fieldType is Road && board[x, y].industry!.product is not Citizen)
                     {
                         return (true, board[nx, ny].industry);
                     }
