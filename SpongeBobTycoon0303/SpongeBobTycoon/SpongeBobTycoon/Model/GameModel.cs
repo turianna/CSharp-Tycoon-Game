@@ -218,7 +218,8 @@ namespace SpongeBobTycoon.Model
 
         public bool AdjacentRoad(int x, int y)
         {
-            bool isTrue = false;
+            bool AnyRoad = false;
+            bool RightHeight = true;
             for(int i = 0; i < 4; i++)
             {
                 news[i] = 0;
@@ -238,18 +239,19 @@ namespace SpongeBobTycoon.Model
                 if (nx >= 0 && nx < board.GetLength(0) &&
                     ny >= 0 && ny < board.GetLength(1))
                 {
-                    if ((board[nx, ny].fieldType is Road || board[nx, ny].fieldType is Bridge) && Math.Abs(board[nx,ny].Z - board[x,y].Z)<2)
+                    if ((board[nx, ny].fieldType is Road || board[nx, ny].fieldType is Bridge))
                     {
                         if ((dx, dy) == (-1, 0)) news[0] = 1;
                         if ((dx, dy) == (0, 1)) news[1] = 1;
                         if ((dx, dy) == (0, -1)) news[2] = 1;
                         if ((dx, dy) == (1, 0)) news[3] = 1;
-                        isTrue = true;
+                        RightHeight = (Math.Abs(board[nx, ny].Z - board[x, y].Z) < 2) && RightHeight; 
+                        AnyRoad = true;
                     }
                 }
             }
             
-            return isTrue;
+            return (AnyRoad && RightHeight);
         }
         public void BuyBridge(int x, int y, bool isFast, bool isRiver) {
 
@@ -342,6 +344,7 @@ namespace SpongeBobTycoon.Model
 
         public (bool, Industry?) IsStopValid(int x, int y)
         {
+            if (board[x, y].fieldType is not Road || board[x, y].industry!.product is Citizen) return (false, new Industry(new Product()));
             (int dx, int dy)[] directions =
                 {
                     (-1,-1), (-1,0), (-1,1),
@@ -357,7 +360,7 @@ namespace SpongeBobTycoon.Model
                 if (nx >= 0 && nx < board.GetLength(0) &&
                     ny >= 0 && ny < board.GetLength(1))
                 {
-                    if (board[nx, ny].industry!.product is not null && board[x, y].fieldType is Road && board[x, y].industry!.product is not Citizen)
+                    if (board[nx, ny].industry!.product is not null)
                     {
                         return (true, board[nx, ny].industry);
                     }
@@ -416,6 +419,7 @@ namespace SpongeBobTycoon.Model
             vehicle.route_index = 0;
             vehicle.ClearRoute();
             parkingVehicles.Add(vehicle);
+
         }
 
         public void Terraform(int x, int y, bool isUp)
@@ -440,6 +444,11 @@ namespace SpongeBobTycoon.Model
             if (money + amount < 0)
             {
                 timer.Stop();
+                List<Vehicle> removevehicle = new List<Vehicle>(movingVehicles);
+                foreach (Vehicle vehicle in removevehicle)
+                {
+                    RemoveVehicleFromRoute(vehicle);
+                }
                 OnGameOver();
                 return;
             }
