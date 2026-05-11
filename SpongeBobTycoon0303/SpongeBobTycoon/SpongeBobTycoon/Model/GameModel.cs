@@ -793,7 +793,8 @@ namespace SpongeBobTycoon.Model
                         ChangeBalance(moneyEarned);
                     }
                     v.Transaction(stop);
-                }
+                    OnProduce(stop.industry);
+            }
 
                 OnCarStepped((v.x, v.y, v.dir));
                 v.brokness--;
