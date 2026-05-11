@@ -48,3 +48,5 @@ A többhozzávalós késztermékek érjenek többet az általános egyhozzával�
 
 ### Játék közben
 ![Játék közben](game.png)
+
+A képek a játékhoz AI segítségével készültek.
