@@ -32,3 +32,6 @@ A már leszállított alapanyagokat a gyárak legyenek képesek eltárolni, majd
 A többhozzávalós késztermékek érjenek többet az általános egyhozzávalós késztermékeknél. Legalább egy ilyen gyár legyen.
 
 
+## Képek a játékról
+
+![Ide jön a kép rövid leírása](kezdokepernyo.png)
