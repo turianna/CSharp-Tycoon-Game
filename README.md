@@ -34,4 +34,8 @@ A többhozzávalós késztermékek érjenek többet az általános egyhozzával�
 
 ## Képek a játékról
 
-![Ide jön a kép rövid leírása](kezdokepernyo.png)
+![Kezdőképernyő](kezdokepernyo.png)
+![Vásárlás gombok](vasarlas.png)
+![Terraformálás gombok](terraform.png)
+![Járművek listái](autolista.png)
+![Játék közben](game.png)
