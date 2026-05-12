@@ -48,7 +48,7 @@ namespace SpongeBobTycoon.Model
         public event EventHandler<FieldChangedEventArgs>? FieldChanged;
         public event EventHandler<Vehicle>? VehicleBought; //updatelni kell a parkoló autók listáját
         public event EventHandler? Refresh;
-        public event EventHandler<(int,int, int)>? CarStepped;
+        public event EventHandler<(int,int,int)>? CarStepped;
         public event EventHandler<Vehicle>? AddMovingVehicle;
         public event EventHandler? CreateRouteFailed;
         public event EventHandler<Industry>? Produce;
@@ -141,6 +141,13 @@ namespace SpongeBobTycoon.Model
         #region Initialization
         public void StartNewGame()
         {
+            timer.Stop();
+            List<Vehicle> removevehicle = new List<Vehicle>(movingVehicles);
+            foreach (Vehicle vehicle in removevehicle)
+            {
+                RemoveVehicleFromRoute(vehicle);
+            }
+
             stops.Clear();
             parkingVehicles.Clear(); 
             movingVehicles.Clear();
