@@ -9,6 +9,9 @@ ezeket összekötő úthálózat és terepi objektumok találhatóak. A játéko
 helyezhet el az úthálózaton, közúti járműveket vásárolhat útvonalakat definiál és ezek segítségével
 árukat és/vagy utasokat szállíthat. A játék valós időben fut, de az idő múlása gyorsítható.
 
+## Játékbemutató Videó
+https://www.youtube.com/watch?v=yFw-ULrpP8U
+
 ## Játékos feladatai
 
 - Útépítés
