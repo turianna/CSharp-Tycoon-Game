@@ -32,6 +32,10 @@ namespace SpongeBobTycoon.Model
         {
             _stops.Add(stop);
         }
+        /// <summary>
+        /// ValidRoute
+        /// Ellenőrzi, hogy a kijelölt útvonal érvényes-e a jármű által szállított termék típusának függvényében, figyelembe véve a megállók számát és az érintett iparágak (termékek) összetételét. A metódus különböző logikai feltételeket vizsgál: például Burger szállításához legalább 4 megálló és a teljes ellátási lánc (Burger, Meat, Spatula, Citizen) jelenléte szükséges, míg Citizen (lakos) szállításához legalább két különböző városi megálló kell. Ha az útvonal nem tartalmazza az összes előírt terméktípust vagy nem éri el a minimális megállószámot, a metódus hamis (false) értékkel tér vissza, egyébként pedig jóváhagyja az útvonalat.
+        /// </summary>
         public bool ValidRoute()
         {
             if(_stops.Count == 0) return false;
@@ -165,6 +169,10 @@ namespace SpongeBobTycoon.Model
             return true;
         }
 
+        /// <summary>
+        /// BFS
+        /// Szélességi keresés (BFS) algoritmus segítségével megkeresi a legrövidebb útvonalat két megálló (currentStop és nextStop) között a játéktáblán. A metódus inicializál egy látogatottsági mátrixot és egy várakozási sort, majd elindulva a kiindulási megállótól, csak út (Road) vagy híd (Bridge) típusú mezőkön keresztül haladva feltérképezi a lehetséges irányokat. A keresési fázis során minden érintett mezőhöz rögzíti a szülőmezőt és a kezdőponttól mért távolságot. Amennyiben a célt elérte, a rögzített adatokból visszafelé haladva (backtracking) összeállítja a koordináták listáját, majd az irány helyreállítása után visszatér a kész útvonalszakasszal. Ha a két pont között nincs összeköttetés, egy üres listát ad vissza.
+        /// </summary>
         private List<(int,int)> BFS(GameModel model, Stop currentStop, Stop nextStop)
         {
             queue = new Queue<(int, int)>();
@@ -255,7 +263,10 @@ namespace SpongeBobTycoon.Model
             return _partRouteFinal;
         }
 
-
+        /// <summary>
+        /// DesignRoute
+        /// Összeállítja a jármű végleges útvonalát a kijelölt megállók alapján, amennyiben azok megfelelnek az érvényességi szabályoknak (ValidRoute). A metódus végigmegy a megállók listáján, és a BFS algoritmus segítségével kiszámítja a legrövidebb útszakaszokat az egymást követő megállók között, majd ezeket egy közös listába (_routeFinal) fűzi össze. A folytonosság érdekében az utolsó és az első megálló közötti szakaszt is megtervezi, így egy zárt kört hoz létre. Ha bármelyik szakasz tervezése sikertelen (nincs összeköttetés), vagy a megállók nem elégítik ki a logikai követelményeket, a lista törlésre kerül és a metódus hamis (false) értékkel tér vissza. Sikeres tervezés esetén hozzárendeli az útvonalat a járműhöz, beállítja annak kezdőpozícióját, és igaz (true) értékkel zárul.
+        /// </summary>
         public bool DesignRoute(GameModel model)
         {
             Stop current_stop;

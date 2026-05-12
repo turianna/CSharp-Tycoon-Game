@@ -13,7 +13,11 @@ namespace SpongeBobTycoon.Model
         private const int maxHeight = 4;
         public bool terraformUp;
         public int X; public int Y;
-        
+
+        /// <summary>
+        /// Terraform
+        /// Végrehajtja a tereprendezést a játéktábla (board) adott x és y koordinátájú mezőjén. A metódus először ellenőrzi, hogy a célmező alkalmas-e a módosításra: csak fű (Grass) vagy erdő (Forest) típusú területen engedélyezi a műveletet. Ezt követően a validTerraform segédfüggvénnyel megvizsgálja, hogy a magasságmódosítás (emelés vagy süllyesztés) megfelel-e a szabályoknak (például a szomszédos mezőktől való maximális eltérésnek). Ha minden feltétel teljesül, az isUp paramétertől függően növeli vagy csökkenti a mező magassági értékét (Z), és igaz (true) értékkel tér vissza; egyébként a módosítás elmarad és hamis (false) értéket ad vissza.
+        /// </summary>
         public bool Terraform(Field[,] board, int x, int y, bool isUp) 
         {
             Field field = board[x, y];
@@ -30,7 +34,10 @@ namespace SpongeBobTycoon.Model
 
 
         }
-        
+        /// <summary>
+        /// validTerraform
+        /// Ellenőrzi, hogy a kért tereprendezési művelet (emelés vagy süllyesztés) végrehajtható-e a játéktábla adott pontján a magassági szabályok betartásával. Emelés esetén (isUp) a metódus megvizsgálja, hogy a mező elérte-e már a maximális magasságot (maxHeight), illetve hogy az emelés után nem alakul-e ki egynél nagyobb szintkülönbség a közvetlen szomszédos mezőkhöz képest. Süllyesztés esetén ellenőrzi, hogy a mező nincs-e már a minimális (0) szinten, valamint hogy a süllyesztés nem eredményez-e egynél nagyobb különbséget a környező mezők javára. A pálya széleinél fellépő indexelési hibákat (IndexOutOfRangeException) try-catch blokkokkal kezeli, és csak akkor tér vissza igaz (true) értékkel, ha a módosítás nem sérti a terep folytonosságára vonatkozó korlátokat.
+        /// </summary>
         private bool validTerraform(Field[,] board, int x, int y, bool isUp)
         {
             if(isUp)

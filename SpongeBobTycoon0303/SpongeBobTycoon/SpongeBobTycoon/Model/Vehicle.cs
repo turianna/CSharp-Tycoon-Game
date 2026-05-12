@@ -169,7 +169,10 @@ namespace SpongeBobTycoon.Model
         {
             _route.Clear();
         }
-
+        /// <summary>
+        /// Transaction
+        /// Lebonyolítja az áruforgalmat a jármű és az aktuális megálló (currentStop) között. A metódus két fő fázisból áll: először ellenőrzi, hogy a megálló termeli-e a jármű fő profiljába tartozó terméket, és ha igen, a szabad kapacitás erejéig felrakodja azt, majd (összetett termékek esetén) leadja a szállított alapanyagokat a megálló gyárának. A második fázisban a jármű végigiterál a saját alapanyag-listáján (_ingredients): ha a megálló olyan alapanyagot kínál, amelyből a járműnek még van szabad raktárhelye, elvégzi a vételezést és frissíti a készleteket. A folyamat minden lépését részletes debug üzenetekkel naplózza.
+        /// </summary>
         public void Transaction(Stop currentStop)
         {
             int stopAmount = currentStop.industry.productAmount;
@@ -229,6 +232,10 @@ namespace SpongeBobTycoon.Model
             return moneyEarned;
         }
 
+        /// <summary>
+        /// CanVehicleMove
+        /// Ellenőrzi, hogy a jármű megkezdheti-e a mozgást a következő útvonalpont felé, figyelembe véve a forgalmi akadályokat és az időzítést. A metódus először meghatározza a következő koordinátákat és a haladási irányt, majd megvizsgálja, tartózkodik-e másik jármű a célmezőn. Amennyiben egy másik jármű blokkolja az utat (és az nem szemből érkezik), a metódus várakozásra kényszeríti az aktuális járművet a várakozási idő (timeUntilMoves) növelésével. Minden híváskor csökkenti a mozgásig hátralévő időt; ha ez eléri a nullát, visszaállítja az alapértelmezett várakozási időt (baseTime) és igaz (true) értékkel jelzi, hogy a jármű ténylegesen előreléphet, egyébként hamis (false) értékkel tér vissza.
+        /// </summary>
         public bool CanVehicleMove(Field[,] board, List<Vehicle> allVehicles)
         {
             int nextX = _route![(route_index + 1) % (_route.Count - 1)].Item1;
@@ -282,6 +289,10 @@ namespace SpongeBobTycoon.Model
             }
         }
 
+        /// <summary>
+        /// DecideDirection
+        /// Meghatározza a haladási irányt a jelenlegi (X, Y) és a következő (nextX, nextY) koordináták összehasonlítása alapján. A metódus megvizsgálja a két pozíció relatív helyzetét, és visszatér a megfelelő Direction értékkel (UP, DOWN, LEFT vagy RIGHT). Amennyiben a célállomás nem szomszédos a jelenlegi mezővel, vagy a koordináták megegyeznek, a jármű megőrzi az aktuális haladási irányát.
+        /// </summary>
         public Direction DecideDirection(int nextX, int nextY, int X, int Y)
         {
             if (nextX == X - 1 && nextY == Y)
