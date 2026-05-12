@@ -155,7 +155,7 @@ namespace SpongeBobTycoon.Model
                 for (int i = 0; i < _ingredients!.Count; i++)
                 {
                     Factory stopFactory = (Factory)currentStop.industry;
-                    stopFactory.ReceiveIngredient(_ingredients[i], _ingredientAmounts![i]);
+                    stopFactory.ReceiveIngredient(_ingredients[i], _ingredientAmounts[i]);
                 }
             }
 

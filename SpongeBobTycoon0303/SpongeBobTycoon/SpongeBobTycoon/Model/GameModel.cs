@@ -18,6 +18,7 @@ namespace SpongeBobTycoon.Model
         private const int GAMETIME_BASE = 4;
         private const int GAMETIME_FAST = 2;
         private const int GAMETIME_FASTEST = 1;
+        
         #endregion
 
         #region Properties
@@ -29,8 +30,10 @@ namespace SpongeBobTycoon.Model
         
 
         private Vehicle? VehicleForRoute { get; set; }
-        private List<Stop> StopsForRoute { get; set; }
+        public List<Stop> StopsForRoute { get; set; }
         public int money { get; private set; }
+        public int RoadPrice = 20;
+        public int TerraformPrice = 250;
         #endregion
 
         #region Instances of other classes
@@ -48,6 +51,7 @@ namespace SpongeBobTycoon.Model
         public event EventHandler<(int,int, int)>? CarStepped;
         public event EventHandler<Vehicle>? AddMovingVehicle;
         public event EventHandler? CreateRouteFailed;
+        public event EventHandler<Industry>? Produce;
 
         public event EventHandler<int>? TimerTick;
         int[] news;
@@ -114,7 +118,7 @@ namespace SpongeBobTycoon.Model
             {
                 for (int j = 0; j < 100; j++)
                 {
-                    OnFieldChanged(i, j, board[i, j].fieldType);
+                    OnFieldChanged(i, j, board[i, j].fieldType!);
                 }
             }
             
@@ -144,14 +148,14 @@ namespace SpongeBobTycoon.Model
         #region Buying and Building
         public void BuyRoad(int x, int y) {
 
-            if (board[x,y].fieldType is Grass && board[x,y].industry.product is not Citizen && AdjacentRoad(x, y))
+            if (board[x,y].fieldType is Grass && board[x,y].industry!.product is not Citizen && AdjacentRoad(x, y))
             {           
                 board[x, y].fieldType = new Road();
-                if ((news[0]==1 || news[3] == 1) && news[1]==0 && news[2] == 0 ) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
-                else if(news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
-                ChangeBalance(-20);
+                if ((news[0]==1 || news[3] == 1) && news[1]==0 && news[2] == 0 ) ((Road)board[x, y].fieldType!).roadType = RoadType.STRAIGHTNS;
+                else if(news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((Road)board[x, y].fieldType!).roadType = RoadType.STRAIGHTWE;
+                ChangeBalance(-RoadPrice);
                 OnFieldChanged(x, y, board[x, y].fieldType!);
-            }else if (board[x, y].fieldType is Forest && board[x, y].industry.product is not Citizen && AdjacentRoad(x, y)) 
+            }else if (board[x, y].fieldType is Forest && board[x, y].industry!.product is not Citizen && AdjacentRoad(x, y)) 
             {
                 Field? forestToRemove = null;
                 foreach (Field f in forests)
@@ -163,9 +167,9 @@ namespace SpongeBobTycoon.Model
                 }
                 if(forestToRemove != null) forests.Remove(forestToRemove);
                 board[x, y].fieldType = new Road();
-                if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
-                else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((Road)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
-                ChangeBalance(-60);
+                if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((Road)board[x, y].fieldType!).roadType = RoadType.STRAIGHTNS;
+                else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((Road)board[x, y].fieldType!).roadType = RoadType.STRAIGHTWE;
+                ChangeBalance(-RoadPrice*3);
                 OnFieldChanged(x, y, board[x, y].fieldType!);
             }
 
@@ -249,43 +253,43 @@ namespace SpongeBobTycoon.Model
         }
         public void BuyBridge(int x, int y, bool isFast, bool isRiver) {
 
-            if (board[x, y].fieldType is Lava lavaField && board[x, y].industry.product is not Citizen)
+            if (board[x, y].fieldType is Lava lavaField && board[x, y].industry!.product is not Citizen)
             {
                 if (lavaField.isRiver && isRiver && AdjacentRoad(x,y))
                 {
                     if (isFast)
                     {
                         board[x, y].fieldType =  new FastBridge(isRiver);
-                        if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((FastBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
-                        else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((FastBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
-                        ChangeBalance(-((FastBridge)board[x,y].fieldType).cost);
-                        OnFieldChanged(x, y, board[x, y].fieldType);
+                        if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((FastBridge)board[x, y].fieldType!).roadType = RoadType.STRAIGHTNS;
+                        else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((FastBridge)board[x, y].fieldType!).roadType = RoadType.STRAIGHTWE;
+                        ChangeBalance(-((FastBridge)board[x,y].fieldType!).cost);
+                        OnFieldChanged(x, y, board[x, y].fieldType!);
                     }
                     else
                     {
                         board[x, y].fieldType = new SlowBridge(isRiver);
-                        if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((SlowBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
-                        else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((SlowBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
-                        ChangeBalance(-((SlowBridge)board[x, y].fieldType).cost);
-                        OnFieldChanged(x, y, board[x, y].fieldType);
+                        if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((SlowBridge)board[x, y].fieldType!).roadType = RoadType.STRAIGHTNS;
+                        else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((SlowBridge)board[x, y].fieldType!).roadType = RoadType.STRAIGHTWE;
+                        ChangeBalance(-((SlowBridge)board[x, y].fieldType!).cost);
+                        OnFieldChanged(x, y, board[x, y].fieldType!);
                     }
                 }else if(lavaField.isRiver == false && isRiver == false && AdjacentRoad(x, y))
                 {
                     if (isFast)
                     {
                         board[x, y].fieldType = new FastBridge(isRiver);
-                        if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((FastBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
-                        else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((FastBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
-                        ChangeBalance(-((FastBridge)board[x, y].fieldType).cost);
-                        OnFieldChanged(x, y, board[x, y].fieldType);
+                        if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((FastBridge)board[x, y].fieldType!).roadType = RoadType.STRAIGHTNS;
+                        else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((FastBridge)board[x, y].fieldType!).roadType = RoadType.STRAIGHTWE;
+                        ChangeBalance(-((FastBridge)board[x, y].fieldType!).cost);
+                        OnFieldChanged(x, y, board[x, y].fieldType!);
                     }
                     else
                     {
                         board[x, y].fieldType = new SlowBridge(isRiver);
-                        if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((SlowBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTNS;
-                        else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((SlowBridge)board[x, y].fieldType).roadType = RoadType.STRAIGHTWE;
-                        ChangeBalance(-((SlowBridge)board[x, y].fieldType).cost);
-                        OnFieldChanged(x, y, board[x, y].fieldType);
+                        if ((news[0] == 1 || news[3] == 1) && news[1] == 0 && news[2] == 0) ((SlowBridge)board[x, y].fieldType!).roadType = RoadType.STRAIGHTNS;
+                        else if (news[0] == 0 && (news[1] == 1 || news[2] == 1) && news[3] == 0) ((SlowBridge)board[x, y].fieldType!).roadType = RoadType.STRAIGHTWE;
+                        ChangeBalance(-((SlowBridge)board[x, y].fieldType!).cost);
+                        OnFieldChanged(x, y, board[x, y].fieldType!);
                     }
                 }
                 else
@@ -304,19 +308,18 @@ namespace SpongeBobTycoon.Model
         public void PutStop(int x, int y) {
 
             bool isValid;
-            Industry industry;
+            Industry? industry;
 
             //if(industry is null)
             (isValid, industry) = IsStopValid(x, y);
 
-
-            if (board[x, y].fieldType is Road && isValid && board[x, y].industry!.product is not Citizen)
+            if (isValid)
             {
                 board[x, y].isStop = true;
                 //board[x,y].industry = industry;
 
-                Stop stop = new Stop(x,y, industry);
-                System.Diagnostics.Debug.WriteLine($"Stop created at ({x}, {y}) product: {industry.product.GetType().Name}, product amount: {industry.productAmount}");
+                Stop stop = new Stop(x,y, industry!);
+                System.Diagnostics.Debug.WriteLine($"Stop created at ({x}, {y}) product: {industry!.product.GetType().Name}, product amount: {industry.productAmount}");
                 stops.Add(stop);
             }
             
@@ -337,7 +340,7 @@ namespace SpongeBobTycoon.Model
             }
         }
 
-        public (bool, Industry) IsStopValid(int x, int y)
+        public (bool, Industry?) IsStopValid(int x, int y)
         {
             (int dx, int dy)[] directions =
                 {
@@ -354,7 +357,7 @@ namespace SpongeBobTycoon.Model
                 if (nx >= 0 && nx < board.GetLength(0) &&
                     ny >= 0 && ny < board.GetLength(1))
                 {
-                    if (board[nx, ny].industry is not null)
+                    if (board[nx, ny].industry!.product is not null && board[x, y].fieldType is Road && board[x, y].industry!.product is not Citizen)
                     {
                         return (true, board[nx, ny].industry!);
                     }
@@ -425,7 +428,7 @@ namespace SpongeBobTycoon.Model
             }
 
             System.Diagnostics.Debug.WriteLine($"Successful terraform at ({x}, {y}), isUp: {isUp}, new Z: {board[x, y].Z}");
-            ChangeBalance(-250);
+            ChangeBalance(-TerraformPrice);
             OnFieldChanged(x, y, board[x, y].fieldType!);
         }
 
@@ -484,6 +487,11 @@ namespace SpongeBobTycoon.Model
         {
             board[x, y].fieldType = type;
             FieldChanged?.Invoke(this, new FieldChangedEventArgs(x,y,type));
+        }
+
+        public void OnProduce(Industry industry)
+        {
+            Produce?.Invoke(this, industry);
         }
 
         private void OnTimerTick(int gameTimer)
@@ -597,11 +605,13 @@ namespace SpongeBobTycoon.Model
                 {
                     Farm farm = (Farm)industry;
                     farm.Produce();
+                    OnProduce(farm);
                 }
                 else if (industry is Factory)
                 {
                     Factory factory = (Factory)industry;
                     factory.Produce();
+                    OnProduce(factory);
 
                 }
             }

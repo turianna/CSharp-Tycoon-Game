@@ -26,7 +26,135 @@
             <MenuItem Header="Load" Command="{Binding LoadCommand}" BorderBrush="Black"/>
             <MenuItem Header="Save" Command="{Binding SaveCommand}" BorderBrush="Black"/>
             <MenuItem Header="Quit" Command="{Binding QuitCommand}" BorderBrush="Black"/>
+            <MenuItem Header="Info" Command="{Binding InfoCommand}" BorderBrush="Black"/>
         </Menu>
+
+
+        <Popup Placement="Center" AllowsTransparency="True" 
+           IsOpen="{Binding InfoIsOpen}" 
+           StaysOpen="True">
+
+            <Border Background="White" BorderBrush="LightGray" BorderThickness="1" 
+                CornerRadius="5" Padding="20" Width="300">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" Opacity="0.3" ShadowDepth="2"/>
+                </Border.Effect>
+                <ScrollViewer MaxHeight="600" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <StackPanel>
+                        <TextBlock Text="Build roads between industries and cities to deliver the materials produced by the industries to the city residents. Additionally, transport the city residents to other cities. You will receive money from the citizens for your help, make sure not to go bankrupt, otherwise the game ends." 
+                           TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"/>
+                        <TextBlock Text="Elements of the map" 
+                            TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15" FontWeight="Bold" FontSize="16" />
+
+                        <TextBlock Text="City" 
+                            TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="14" />
+                        <Image Source="Images/varos.png" Stretch="Fill" Margin="0,0,0,0"/>
+
+                        <TextBlock Text="Industry" 
+                            TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="14" />
+                        <Image Source="Images/gyar.png" Stretch="Fill" Margin="0,0,0,0"/>
+                        <TextBlock Text="In the top right corner of the factories, you can see what they produce. However, if you hover your mouse over them, it will also display exactly what kind of factory it is." 
+                            TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+
+                        <TextBlock Text="Lava - River" 
+                            TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="14" />
+                        <Image Source="Images/lavakep.png" Stretch="Fill" Margin="0,0,0,0"/>
+                        <TextBlock Text="Lava - Lake" 
+                            TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="14" />
+                        <Image Source="Images/lavatokep.png" Stretch="Fill" Margin="0,0,0,0"/>
+                        <TextBlock Text="There are two types of lava: lava rivers and lava lakes. You can only cross them by building bridges. Watch out, though: you must buy specifically designed lake bridges for lakes, and river bridges for rivers." 
+                            TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+
+                        <TextBlock Text="Forest" 
+                            TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="14" />
+                        <Image Source="Images/erdo.png" Stretch="Fill" Margin="0,0,0,0"/>
+                        <TextBlock Text="Trees grow continuously in the forests, and once enough have grown, they will start to spread. You can build roads on forest tiles, but it is more expensive. Don't worry, forests only spread to sand tiles." 
+                            TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+
+                        <TextBlock Text="Sand" 
+                            TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="14" />
+                        <Image Source="Images/magassag.png" Stretch="Fill" Margin="0,0,0,0"/>
+                        <TextBlock Text="The different colors indicate the height of the tiles. If you hover your mouse over them, you can see their exact height. The height only ranges from 0 to 4." 
+                            TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+
+                        <TextBlock Text="How to play" 
+                            TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15" FontWeight="Bold" FontSize="16" />
+
+                        <TextBlock Text="Buy" 
+                                TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="14" />
+                        <Image Source="Images/vasarlas.png" Stretch="Fill" Margin="0,0,0,0"/>
+                        <TextBlock Text="Under this tab, you can buy various items. Hover your mouse over the icons to see how much they cost." 
+                                TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+                        <TextBlock Text="Road" 
+                                TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="12" />
+                        <TextBlock Text="Click the road icon, then select a suitable tile: a sand tile next to an existing road. You can also build roads on forest tiles, but at a higher cost. Furthermore, roads can only be built between tiles with the same elevation or a maximum elevation difference of +-1." 
+                                TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+                        <TextBlock Text="Stop" 
+                                TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="12" />
+                        <TextBlock Text="Click the stop icon and select a suitable tile: a road tile adjacent to a city or an industry." 
+                                TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+                        <TextBlock Text="Vehicle" 
+                                TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="12" />
+                        <TextBlock Text="Click the vehicle icon, and it will bring up two options: a van and a truck. Vans can carry less item and are slower, while trucks can carry more item and are faster. After that, select what you want to transport. Your vehicle will be added to the parked vehicles list." 
+                                TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+                        <TextBlock Text="Bridge" 
+                                TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="12" />
+                        <TextBlock Text="Click the bridge icon, then select whether you want it for a river or a lake. Next, choose whether to buy a wooden bridge, where vehicles travel slower, or a modern bridge, where they can travel faster." 
+                                TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+
+                        <TextBlock Text="Terraform" 
+                                TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="14" />
+                        <Image Source="Images/terraformalas.png" Stretch="Fill" Margin="0,0,0,0"/>
+                        <TextBlock Text="Under this tab, you can terraform. Hover your mouse over the icons to see how much they cost." 
+                                TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+                        <TextBlock Text="Up" 
+                                TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="12" />
+                        <TextBlock Text="Click the up arrow icon to increase the elevation of the selected sand tiles. But be careful: the elevation difference between two tiles can be a maximum of 2." 
+                                TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+                        <TextBlock Text="Down" 
+                                TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="12" />
+                        <TextBlock Text="Click the down arrow icon to decrease the elevation of the selected sand tiles. But be careful: the elevation difference between two tiles can be a maximum of 2." 
+                                TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+
+                        <TextBlock Text="Route manager" 
+                                TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="14" />
+                        <Image Source="Images/megvettauto.png" Stretch="Fill" Margin="0,0,0,0"/>
+                        <TextBlock Text="Under this tab, you can create routes and remove vehicles from them." 
+                                TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+                        <TextBlock Text="Create route" 
+                                TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="12" />
+                        <TextBlock Text="Click the parked vehicles list. Here you can see the vehicles you have purchased that haven't been placed on the map and aren't transporting items yet. Select a vehicle, then choose the stops you want it to visit. Once you have selected them, click the 'Create Route' button in the top right corner. " 
+                                TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+                        <Image Source="Images/stoplerakas.png" Stretch="Fill" Margin="0,0,0,5"/>
+                        <Image Source="Images/utvegleg.png" Stretch="Fill" Margin="0,0,0,5"/>
+                        <TextBlock Text="Creating a valid route" 
+                                TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="12" />
+                        <TextBlock Text="Creating a valid route: based on the chosen vehicle's cargo, you must select the stops so that the vehicle visits all the required raw material industries, then the production industry, and finally a city. " 
+                                TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+                        <TextBlock Text="Valid routes" 
+                                TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="12" />
+                        <TextBlock Text="City -> City" 
+                                TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+                        <TextBlock Text="Wood -> City" 
+                                TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+                        <TextBlock Text="Net -> City" 
+                                TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+                        <TextBlock Text="Algae -> Petfood -> City" 
+                                TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+                        <TextBlock Text="Meat -> Spatula -> Burger -> City" 
+                                 TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+
+                        <TextBlock Text="Remove vehicle from route" 
+                                TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,15" FontWeight="Bold" FontSize="12" />
+                        <TextBlock Text="Click the moving vehicles list. Here you can see the vehicles you have purchased that have been placed on the map and are transporting items yet. Select a vehicle that you want to remove."
+                                   TextWrapping="Wrap" TextAlignment="Center" Margin="0,0,0,15"  FontSize="12" />
+
+                        <Button Content="OK" Width="80" Command="{Binding CloseInfoCommand}"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Popup>
+
 
         <Menu Grid.Row="0" HorizontalAlignment="Center" Height="30">
             <Menu.ItemsPanel>
@@ -52,7 +180,7 @@
                         <MenuItem.Icon>
                             <Image Source="Images/road.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                 <Image.ToolTip>
-                                    Road
+                                    <ToolTip Content="{Binding RoadPrice}" ContentStringFormat="Road - {0} Dollars" />
                                 </Image.ToolTip>
                             </Image>
                         </MenuItem.Icon>
@@ -84,7 +212,7 @@
                                 <MenuItem.Icon>
                                     <Image Source="Images/truck.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                         <Image.ToolTip>
-                                            Truck
+                                            <ToolTip Content="{Binding TruckPrice}" ContentStringFormat="Truck - {0} Dollars" />
                                         </Image.ToolTip>
                                     </Image>
                                 </MenuItem.Icon>
@@ -146,7 +274,7 @@
                                 <MenuItem.Icon>
                                     <Image Source="Images/van.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                         <Image.ToolTip>
-                                            Van
+                                            <ToolTip Content="{Binding VanPrice}" ContentStringFormat="Van - {0} Dollars" />
                                         </Image.ToolTip>
                                     </Image>
                                 </MenuItem.Icon>
@@ -237,7 +365,8 @@
                                         <MenuItem.Icon>
                                             <Image Source="Images/woodbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
-                                                    Wood bridge for lake
+
+                                                    <ToolTip Content="{Binding WoodBridgeLakePrice}" ContentStringFormat="Wood bridge for lake - {0} Dollars" />
                                                 </Image.ToolTip>
                                             </Image>
                                         </MenuItem.Icon>
@@ -246,7 +375,8 @@
                                         <MenuItem.Icon>
                                             <Image Source="Images/modernbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
-                                                    Modern bridge for lake
+
+                                                    <ToolTip Content="{Binding ModernBridgeLakePrice}" ContentStringFormat="Modern bridge for lake - {0} Dollars" />
                                                 </Image.ToolTip>
                                             </Image>
                                         </MenuItem.Icon>
@@ -257,7 +387,7 @@
                                 <MenuItem.Icon>
                                     <Image Source="Images/river.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                         <Image.ToolTip>
-                                            Bridges for lake
+                                            Bridges for river
                                         </Image.ToolTip>
                                     </Image>
                                 </MenuItem.Icon>
@@ -271,7 +401,8 @@
                                         <MenuItem.Icon>
                                             <Image Source="Images/woodbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
-                                                    Wood bridge for river
+
+                                                    <ToolTip Content="{Binding WoodBridgeRiverPrice}" ContentStringFormat="Wood bridge for river - {0} Dollars" />
                                                 </Image.ToolTip>
                                             </Image>
                                         </MenuItem.Icon>
@@ -280,7 +411,8 @@
                                         <MenuItem.Icon>
                                             <Image Source="Images/modernbridge.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                                 <Image.ToolTip>
-                                                    Modern bridge for river
+
+                                                    <ToolTip Content="{Binding ModernBridgeRiverPrice}" ContentStringFormat="Modern bridge for river - {0} Dollars" />
                                                 </Image.ToolTip>
                                             </Image>
                                         </MenuItem.Icon>
@@ -309,7 +441,8 @@
                         <MenuItem.Icon>
                             <Image Source="Images/up-arrow.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                 <Image.ToolTip>
-                                    Upward terraformation
+
+                                    <ToolTip Content="{Binding TerraformPrice}" ContentStringFormat="Upward terraformation - {0} Dollars" />
                                 </Image.ToolTip>
                             </Image>
                         </MenuItem.Icon>
@@ -318,7 +451,8 @@
                         <MenuItem.Icon>
                             <Image Source="Images/down-arrow.png" Width="40" Height="20" Margin="-5,-10,-10,-10">
                                 <Image.ToolTip>
-                                    Downward terrafarmation
+
+                                    <ToolTip Content="{Binding TerraformPrice}" ContentStringFormat="Downward terrafarmation - {0} Dollars" />
                                 </Image.ToolTip>
                             </Image>
                         </MenuItem.Icon>
@@ -643,16 +777,6 @@
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
 
-
-                                        <DataTrigger Binding="{Binding Color}" Value="2001">
-                                            <Setter Property="Background" >
-                                                <Setter.Value>
-                                                    <ImageBrush ImageSource="Images/burger1.png" Stretch="Fill"/>
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Setter Property="ToolTip" Value="Burger factory"/>
-                                            <Setter Property="BorderThickness" Value="0" />
-                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding Color}" Value="2001">
                                             <Setter Property="Background" >
                                                 <Setter.Value>
@@ -675,7 +799,8 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
-                                            <Setter Property="ToolTip" Value="Burger factory"/>
+                                            <Setter Property="ToolTip" Value="{Binding DataContext.BurgerFactoryText, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
+
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
 
@@ -687,12 +812,22 @@
                                                     <ImageBrush ImageSource="Images/varos_0.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip Content="{Binding CityInfo}" ContentStringFormat="City - Citizens waiting for the bus: {0}" />
+                                                </Setter.Value>
+                                            </Setter>
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Color}" Value="31">
                                             <Setter Property="Background" >
                                                 <Setter.Value>
                                                     <ImageBrush ImageSource="Images/varos_1.png" Stretch="Fill"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip Content="{Binding CityInfo}" ContentStringFormat="City - Citizens waiting for the bus: {0}" />
                                                 </Setter.Value>
                                             </Setter>
                                             <Setter Property="BorderThickness" Value="0" />
@@ -703,6 +838,11 @@
                                                     <ImageBrush ImageSource="Images/varos_2.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip Content="{Binding CityInfo}" ContentStringFormat="City - Citizens waiting for the bus: {0}" />
+                                                </Setter.Value>
+                                            </Setter>
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Color}" Value="33">
@@ -711,12 +851,22 @@
                                                     <ImageBrush ImageSource="Images/varos_3.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip Content="{Binding CityInfo}" ContentStringFormat="City - Citizens waiting for the bus: {0}" />
+                                                </Setter.Value>
+                                            </Setter>
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Color}" Value="34">
                                             <Setter Property="Background" >
                                                 <Setter.Value>
                                                     <ImageBrush ImageSource="Images/varos_4.png" Stretch="Fill"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <ToolTip Content="{Binding CityInfo}" ContentStringFormat="City - Citizens waiting for the bus: {0}" />
                                                 </Setter.Value>
                                             </Setter>
                                             <Setter Property="BorderThickness" Value="0" />
@@ -745,7 +895,7 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
-                                            <Setter Property="ToolTip" Value="Algae factory"/>
+                                            <Setter Property="ToolTip" Value="{Binding DataContext.AlgaeFactoryText, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
 
@@ -774,7 +924,7 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
-                                            <Setter Property="ToolTip" Value="Wood factory"/>
+                                            <Setter Property="ToolTip" Value="{Binding DataContext.WoodFactoryText, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
 
@@ -801,7 +951,7 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
-                                            <Setter Property="ToolTip" Value="Net factory"/>
+                                            <Setter Property="ToolTip" Value="{Binding DataContext.NetFactoryText, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
 
@@ -827,7 +977,7 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
-                                            <Setter Property="ToolTip" Value="Spatula factory"/>
+                                            <Setter Property="ToolTip" Value="{Binding DataContext.SpatulaFactoryText, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
 
@@ -853,7 +1003,7 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
-                                            <Setter Property="ToolTip" Value="Petfood factory"/>
+                                            <Setter Property="ToolTip" Value="{Binding DataContext.PetfoodFactoryText, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
 
@@ -879,7 +1029,7 @@
                                                     <ImageBrush ImageSource="Images/factory.png" Stretch="Fill"/>
                                                 </Setter.Value>
                                             </Setter>
-                                            <Setter Property="ToolTip" Value="Meat factory"/>
+                                            <Setter Property="ToolTip" Value="{Binding DataContext.MeatFactoryText, RelativeSource={RelativeSource AncestorType=ItemsControl}}" />
                                             <Setter Property="BorderThickness" Value="0" />
                                         </DataTrigger>
 

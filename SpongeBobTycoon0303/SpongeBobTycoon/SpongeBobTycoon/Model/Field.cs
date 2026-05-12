@@ -13,8 +13,8 @@ namespace SpongeBobTycoon.Model
     {
         public int X; public int Y; public int Z;
 
-        public FieldType fieldType;
-        public Industry industry; 
+        public FieldType? fieldType;
+        public Industry? industry; 
         public bool isVehicle;
         public bool areTwoVehicles;
         public Direction direction;
@@ -22,7 +22,7 @@ namespace SpongeBobTycoon.Model
         public int id; // A viewhoz kell hogy jó képet rakjak az industrieshoz 
         //public bool isCrossRoad --> ez még lehet enum lesz
 
-        public Field(int x, int y,int z, Industry industry, FieldType ft, bool isVehicle, bool areTwoVehicles, bool isStop, int id, Direction direction)
+        public Field(int x, int y,int z, Industry? industry, FieldType? ft, bool isVehicle, bool areTwoVehicles, bool isStop, int id, Direction direction)
         {
             this.X = x;
             this.Y = y;
