@@ -384,7 +384,7 @@ namespace SpongeBobTycoon.Model
 
         public (bool, Industry?) IsStopValid(int x, int y)
         {
-            if (board[x, y].fieldType is not Road || board[x, y].industry!.product is Citizen) return (false, new Industry(new Product()));
+            if (board[x, y].fieldType is not Road || board[x, y].industry!.product is Citizen) return (false, new Industry());
             (int dx, int dy)[] directions =
                 {
                     (-1,-1), (-1,0), (-1,1),
