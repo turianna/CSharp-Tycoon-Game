@@ -111,6 +111,7 @@ namespace SpongeBobTycoon.Model.Industries
                     if (ingredientAmounts[i] < ingredientsForProduction[i]) return;
                 }
 
+                System.Diagnostics.Debug.WriteLine($"{this.product.GetType().Name} factory started producing - current product amount: {productAmount}");
                 producing = true;
                 productionTimeLeft = productionTime;
                 

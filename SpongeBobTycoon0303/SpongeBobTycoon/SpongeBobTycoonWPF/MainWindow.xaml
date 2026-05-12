@@ -8,7 +8,9 @@
         Title="SpongeBob_Tycoon" Height="450" Width="800"
         WindowState="Maximized"
         ResizeMode="NoResize"
-        WindowStyle="None">
+        WindowStyle="None"
+        KeyDown="Window_KeyDown"
+        >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

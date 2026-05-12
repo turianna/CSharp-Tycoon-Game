@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace SpongeBobTycoonWPF
 {
@@ -22,7 +23,7 @@ namespace SpongeBobTycoonWPF
         public MainWindow()
         {
             InitializeComponent();
- 
+            this.Focus();
         }
         private void GameScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
@@ -76,6 +77,27 @@ namespace SpongeBobTycoonWPF
 
             }
 
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            double scrollSpeed = 30;
+
+            switch (e.Key)
+            {
+                case Key.W:
+                    GameScrollViewer.ScrollToVerticalOffset(GameScrollViewer.VerticalOffset - scrollSpeed);
+                    break;
+                case Key.S:
+                    GameScrollViewer.ScrollToVerticalOffset(GameScrollViewer.VerticalOffset + scrollSpeed);
+                    break;
+                case Key.A:
+                    GameScrollViewer.ScrollToHorizontalOffset(GameScrollViewer.HorizontalOffset - scrollSpeed);
+                    break;
+                case Key.D:
+                    GameScrollViewer.ScrollToHorizontalOffset(GameScrollViewer.HorizontalOffset + scrollSpeed);
+                    break;
+            }
         }
     }
 }

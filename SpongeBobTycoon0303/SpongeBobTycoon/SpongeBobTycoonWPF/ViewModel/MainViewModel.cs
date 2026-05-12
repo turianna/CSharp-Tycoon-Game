@@ -376,6 +376,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             this.model.CarStepped += Model_CarStepped;
             this.model.Produce += Model_Produce;
 
+            LoadCommand = new DelegateCommand(_ => LoadGame());
             StartCommand = new DelegateCommand(param => StartGame(param!));
             StopTimeCommand = new DelegateCommand(_ => StopTime());
             StartTimeCommand = new DelegateCommand(_ => StartTime());
