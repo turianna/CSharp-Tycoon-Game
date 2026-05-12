@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +9,7 @@ namespace SpongeBobTycoon.Model.Industries
 {
     public class Empty : Industry
     {
-        public Empty(Product product) : base(product)
+        public Empty(Product product) : base()
         {
             
         }
