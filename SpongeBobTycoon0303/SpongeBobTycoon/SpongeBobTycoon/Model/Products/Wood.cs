@@ -10,7 +10,7 @@ namespace SpongeBobTycoon.Model.Products
     {
         public Wood()
         {
-            value = 50;
+            value = 20;
         }
     }
 }

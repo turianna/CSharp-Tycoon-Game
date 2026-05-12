@@ -44,8 +44,8 @@ public class RouteManagerTest
         Stop stopBurger = new Stop(7, 2, new Factory(new Burger()));
         Stop stopPetfood = new Stop(45, 30, new Factory(new Petfood()));
         Stop stopAlgae = new Stop(34, 10, new Farm(new Algae()));
-        Stop stopCity1 = new Stop(20, 10, new Factory(new Citizen()));
-        Stop stopCity2 = new Stop(20, 10, new Factory(new Citizen()));
+        Stop stopCity1 = new Stop(20, 10, new Farm(new Citizen()));
+        Stop stopCity2 = new Stop(20, 10, new Farm(new Citizen()));
         Stop stopNet = new Stop(1, 65, new Farm(new Net()));
         Stop stopMeat = new Stop(41, 31, new Farm(new Meat()));
         Stop stopSpatula = new Stop(30, 14, new Farm(new Spatula()));

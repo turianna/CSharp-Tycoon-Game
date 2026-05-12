@@ -582,6 +582,7 @@
                             <Button.Style>
                                 <Style TargetType="Button">
                                     <Style.Triggers>
+
                                         <DataTrigger Binding="{Binding Color}" Value="0">
                                             <Setter Property="Background">
                                                 <Setter.Value>
@@ -1747,6 +1748,15 @@
                                             </Setter>
                                             <Setter Property="ToolTip" Value="4"/>
                                             <Setter Property="BorderThickness" Value="0" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsHighlighted}" Value="true">
+                                            <Setter Property="BorderBrush" Value="DarkRed"/>
+                                            <Setter Property="BorderThickness" Value="2"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding IsHighlighted}" Value="false">
+                                            <Setter Property="BorderBrush" Value="Transparent"/>
+                                            <Setter Property="BorderThickness" Value="0"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>

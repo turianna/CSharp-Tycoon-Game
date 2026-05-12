@@ -29,8 +29,6 @@ namespace SpongeBobTycoon.Persistence
 
         public FieldData(Field f, int industryIndex)
         {
-            FieldTypeData = new FieldTypeData();
-
             this.industryIndex = industryIndex;
             this.x = f.X;
             this.y = f.Y;

@@ -57,13 +57,19 @@ namespace SpongeBobTycoon.Persistence
             if (fieldType is null) return;
             switch (fieldType)
             {
-                case Bridge:
+                case FastBridge:
+                    FastBridge bridge = (FastBridge)fieldType;
                     this.fieldType = FieldTypeEnum.Bridge;
-                    Bridge bridge = (Bridge)fieldType;
-                    if (bridge is FastBridge) isFastBridge = true;
-                    else; isFastBridge = false;
-                        this.isRiver = bridge.isRiver;
+                    this.isFastBridge = true;
+                    this.isRiver = bridge.isRiver;
                     this.roadType = bridge.roadType;
+                    break;
+                case SlowBridge:
+                    SlowBridge sbridge = (SlowBridge)fieldType;
+                    this.fieldType = FieldTypeEnum.Bridge;
+                    this.isFastBridge = false;
+                    this.isRiver = sbridge.isRiver;
+                    this.roadType = sbridge.roadType;
                     break;
                 case Road:
                     this.fieldType = FieldTypeEnum.Road;

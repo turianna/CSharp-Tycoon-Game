@@ -13,6 +13,7 @@ namespace SpongeBobTycoonWPF.ViewModel
         private int stopPicture;
         private int vehiclePicture;
         private string content = "";
+        private bool isHighlighted;
 
         public int Color
         {
@@ -67,6 +68,11 @@ namespace SpongeBobTycoonWPF.ViewModel
 
         }
 
+        public bool IsHighlighted
+        {
+            get { return isHighlighted; }
+            set { isHighlighted = value; OnPropertyChanged(nameof(IsHighlighted)); }
+        }
         public DelegateCommand? ClickCommand { get; set; }
         /* ez egyelőre csak ki lett másolva
         public int x { get; set; }

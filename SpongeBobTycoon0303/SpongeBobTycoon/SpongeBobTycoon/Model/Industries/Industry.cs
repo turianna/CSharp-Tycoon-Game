@@ -13,8 +13,8 @@ namespace SpongeBobTycoon.Model.Industries
     {
         protected static Random random = new Random();
 
-        protected const int minProductionTime = 20;
-        protected const int maxProductionTime = 40;
+        protected const int minProductionTime = 15;
+        protected const int maxProductionTime = 25;
         protected int productionTime;
         public int getProductionTime => productionTime;
 

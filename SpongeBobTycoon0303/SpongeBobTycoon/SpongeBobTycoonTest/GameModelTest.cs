@@ -4,6 +4,7 @@ using SpongeBobTycoon.Persistence;
 using SpongeBobTycoon.Model.FieldTypes;
 using SpongeBobTycoon.Model.Industries;
 using SpongeBobTycoon.Model.Products;
+using System.Net.Http.Headers;
 namespace SpongeBobTycoonTest
 {
     [TestClass]
@@ -24,6 +25,118 @@ namespace SpongeBobTycoonTest
             dataAccess = new DataAccess();
             model = new GameModel(dataAccess);
         }*/
+
+        [TestMethod]
+        public void TestTreeGrow()
+        {
+            model.timer.Stop();
+
+            Forest forest = (Forest)model.GetForests()[0].fieldType;
+
+            int initialForestCount = model.GetForests().Count;
+
+            Assert.IsTrue(forest.treeCount == 1);
+            Assert.IsFalse(forest.readyToSpread);
+
+            for (int i = 0; i < 4*119; i++)
+            {
+                model.SimulateTimerElapsed();
+            }
+
+            Assert.IsFalse(forest.treeCount == 2);
+            Assert.IsFalse(forest.readyToSpread);
+
+            for (int i = 0; i < 4 * 62; i++)
+            {
+                model.SimulateTimerElapsed();
+            }
+
+            Assert.IsTrue(forest.treeCount == 2);
+
+            for(int i = 0; i < 4 * 400; i++)
+            {
+                model.SimulateTimerElapsed();
+            }
+
+            Assert.IsTrue(model.GetForests().Count > initialForestCount);
+            bool newForestGrew = model.board[33, 2].fieldType is Forest || model.board[32, 3].fieldType is Forest;
+            Assert.IsTrue(newForestGrew);
+
+        }
+
+        [TestMethod]
+
+        public void TestFarms()
+        {
+            Farm woodFarm = new Farm(new Wood());
+            Farm algaeFarm = new Farm(new Algae());
+            Farm meatFarm = new Farm(new Meat());
+            int oldProductionTime = woodFarm.getProductionTime;
+
+            Assert.IsTrue(woodFarm.product is Wood);
+            Assert.IsTrue(algaeFarm.product is Algae);
+            Assert.IsTrue(meatFarm.product is Meat);
+
+            Assert.IsTrue(woodFarm.productAmount == 0);
+            Assert.IsTrue(algaeFarm.productAmount == 0);
+            Assert.IsTrue(meatFarm.productAmount == 0);
+
+            for(int i = 0; i < 26; i++)
+            {
+                woodFarm.Produce();
+                algaeFarm.Produce();
+                meatFarm.Produce();
+            }
+
+            Assert.IsTrue(woodFarm.productAmount == 5);
+            Assert.IsTrue(algaeFarm.productAmount == 5);
+            Assert.IsTrue(meatFarm.productAmount == 4);
+            int newProductionTime = woodFarm.getProductionTime;
+
+            Assert.IsTrue(Math.Abs(oldProductionTime - newProductionTime) <= 1);
+
+            for(int i = 0; i < 125; i++)
+            {
+                meatFarm.Produce();
+            }
+
+            Assert.IsFalse(meatFarm.productAmount > 20);
+        }
+
+        [TestMethod]
+
+        public void TestFactories()
+        {
+            Assert.ThrowsException<Exception>(() => new Factory(new Wood()));
+            Factory burgerFactory = new Factory(new Burger());
+            Factory petFoodFactory = new Factory(new Petfood());
+
+            Assert.IsTrue(burgerFactory.getIngredients.Count == 2);
+            Assert.IsTrue(petFoodFactory.getIngredients.Count == 1);
+
+            for(int i = 0; i < 25; i++)
+            {
+                burgerFactory.Produce();
+                petFoodFactory.Produce();
+            }
+
+            Assert.IsTrue(burgerFactory.productAmount == 0);
+            Assert.IsTrue(petFoodFactory.productAmount == 0);
+
+            burgerFactory.ReceiveIngredient(new Meat(), 8);
+            burgerFactory.ReceiveIngredient(new Spatula(), 1);
+            petFoodFactory.ReceiveIngredient(new Algae(), 5);
+
+            for (int i = 0; i < 26; i++)
+            {
+                burgerFactory.Produce();
+                petFoodFactory.Produce();
+            }
+
+            Assert.IsTrue(burgerFactory.productAmount == 1);
+            Assert.IsTrue(petFoodFactory.productAmount == 1);
+
+        }
 
         [TestMethod]
 
@@ -61,7 +174,7 @@ namespace SpongeBobTycoonTest
             Assert.AreEqual(model.gameTime, 4);
             Assert.AreEqual(model.gameTimer, 0);
             Assert.AreEqual(model.timeStatus, TimeStatus.BASE);
-            Assert.AreEqual(model.money, 10000);
+            Assert.AreEqual(model.money, 5000);
 
             Assert.IsTrue(model.board[0, 0].fieldType is Grass);
             Assert.IsTrue(model.board[3, 10].fieldType is Grass);
@@ -74,30 +187,30 @@ namespace SpongeBobTycoonTest
             model.StartNewGame();
             model.BuyRoad(3, 10);
             Assert.IsTrue(model.board[3, 10].fieldType is Road);
-            Assert.AreEqual(model.money,9980);
+            Assert.AreEqual(model.money,4900);
             model.BuyRoad(3, 11);
             Assert.IsTrue(model.board[3, 11].fieldType is Road);
-            Assert.AreEqual(model.money,9960);
+            Assert.AreEqual(model.money,4800);
             model.BuyRoad(5, 6);
             Assert.IsTrue(model.board[5, 6].fieldType is Road);
-            Assert.AreEqual(model.money,9940);
+            Assert.AreEqual(model.money,4700);
             model.BuyRoad(6, 6);
             Assert.IsTrue(model.board[6, 6].fieldType is Road);
-            Assert.AreEqual(model.money,9920);
+            Assert.AreEqual(model.money,4600);
 
 
             model.BuyRoad(8, 0); // Folyó
             Assert.IsFalse(model.board[8, 0].fieldType is Road);
-            Assert.AreEqual(model.money, 9920);
+            Assert.AreEqual(model.money, 4600);
             model.BuyRoad(14, 3); //Ipar
             Assert.IsFalse(model.board[14, 3].fieldType is Road);
-            Assert.AreEqual(model.money, 9920);
+            Assert.AreEqual(model.money, 4600);
             model.BuyRoad(3, 41); // Tó
             Assert.IsFalse(model.board[3, 41].fieldType is Road);
-            Assert.AreEqual(model.money, 9920);
+            Assert.AreEqual(model.money, 4600);
             model.BuyRoad(2, 5); // Város
             Assert.IsFalse(model.board[2, 5].fieldType is Road);
-            Assert.AreEqual(model.money, 9920);
+            Assert.AreEqual(model.money, 4600);
 
             model.BuyRoad(9,27);
             Assert.IsTrue(model.board[9, 27].fieldType is Road);
@@ -110,7 +223,7 @@ namespace SpongeBobTycoonTest
             model.BuyRoad(4, 29);
             model.BuyRoad(4, 30);
             Assert.IsTrue(model.board[9, 27].fieldType is Road); // erdő
-            Assert.AreEqual(model.money, 9700);
+            Assert.AreEqual(model.money, 3500);
             /*
             model.BuyRoad(2, 31); // erdő
             Assert.IsTrue(model.board[2, 31].fieldType is Road);
@@ -125,22 +238,22 @@ namespace SpongeBobTycoonTest
             Assert.AreEqual(model.parkingVehicles.Count, 1);
             Assert.IsTrue(model.parkingVehicles.ElementAt(0).product is Burger);
             Assert.IsTrue(model.parkingVehicles.ElementAt(0) is SlowCar);
-            Assert.AreEqual(model.money, 9800);
+            Assert.AreEqual(model.money, 4500);
             model.BuyVehicle(VehicleType.SlowCar, new Citizen());
             Assert.AreEqual(model.parkingVehicles.Count, 2);
             Assert.IsTrue(model.parkingVehicles.ElementAt(1).product is Citizen);
             Assert.IsTrue(model.parkingVehicles.ElementAt(1) is SlowCar);
-            Assert.AreEqual(model.money, 9600);
+            Assert.AreEqual(model.money, 4000);
             model.BuyVehicle(VehicleType.FastCar, new Net());
             Assert.AreEqual(model.parkingVehicles.Count, 3);
             Assert.IsTrue(model.parkingVehicles.ElementAt(2).product is Net);
             Assert.IsTrue(model.parkingVehicles.ElementAt(2) is FastCar);
-            Assert.AreEqual(model.money, 9400);
+            Assert.AreEqual(model.money, 3500);
             model.BuyVehicle(VehicleType.FastCar, new Petfood());
             Assert.AreEqual(model.parkingVehicles.Count, 4);
             Assert.IsTrue(model.parkingVehicles.ElementAt(3).product is Petfood);
             Assert.IsTrue(model.parkingVehicles.ElementAt(3) is FastCar);
-            Assert.AreEqual(model.money, 9200);
+            Assert.AreEqual(model.money, 3000);
         }
 
         [TestMethod]
@@ -159,18 +272,18 @@ namespace SpongeBobTycoonTest
             model.BuyRoad(6, 7);
             model.BuyBridge(7, 7, false, false);
             Assert.IsFalse(model.board[7, 7].fieldType is Bridge);
-            Assert.AreEqual(model.money, 9190);
+            Assert.AreEqual(model.money, 3950);
             model.BuyBridge(7, 7, true, false);
             Assert.IsFalse(model.board[7, 7].fieldType is Bridge);
-            Assert.AreEqual(model.money, 9190);
+            Assert.AreEqual(model.money, 3950);
 
             model.BuyBridge(7, 7, false, true);
             Assert.IsTrue(model.board[7, 7].fieldType is SlowBridge);
-            Assert.AreEqual(model.money, 8990);
+            Assert.AreEqual(model.money, 3750);
 
             model.BuyBridge(8, 7, true, true);
             Assert.IsTrue(model.board[8, 7].fieldType is FastBridge);
-            Assert.AreEqual(model.money, 8590);
+            Assert.AreEqual(model.money, 3350);
 
             //tavon tesztelés
             model.BuyRoad(9, 27);
@@ -188,19 +301,18 @@ namespace SpongeBobTycoonTest
 
             model.BuyBridge(9, 39, false, true);
             Assert.IsFalse(model.board[9, 39].fieldType is Bridge);
-            Assert.AreEqual(model.money, 8350);
+            Assert.AreEqual(model.money, 2150);
             model.BuyBridge(9, 39, true, true);
             Assert.IsFalse(model.board[9, 39].fieldType is Bridge);
-            Assert.AreEqual(model.money, 8350);
+            Assert.AreEqual(model.money, 2150);
 
             model.BuyBridge(9, 39, false, false);
             Assert.IsTrue(model.board[9, 39].fieldType is SlowBridge);
-            Assert.AreEqual(model.money, 8150);
+            Assert.AreEqual(model.money, 1950);
 
             model.BuyBridge(9, 40, true, false);
             Assert.IsTrue(model.board[9, 40].fieldType is FastBridge);
-            Assert.AreEqual(model.money, 7750);
-
+            Assert.AreEqual(model.money, 1550);
         }
         [TestMethod]
         public void TestIsStopValid()
@@ -354,16 +466,15 @@ namespace SpongeBobTycoonTest
         public void TestChangeBalance()
         {
             model.StartNewGame();
-            Assert.AreEqual(model.money, 10000);
+            Assert.AreEqual(model.money, 5000);
             model.ChangeBalance(100);
-            Assert.AreEqual(model.money, 10100);
+            Assert.AreEqual(model.money, 5100);
             model.ChangeBalance(-200);
-            Assert.AreEqual(model.money, 9900);
+            Assert.AreEqual(model.money, 4900);
             model.ChangeBalance(-250);
-            Assert.AreEqual(model.money, 9650);
+            Assert.AreEqual(model.money, 4650);
             model.ChangeBalance(150);
-            Assert.AreEqual(model.money, 9800);
-
+            Assert.AreEqual(model.money, 4800);
         }
 
 

@@ -61,11 +61,15 @@ namespace SpongeBobTycoon.Model
 
                     if (ftd.isFastBridge)
                     {
-                        this.fieldType = new FastBridge(isRiver);
+                        FastBridge fb= new FastBridge(isRiver);
+                        fb.roadType = ftd.roadType;
+                        this.fieldType = fb;
                     }
                     else
                     {
-                        this.fieldType = new SlowBridge(isRiver);
+                        SlowBridge sb = new SlowBridge(isRiver);
+                        sb.roadType = ftd.roadType;
+                        this.fieldType = sb;
                     }
                     break;
                 
