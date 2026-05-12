@@ -32,3 +32,21 @@ A már leszállított alapanyagokat a gyárak legyenek képesek eltárolni, majd
 A többhozzávalós késztermékek érjenek többet az általános egyhozzávalós késztermékeknél. Legalább egy ilyen gyár legyen.
 
 
+## Képek a játékról
+
+### Kezdőképernyő
+![Kezdőképernyő](kezdokepernyo.png)
+
+### Gombok vásárláshoz
+![Vásárlás gombok](vasarlas.png)
+
+### Gombok terraformáláshoz
+![Terraformálás gombok](terraform.png)
+
+### Álló és mozgó jármű listák
+![Járművek listái](autolista.png)
+
+### Játék közben
+![Játék közben](game.png)
+
+A képek a játékhoz AI segítségével készültek.

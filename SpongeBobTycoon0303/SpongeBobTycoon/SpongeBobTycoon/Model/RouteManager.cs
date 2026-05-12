@@ -112,7 +112,7 @@ namespace SpongeBobTycoon.Model
                     }
                     if(!petfood || !algee || !city)
                     {
-                        System.Diagnostics.Debug.WriteLine("Route creation failed - not all stop requirements were met.");
+                        
                         return false;
                     }
                     break;
@@ -147,7 +147,7 @@ namespace SpongeBobTycoon.Model
                             city1 = true;
                             
                         }
-                        else if(stop.industry.product is Citizen || city1)
+                        else if(stop.industry.product is Citizen && city1)
                         {
                             city2 = true;
                         }
@@ -163,7 +163,6 @@ namespace SpongeBobTycoon.Model
             }
             
             return true;
-            //min 2 és muszáj érintenie azt a megállót amit szállít az autó és körút-e és jó irányba megy-e az útvonal
         }
 
         private List<(int,int)> BFS(GameModel model, Stop currentStop, Stop nextStop)
@@ -312,6 +311,7 @@ namespace SpongeBobTycoon.Model
             else
             {
                 _stops.Clear();
+                System.Diagnostics.Debug.WriteLine("Route creation failed - not all stop requirements were met.");
                 return false;
             }
             
