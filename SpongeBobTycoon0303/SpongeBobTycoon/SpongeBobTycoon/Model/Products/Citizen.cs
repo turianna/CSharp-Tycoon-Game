@@ -10,7 +10,7 @@ namespace SpongeBobTycoon.Model.Products
     {
         public Citizen() : base()
         {
-            value = 100;
+            value = 30;
         }
     }
 }

@@ -180,7 +180,6 @@ namespace SpongeBobTycoonWPF.ViewModel
         #region Commands
         public DelegateCommand StartCommand { get; private set; }
         public DelegateCommand NewGameCommand { get; private set; }
-        public DelegateCommand SaveCommand { get; private set; }
         public DelegateCommand LoadCommand { get; private set; }
         public DelegateCommand QuitCommand { get; private set; } 
         public DelegateCommand StopTimeCommand { get; private set; }
@@ -247,6 +246,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             }
         }
 
+        #region Game loading
         private void LoadGame()
         {
             SaveFiles.Clear();
@@ -298,22 +298,13 @@ namespace SpongeBobTycoonWPF.ViewModel
             this.model.AddMovingVehicle += Model_AddMovingVehicle;
             this.model.CarStepped += Model_CarStepped;
 
-            /*
-            Vehicle fastvehicle = new FastCar(new Wood());
-            Vehicle slowvehicle = new SlowCar(new Wood());
-            SlowBridge slowbridge = new SlowBridge(true);
-            FastBridge fastbridge = new FastBridge(true);
-
-            Money = model.money;
-            RoadPrice = model.RoadPrice;
-            TruckPrice = fastvehicle.cost;
-            VanPrice = slowvehicle.cost;
-            WoodBridgeLakePrice = slowbridge.cost;
-            WoodBridgeRiverPrice = slowbridge.cost;
-            ModernBridgeLakePrice = fastbridge.cost;
-            ModernBridgeRiverPrice = fastbridge.cost;
-            TerraformPrice = model.TerraformPrice;
-            */
+            MovingVehicleList = new ObservableCollection<VehicleButton>();
+            ParkingVehicleList = new ObservableCollection<VehicleButton>();
+            MovingVehicleListSize = MovingVehicleList.Count;
+            ParkingVehicleListSize = ParkingVehicleList.Count;
+            structure = BuildMode.NONE;
+            Board = new ObservableCollection<GameField>();
+            SaveFiles = new ObservableCollection<SaveFile>();
 
             AddVehicles();
 
@@ -338,6 +329,7 @@ namespace SpongeBobTycoonWPF.ViewModel
                 Model_AddMovingVehicle(null, v);
             }
         }
+        #endregion
 
         public MainViewModel(GameModel model)
         {
@@ -443,7 +435,8 @@ namespace SpongeBobTycoonWPF.ViewModel
                                     HandleClick(pos.Item1, pos.Item2);
                                 }
                             }),
-                            Content = ""
+                            Content = "",
+                            IsHighlighted = false
                         });
                     if (color_int == 1) Board[i * 100 + j].Content = ((Forest)model.Board(i, j).fieldType!).treeCount.ToString();
                 }
@@ -598,6 +591,11 @@ namespace SpongeBobTycoonWPF.ViewModel
         public void CreateRoute()
         {
             model.CreateRoute();
+            foreach(GameField gf in Board)
+            {
+                gf.IsHighlighted = false;
+            }
+            structure = BuildMode.NONE;
             Route_IsOn = false;
         }
         #endregion
@@ -810,12 +808,28 @@ namespace SpongeBobTycoonWPF.ViewModel
                     model.Terraform(x, y, false);
                     break;
                 case BuildMode.ROUTE:
-                    model.SelectStop(x,y);
+
+                    if (model.board[x,y].isStop == false)
+                    {
+                        MessageBox.Show("You can only set a route on a stop!");
+                        break;
+                    }
+
+                    if (Board[x * 100 + y].IsHighlighted)
+                    {
+                        Board[x * 100 + y].IsHighlighted = false;
+                        model.DeSelectStop(x, y);
+                    }
+                    else
+                    {
+                        Board[x * 100 + y].IsHighlighted = true;
+                        model.SelectStop(x, y);
+                    }
                     break;
                 case BuildMode.NONE:
                     break;
             }
-        }
+        }  
 
         public void ViewModel_PutStop(int x, int y)
         {
@@ -983,19 +997,14 @@ namespace SpongeBobTycoonWPF.ViewModel
                             {
                                 case 0:
                                     return color_int = 110;
-                                    break;
                                 case 1:
                                     return color_int = 111;
-                                    break;
                                 case 2:
                                     return color_int = 112;
-                                    break;
                                 case 3:
                                     return color_int = 113;
-                                    break;
                                 case 4:
                                     return color_int = 114;
-                                    break;
                             }
                             break;
                         case 2:
@@ -1003,19 +1012,14 @@ namespace SpongeBobTycoonWPF.ViewModel
                             {
                                 case 0:
                                     return color_int = 120;
-                                    break;
                                 case 1:
                                     return color_int = 121;
-                                    break;
                                 case 2:
                                     return color_int = 122;
-                                    break;
                                 case 3:
                                     return color_int = 123;
-                                    break;
                                 case 4:
                                     return color_int = 124;
-                                    break;
                             }
                             break;
                         case 3:
@@ -1023,19 +1027,14 @@ namespace SpongeBobTycoonWPF.ViewModel
                             {
                                 case 0:
                                     return color_int = 130;
-                                    break;
                                 case 1:
                                     return color_int = 131;
-                                    break;
                                 case 2:
                                     return color_int = 132;
-                                    break;
                                 case 3:
                                     return color_int = 133;
-                                    break;
                                 case 4:
                                     return color_int = 134;
-                                    break;
                             }
                             break;
                         case 4:
@@ -1043,19 +1042,14 @@ namespace SpongeBobTycoonWPF.ViewModel
                             {
                                 case 0:
                                     return color_int = 140;
-                                    break;
                                 case 1:
                                     return color_int = 141;
-                                    break;
                                 case 2:
                                     return color_int = 142;
-                                    break;
                                 case 3:
                                     return color_int = 143;
-                                    break;
                                 case 4:
                                     return color_int = 144;
-                                    break;
                             }
                             break;
                     }

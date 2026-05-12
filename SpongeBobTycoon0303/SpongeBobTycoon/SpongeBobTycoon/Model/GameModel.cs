@@ -19,7 +19,7 @@ namespace SpongeBobTycoon.Model
         private const int GAMETIME_BASE = 4;
         private const int GAMETIME_FAST = 2;
         private const int GAMETIME_FASTEST = 1;
-        
+        private const int startingMoney = 5000;
         #endregion
 
         #region Properties
@@ -33,7 +33,7 @@ namespace SpongeBobTycoon.Model
         public Vehicle? VehicleForRoute { get; set; }
         public List<Stop> StopsForRoute { get; set; }
         public int money { get; private set; }
-        public int RoadPrice = 20;
+        public int RoadPrice = 100;
         public int TerraformPrice = 250;
         #endregion
 
@@ -87,15 +87,6 @@ namespace SpongeBobTycoon.Model
             this.movingVehicles = movingVehicles;
             this.news = news;
 
-            /*
-            stops = new List<Stop>();
-            foreach (Field f in board)
-            {
-                if (f.fieldType is Stop) stops.Add((Stop)f.fieldType);
-            }
-            this.stops = stops;
-            */
-
             StopsForRoute = new List<Stop>();
             DataAccess = new DataAccess();
             timer = new GameTimer();
@@ -124,7 +115,7 @@ namespace SpongeBobTycoon.Model
             gameTime = GAMETIME_BASE;
             gameTimer = 0;
             timeStatus = TimeStatus.BASE;
-            money = 10000;
+            money = startingMoney;
             biggestVehicleID = 0;
             news = new int[4];
 
@@ -171,7 +162,7 @@ namespace SpongeBobTycoon.Model
 
             gameTimer = 0;
             timeStatus = TimeStatus.BASE;
-            money = 10000;
+            money = startingMoney;
             biggestVehicleID = 0;
             OnMoneyChanged(money);
 
@@ -318,8 +309,8 @@ namespace SpongeBobTycoon.Model
         /// BuyBridge
         /// Új hidat épít a megadott x és y koordinátákon, ha az adott mező Láva (Lava), nincs rajta lakos (Citizen), csatlakozik egy meglévő úthoz, és a mező folyó státusza megegyezik az isRiver paraméterrel. Az isFast logikai értéktől függően egy gyors (FastBridge) vagy lassú (SlowBridge) hidat példányosít. Sikeres építés esetén a szomszédos mezők alapján beállítja a híd irányát (Észak-Dél vagy Kelet-Nyugat), levonja az adott híd típusához tartozó költséget a játékos egyenlegéből, majd az OnFieldChanged eseménnyel frissíti a felhasználói felületet.
         /// </summary>
-        public void BuyBridge(int x, int y, bool isFast, bool isRiver) {
-
+        public void BuyBridge(int x, int y, bool isFast, bool isRiver) 
+        {
             if (board[x, y].fieldType is Lava lavaField && board[x, y].industry!.product is not Citizen)
             {
                 if (lavaField.isRiver && isRiver && AdjacentRoad(x,y))
@@ -376,7 +367,10 @@ namespace SpongeBobTycoon.Model
         /// PutStop
         /// A megadott x és y koordinátákon elhelyez egy megállót, miután az IsStopValid metódus segítségével ellenőrizte annak érvényességét és lekérte a hozzá tartozó ipart (Industry). Ha az elhelyezés érvényes, a játéktábla adott mezőjének isStop tulajdonságát igazra állítja, létrehoz egy új Stop objektumot, debug információkat ír ki róla a konzolra (pozíció, termék típusa és mennyisége), majd hozzáadja az új megállót a belső megállókat nyilvántartó (stops) listához.
         /// </summary>
-        public void PutStop(int x, int y) {
+        
+        public void PutStop(int x, int y) 
+        {
+            if (board[x, y].isStop) return;
 
             bool isValid;
             Industry? industry;
@@ -408,8 +402,26 @@ namespace SpongeBobTycoon.Model
                 {
                     if (stop.X == x && stop.Y == y)
                     {
+                        System.Diagnostics.Debug.WriteLine($"{stop.industry.product.GetType().Name} stop selected successfully!");
                         StopsForRoute.Add(stop);
                     }
+                }
+            }
+        }
+
+        public void DeSelectStop(int x, int y)
+        {
+            if (board[x, y].isStop == false) return;
+
+            Stop stopToRemove;
+
+            foreach (Stop stop in stops)
+            {
+                if (stop.X == x && stop.Y == y)
+                {
+                    stopToRemove = stop;
+                    StopsForRoute.Remove(stopToRemove);
+                    break;
                 }
             }
         }
@@ -608,6 +620,12 @@ namespace SpongeBobTycoon.Model
         #endregion
 
         #region Timer & Ticks
+
+        public void SimulateTimerElapsed()
+        {
+            Timer_Elapsed(this, EventArgs.Empty);
+        }
+
         public void BaseTime()
         {
             gameTime = GAMETIME_BASE;

@@ -10,7 +10,7 @@ namespace SpongeBobTycoon.Model.Products
     {
         public Net() : base()
         {
-            value = 200;
+            value = 150;
         }
     }
 }

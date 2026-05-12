@@ -58,6 +58,8 @@ namespace SpongeBobTycoon.Model.Industries
                     ingredientAmounts.Add(0);
                     ingredientsForProduction.Add(5);
                     break;
+                default:
+                    throw new Exception();
 
             }
 

@@ -16,7 +16,7 @@ namespace SpongeBobTycoon.Model
             this.product = product;
             baseTime = 1;
             timeUntilMoves = baseTime;
-            cost = 200;
+            cost = 500;
 
             switch (product)
             {
