@@ -702,7 +702,7 @@ namespace SpongeBobTycoon.Model
         }
         #endregion
 
-        private void CarStep(Vehicle v)
+        public void CarStep(Vehicle v)
         {
 
             (int,int)[] localRoute = new (int,int)[v.Route.Count];

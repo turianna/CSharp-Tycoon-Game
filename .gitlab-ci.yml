@@ -45,7 +45,7 @@ test_model:
       --results-directory TestResults
       --logger:"junit;LogFileName=TestResults.xml;MethodFormat=Class;FailureBodyFormat=Verbose"
       --collect="XPlat Code Coverage"
-      -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Exclude="[*Persistence*]*,[*ViewModel*]*"
+      -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.ExcludeByFile="**/Persistence/**/*.cs,**/ViewModels/**/*.cs,**/View/**/*.cs"
     
     - ls -R TestResults 
     
