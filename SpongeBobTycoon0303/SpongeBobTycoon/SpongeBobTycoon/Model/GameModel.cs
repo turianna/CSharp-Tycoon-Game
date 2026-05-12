@@ -30,7 +30,7 @@ namespace SpongeBobTycoon.Model
         public List<Vehicle> movingVehicles { get; set; }
         
 
-        private Vehicle? VehicleForRoute { get; set; }
+        public Vehicle? VehicleForRoute { get; set; }
         public List<Stop> StopsForRoute { get; set; }
         public int money { get; private set; }
         public int RoadPrice = 20;

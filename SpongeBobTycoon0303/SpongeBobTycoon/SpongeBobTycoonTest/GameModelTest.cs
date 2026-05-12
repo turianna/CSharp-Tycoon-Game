@@ -365,5 +365,126 @@ namespace SpongeBobTycoonTest
             Assert.AreEqual(model.money, 9800);
 
         }
+
+
+        [TestMethod]
+
+        public void TestCreateRoute()
+        {
+            
+            //Correct Route
+            model.StartNewGame();
+
+            model.BuyVehicle(VehicleType.FastCar, new Citizen());
+            Vehicle v = model.parkingVehicles[0];
+            
+            model.BuyRoad(3, 10);
+            model.BuyRoad(3, 11);
+            model.BuyRoad(3, 12);
+            model.BuyRoad(3, 13);
+            model.BuyRoad(3, 14);
+            model.BuyRoad(3, 15);
+            model.BuyRoad(3, 16);
+            model.BuyRoad(4, 16);
+            model.BuyRoad(5, 16);
+            model.BuyRoad(6, 16);
+            model.BuyRoad(7, 16);
+            model.BuyRoad(8, 16);
+            model.BuyRoad(9, 16);
+            model.BuyRoad(10, 16);
+            model.BuyRoad(11, 16);
+            model.BuyRoad(12, 16);
+            model.BuyRoad(13, 16);
+            model.BuyRoad(13, 17);
+            model.BuyRoad(13, 18);
+            model.BuyRoad(13, 19);
+            model.BuyRoad(13, 20);
+            model.BuyRoad(13, 21);
+            model.BuyRoad(13, 22);
+
+            model.PutStop(3, 10);
+            model.PutStop(13, 21);
+
+            model.SelectStop(3, 10);
+            model.SelectStop(13, 21);
+
+
+            //No chosen vehicle
+            model.CreateRoute();
+            Assert.AreEqual(model.StopsForRoute.Count, 2);
+            Assert.AreEqual(model.parkingVehicles.Count, 1);
+            Assert.AreEqual(model.movingVehicles.Count, 0);
+            Assert.IsFalse(model.board[v.x, v.y].isVehicle);
+
+            //Correct Route
+            bool addMovingVehicleEventWasFired = false;
+            model.AddMovingVehicle += (sender, e) =>
+            {
+                addMovingVehicleEventWasFired = true;
+            };
+
+            bool carSteppedWasFired = false;
+            model.CarStepped += (sender, e) =>
+            {
+                carSteppedWasFired = true;
+            };
+
+            model.ChosenVehicle(v);
+            model.CreateRoute();
+            Assert.IsTrue(addMovingVehicleEventWasFired);
+            Assert.IsTrue(carSteppedWasFired);
+            Assert.AreEqual(model.StopsForRoute.Count, 0);
+            Assert.AreEqual(model.parkingVehicles.Count, 0);
+            Assert.AreEqual(model.movingVehicles.Count, 1);
+            Assert.IsTrue(model.board[v.x, v.y].isVehicle);
+
+            //Invalid Route
+            model.StartNewGame();
+
+            model.BuyVehicle(VehicleType.FastCar, new Citizen());
+            Vehicle v2 = model.parkingVehicles[0];
+
+            model.BuyRoad(3, 10);
+            model.BuyRoad(3, 11);
+            model.BuyRoad(3, 12);
+            model.BuyRoad(3, 13);
+            model.BuyRoad(3, 14);
+            model.BuyRoad(3, 15);
+            model.BuyRoad(3, 16);
+            model.BuyRoad(4, 16);
+            model.BuyRoad(5, 16);
+            model.BuyRoad(6, 16);
+
+            model.BuyRoad(9, 16);
+            model.BuyRoad(10, 16);
+            model.BuyRoad(11, 16);
+            model.BuyRoad(12, 16);
+            model.BuyRoad(13, 16);
+            model.BuyRoad(13, 17);
+            model.BuyRoad(13, 18);
+            model.BuyRoad(13, 19);
+            model.BuyRoad(13, 20);
+            model.BuyRoad(13, 21);
+            model.BuyRoad(13, 22);
+
+            model.PutStop(3, 10);
+            model.PutStop(13, 21);
+
+            model.SelectStop(3, 10);
+            model.SelectStop(13, 21);
+
+            bool eventWasFired = false;
+
+            model.CreateRouteFailed += (sender,e) =>
+            {
+                eventWasFired = true;
+            };
+            model.CreateRoute();
+            Assert.IsTrue(eventWasFired);
+            Assert.AreEqual(model.StopsForRoute.Count, 0);
+            Assert.AreEqual(model.parkingVehicles.Count, 1);
+            Assert.AreEqual(model.movingVehicles.Count, 0);
+            Assert.IsFalse(model.board[v.x, v.y].isVehicle);
+        }
     }
 }
