@@ -8,7 +8,7 @@ namespace SpongeBobTycoon.Model.Products
 {
     public class Product
     {
-        public int amount {  get; set; }   
+        //public int amount {  get; set; }   
         public int value { get; set; }  
     }
 }

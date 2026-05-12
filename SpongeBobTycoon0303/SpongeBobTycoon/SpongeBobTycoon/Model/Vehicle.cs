@@ -1,9 +1,11 @@
 ﻿using SpongeBobTycoon.Model.FieldTypes;
 using SpongeBobTycoon.Model.Industries;
 using SpongeBobTycoon.Model.Products;
+using SpongeBobTycoon.Persistence;
 using System;
 //using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Security.Permissions;
 using System.Text;
@@ -11,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace SpongeBobTycoon.Model
 {
-    public class Vehicle 
+    public class Vehicle
     {
         private List<(int, int)> _route = new();
         public IReadOnlyList<(int, int)> Route => _route.AsReadOnly();
@@ -22,26 +24,27 @@ namespace SpongeBobTycoon.Model
         private List<int> _ingredientCapacities = new();
         public IReadOnlyList<int> IngredientCapacities => _ingredientCapacities.AsReadOnly();
 
-        public Product product { get;  set; }
+        public Product product { get; set; }
         public string productName { get; private set; }
         public string typeName { get; private set; }
         public int productAmount { get; private set; }
         public int capacity { get; set; }
 
 
-        public int ID { get;  set; }
-        public int route_index { get;set; }
-        
+        public int ID { get; set; }
+        public int route_index { get; set; }
+
         public Direction direction { get; set; }
         public int dir { get; set; }
         public int time { get; protected set; }
         protected int baseTime;
+        public int getBaseTime => baseTime;
         public int timeUntilMoves { get; set; }
         public int stepsUntilBroken { get; protected set; }
-        public int repairCost { get; protected set; } 
-        
-        public int cost { get;protected set; }
-        
+        public int repairCost { get; protected set; }
+
+        public int cost { get; protected set; }
+
         public int x;
         public int y;
         public int brokness;
@@ -74,7 +77,7 @@ namespace SpongeBobTycoon.Model
 
                     _ingredients.Add(new Spatula());
                     _ingredients.Add(new Meat());
-                    
+
                     _ingredientAmounts.Add(0);
                     _ingredientAmounts.Add(0);
 
@@ -112,17 +115,52 @@ namespace SpongeBobTycoon.Model
                     productName = "Petfood";
                     break;
                 case Spatula:
-                     productName = "Spatula";
+                    productName = "Spatula";
                     break;
                 case Wood:
                     productName = "Wood";
                     break;
             }
-            
+
 
         }
-       
-        public void AssignRoute(IEnumerable<(int,int)> routeFinal)
+
+        public Vehicle(VehicleData vehicleData)
+        {
+            _route = new List<(int, int)>();
+            foreach (Point p in vehicleData.route)
+            {
+                _route.Add((p.X, p.Y));
+            }
+
+            _ingredients = new List<Product>();
+            foreach(ProductEnum pe in vehicleData.ingredients)
+            {
+                _ingredients.Add(ProductEnumToProduct(pe));
+            }
+            _ingredientAmounts = vehicleData.ingredientAmounts;
+            _ingredientCapacities = vehicleData.ingredientCapacities;
+            product = ProductEnumToProduct(vehicleData.product);
+            productName = vehicleData.productName;
+            typeName = vehicleData.typeName;
+            productAmount = vehicleData.productAmount;
+            capacity = vehicleData.capacity;
+            ID = vehicleData.ID;
+            route_index = vehicleData.route_index;
+            direction = vehicleData.direction;
+            dir = vehicleData.dir;
+            time = vehicleData.time;
+            baseTime = vehicleData.baseTime;
+            timeUntilMoves = vehicleData.timeUntilMoves;
+            stepsUntilBroken = vehicleData.stepsUntilBroken;
+            repairCost = vehicleData.repairCost;
+            cost = vehicleData.cost;
+            x = vehicleData.x;
+            y = vehicleData.y;
+            brokness = vehicleData.brokness;
+        }
+
+        public void AssignRoute(IEnumerable<(int, int)> routeFinal)
         {
             _route.AddRange(routeFinal);
         }
@@ -184,30 +222,7 @@ namespace SpongeBobTycoon.Model
         public int CityStopReached()
         {
             //ha a jarmu egy varosba erkezik, akkor a benne levo termeket eladja, es a penzt megkapja
-            int moneyEarned=0;
-
-            switch (product)
-            {
-                case Citizen:
-                    moneyEarned = productAmount * 100;
-                    break;
-
-                case Burger:
-                    moneyEarned = productAmount * 400;
-                    break;
-
-                case Net:
-                    moneyEarned = productAmount * 200;
-                    break;
-
-                case Wood:
-                    moneyEarned = productAmount * 50;
-                    break;
-
-                case Petfood:
-                    moneyEarned = productAmount * 300;
-                    break;
-            }
+            int moneyEarned = productAmount * product.value;
 
             System.Diagnostics.Debug.WriteLine($"Vehicle {ID} sold {productAmount} of {product.GetType().Name}, making {moneyEarned} dollars.");
             productAmount = 0;
@@ -216,20 +231,20 @@ namespace SpongeBobTycoon.Model
 
         public bool CanVehicleMove(Field[,] board, List<Vehicle> allVehicles)
         {
-            int nextX = _route![(route_index+1) % (_route.Count - 1)].Item1;
-            int nextY = _route[(route_index+1) % (_route.Count - 1)].Item2;
+            int nextX = _route![(route_index + 1) % (_route.Count - 1)].Item1;
+            int nextY = _route[(route_index + 1) % (_route.Count - 1)].Item2;
             this.direction = DecideDirection(nextX, nextY, this.x, this.y);
 
             Vehicle? vehicleInTheWay = null;
             if (board[nextX, nextY].isVehicle)
             {
-                foreach(Vehicle v in allVehicles)
+                foreach (Vehicle v in allVehicles)
                 {
                     if (v == this) continue;
                     if (v.x == nextX && v.y == nextY) vehicleInTheWay = v;
                 }
-                
-                if(vehicleInTheWay != null && vehicleInTheWay.direction != InverseDirection(this.direction)) 
+
+                if (vehicleInTheWay != null && vehicleInTheWay.direction != InverseDirection(this.direction))
                 {
                     System.Diagnostics.Debug.WriteLine($"Vehicle {ID} is blocked");
                     timeUntilMoves++;
@@ -269,15 +284,15 @@ namespace SpongeBobTycoon.Model
 
         public Direction DecideDirection(int nextX, int nextY, int X, int Y)
         {
-            if(nextX == X-1 && nextY == Y)
+            if (nextX == X - 1 && nextY == Y)
             {
                 return Direction.UP;
             }
-            if(nextX == X + 1 && nextY == Y)
+            if (nextX == X + 1 && nextY == Y)
             {
                 return Direction.DOWN;
             }
-            if(nextX == X && nextY == Y - 1)
+            if (nextX == X && nextY == Y - 1)
             {
                 return Direction.LEFT;
             }
@@ -289,5 +304,23 @@ namespace SpongeBobTycoon.Model
 
 
         }
+
+        protected Product ProductEnumToProduct(ProductEnum productE)
+        {
+            switch (productE)
+            {
+                case ProductEnum.Net: return new Net();
+                case ProductEnum.Algae: return new Algae();
+                case ProductEnum.Burger: return new Burger();
+                case ProductEnum.Citizen: return new Citizen();
+                case ProductEnum.Meat: return new Meat();
+                case ProductEnum.Petfood: return new Petfood();
+                case ProductEnum.Spatula: return new Spatula();
+                case ProductEnum.Wood: return new Wood();
+            }
+
+            throw new Exception();
+        }
+
     }
 }

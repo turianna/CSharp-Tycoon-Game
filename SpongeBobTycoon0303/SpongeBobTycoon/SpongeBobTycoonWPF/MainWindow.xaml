@@ -24,7 +24,7 @@
             </Menu.ItemsPanel>
             <MenuItem Header="New Game" Command="{Binding NewGameCommand}" BorderBrush="Black"/>
             <MenuItem Header="Load" Command="{Binding LoadCommand}" BorderBrush="Black"/>
-            <MenuItem Header="Save" Command="{Binding SaveCommand}" BorderBrush="Black"/>
+            <MenuItem Header="Save" BorderBrush="Black" Click="MenuItem_Click"/>
             <MenuItem Header="Quit" Command="{Binding QuitCommand}" BorderBrush="Black"/>
             <MenuItem Header="Info" Command="{Binding InfoCommand}" BorderBrush="Black"/>
         </Menu>

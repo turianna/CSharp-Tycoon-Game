@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using Microsoft.Win32;
+using SpongeBobTycoonWPF.ViewModel;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -8,7 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using SpongeBobTycoonWPF.ViewModel;
+using System.IO;
 
 namespace SpongeBobTycoonWPF
 {
@@ -48,6 +50,32 @@ namespace SpongeBobTycoonWPF
                 // Ez megakadályozza, hogy a zoomolással egy időben görgessen is a ScrollViewer
                 e.Handled = true;
             }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            
+            var saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+
+            string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string savesPath = System.IO.Path.Combine(appData, "SpongeBobTycoon", "saves");
+
+            System.IO.Directory.CreateDirectory(savesPath);
+
+            saveFileDialog.InitialDirectory = savesPath;
+            saveFileDialog.Title = "Mentsd el a sárga szivacs birodalmadat! xd";
+
+            saveFileDialog.Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string selectedFileName = saveFileDialog.FileName;
+
+                var viewModel = (MainViewModel)this.DataContext;
+                viewModel.SaveGame(selectedFileName);
+
+            }
+
         }
     }
 }

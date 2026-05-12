@@ -8,5 +8,9 @@ namespace SpongeBobTycoon.Model.Products
 {
     public class Citizen : Product
     {
+        public Citizen() : base()
+        {
+            value = 100;
+        }
     }
 }

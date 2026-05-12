@@ -1,13 +1,14 @@
 using SpongeBobTycoon.Model;
-using SpongeBobTycoon.Model.Industries;
 using SpongeBobTycoon.Model.FieldTypes;
+using SpongeBobTycoon.Model.Industries;
 using SpongeBobTycoon.Model.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace SpongeBobTycoon.Persistence
 {
@@ -17,9 +18,94 @@ namespace SpongeBobTycoon.Persistence
         private List<Field> forests = new List<Field>();
         private List<Industry> industries = new List<Industry>();
 
+        public void SaveGameDataToJson(GameData data, string fileName)
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string jsonString = System.Text.Json.JsonSerializer.Serialize<GameData>(data, options);
 
-        public async Task<GameData> Load(String path) { return new GameData(); }
-        public async Task Save(String path, GameModel model) { }
+            string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string saveFolder = Path.Combine(appData, "SpongeBobTycoon", "saves");
+            string filePath = Path.Combine(saveFolder, fileName);
+
+            System.Diagnostics.Debug.WriteLine($"Saving game data to: {saveFolder}");
+            // This line prevents the DirectoryNotFoundException
+            Directory.CreateDirectory(saveFolder);
+
+            File.WriteAllText(filePath, jsonString);
+        }
+
+        public static (string, int, int) GetSaveFileData(string file)
+        {
+            string jsonString = File.ReadAllText(file);
+            GameData? gameData = System.Text.Json.JsonSerializer.Deserialize<GameData>(jsonString);
+            if (gameData is null) throw new Exception("Failed to deserialize game data.");
+            
+            string fileName = Path.GetFileNameWithoutExtension(file);
+            return (fileName, gameData.gameTimer, gameData.money);
+        }
+
+        public GameModel LoadGameFromJson(string filePath)
+        {
+            string jsonString = File.ReadAllText(filePath);
+            GameData? gameData = System.Text.Json.JsonSerializer.Deserialize<GameData>(jsonString);
+            if (gameData is null) throw new Exception("Failed to deserialize game data.");
+
+            Field[,] board = new Field[50, 100];
+            int gameTimer = gameData.gameTimer;
+            int gameTime = gameData.gameTime;
+            int money = gameData.money;
+            int[] news = gameData.news;
+            List<Field> forests = new List<Field>();
+            List<Stop> stops = new List<Stop>();
+            List<Industry> industries = new List<Industry>();
+            List<Vehicle> parkingVehicles = new List<Vehicle>();
+            List<Vehicle> movingVehicles = new List<Vehicle>();
+
+            //industries
+            foreach (IndustryData industryData in gameData.industries)
+            {
+                if (industryData.isFactory) industries.Add(new Factory(industryData));
+                else industries.Add(new Farm(industryData));
+            }
+
+            //board
+            for (int i = 0; i < 50; i++)
+            {
+                for (int j = 0; j < 100; j++)
+                {
+                    board[i,j] = new Field(gameData.board[i][j], industries);
+                }
+            }
+
+            //forests
+            foreach(Field field in board)
+            {
+                if (field.fieldType is Forest) forests.Add(field);
+            }
+
+            //stops
+            foreach (StopData stop in gameData.stops)
+            {
+                stops.Add(new Stop(stop.x, stop.y, industries[stop.industryIndex]));
+            }
+
+            //parking vehicles
+            foreach (VehicleData vehicleData in gameData.parkingVehicles)
+            {
+                if (vehicleData.isFastCar) parkingVehicles.Add(new FastCar(vehicleData));
+                else parkingVehicles.Add(new SlowCar(vehicleData));
+            }
+
+            //moving vehicles
+            foreach (VehicleData vehicleData in gameData.movingVehicles)
+            {
+                if (vehicleData.isFastCar) movingVehicles.Add(new FastCar(vehicleData));
+                else movingVehicles.Add(new SlowCar(vehicleData));
+            }
+
+            return new GameModel(board, gameTime, gameTimer, money, forests, stops, industries, parkingVehicles, movingVehicles, news);
+
+        }
 
         public Field[,] LoadMap()
         {
@@ -198,35 +284,34 @@ namespace SpongeBobTycoon.Persistence
             switch (fieldType)
             {
                 case 'E':
-                    return (new Grass(), new Empty(null!));
+                    return (new Grass(), new EmptyIndustry());
                 case 'R':
-                    return (new Lava(true), new Industry(null!));
+                    return (new Lava(true), new EmptyIndustry());
                 case 'L':
-                    return (new Lava(false), new Industry(null!));
+                    return (new Lava(false), new EmptyIndustry());
                 case 'C':
                     return (new Grass(), new Farm(new Citizen())); 
                 case 'D':
                     return (new Road(), new Farm(new Citizen()));
                 case 'T':
-                    //return (new Forest(), null);
-                    return (new Forest(), new Industry(null!));
+                    return (new Forest(), new EmptyIndustry());
                 case 'F':
                     switch (factoryType)
                     {
                         case 'H':
-                            return (new FieldType(), new Factory(new Burger()));
+                            return (new FactoryField(), new Factory(new Burger()));
                         case 'S':
-                            return (new FieldType(), new Farm(new Spatula()));
+                            return (new FactoryField(), new Farm(new Spatula()));
                         case 'N':
-                            return (new FieldType(), new Farm(new Net()));
+                            return (new FactoryField(), new Farm(new Net()));
                         case 'M':
-                            return (new FieldType(), new Farm(new Meat()));
+                            return (new FactoryField(), new Farm(new Meat()));
                         case 'K':
-                            return (new FieldType(), new Factory(new Petfood()));
+                            return (new FactoryField(), new Factory(new Petfood()));
                         case 'F':
-                            return (new FieldType(), new Farm(new Wood()));
+                            return (new FactoryField(), new Farm(new Wood()));
                         case 'A':
-                            return (new FieldType(), new Farm(new Algae()));
+                            return (new FactoryField(), new Farm(new Algae()));
                         default:
                             throw new InvalidCastException();
                     }
@@ -261,5 +346,7 @@ namespace SpongeBobTycoon.Persistence
             return industries;
 
         }
+
+        
     }
 }

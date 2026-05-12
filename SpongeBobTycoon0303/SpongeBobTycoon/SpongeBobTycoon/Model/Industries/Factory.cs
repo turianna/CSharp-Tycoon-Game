@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using SpongeBobTycoon.Model.Products;
+using SpongeBobTycoon.Persistence;
 
 namespace SpongeBobTycoon.Model.Industries
 {
@@ -13,13 +15,24 @@ namespace SpongeBobTycoon.Model.Industries
         private List<int> ingredientAmounts;
         private List<int> ingredientsForProduction;
 
-        bool producing;
+        public List<int> getIngredientAmounts => ingredientAmounts;
+        public List<int> getIngredientsForProduction => ingredientsForProduction;
+        public List<Product> getIngredients => ingredients;
 
-        public Factory(Product product) : base(product)
+        public bool producing;
+
+        public Factory(Product product) : base()
         {
+            this.product = product;
+            productionTime = random.Next(minProductionTime, maxProductionTime + 1);
+            productionTimeLeft = productionTime;
+            productAmount = 0;
+
             this.ingredients = new List<Product>();
             this.ingredientAmounts = new List<int>();
             this.ingredientsForProduction = new List<int>();
+
+            producing = false;
 
             switch (product)
             {
@@ -43,7 +56,40 @@ namespace SpongeBobTycoon.Model.Industries
 
                     ingredients.Add(new Algae());
                     ingredientAmounts.Add(0);
-                    ingredientsForProduction.Add(10);
+                    ingredientsForProduction.Add(5);
+                    break;
+
+            }
+
+        }
+
+        public Factory(IndustryData industryData)
+        {
+            this.productAmount = industryData.ProductAmount;
+            ingredients = new List<Product>();
+            foreach(ProductEnum pe in industryData.ingredients)
+            {
+                ingredients.Add(ProductEnumToProduct(pe));
+            }
+            
+            this.productionTime = industryData.productionTime;
+            this.productionTimeLeft = industryData.productionTimeLeft;
+            this.ingredientAmounts = industryData.ingredientAmounts;
+            this.ingredientsForProduction = industryData.ingredientsForProduction;
+            producing = industryData.producing;
+
+            product = ProductEnumToProduct(industryData.product);
+
+            switch (product)
+            {
+                case Burger:
+                    productCapacity = 10;
+                    productPerProduce = 1;
+                    break;
+
+                case Petfood:
+                    productCapacity = 10;
+                    productPerProduce = 1;
                     break;
 
             }
@@ -53,11 +99,6 @@ namespace SpongeBobTycoon.Model.Industries
         public void Produce()
         {
 
-            for (int i = 0; i < ingredients.Count; i++)
-            {
-                if (ingredientAmounts[i] < ingredientsForProduction[i] && !producing) return;
-            }
-
             if (producing)
             {
                 productionTimeLeft--;
@@ -65,6 +106,11 @@ namespace SpongeBobTycoon.Model.Industries
 
             if (!producing)
             {
+                for (int i = 0; i < ingredients.Count; i++)
+                {
+                    if (ingredientAmounts[i] < ingredientsForProduction[i]) return;
+                }
+
                 producing = true;
                 productionTimeLeft = productionTime;
                 
@@ -89,7 +135,7 @@ namespace SpongeBobTycoon.Model.Industries
 
                 productionTimeLeft = productionTime;
 
-                //System.Diagnostics.Debug.WriteLine($"Produced {product.GetType().Name}. New amount: {productAmount}");
+                System.Diagnostics.Debug.WriteLine($"Produced {product.GetType().Name}. New amount: {productAmount}");
             }
 
         }
@@ -106,7 +152,6 @@ namespace SpongeBobTycoon.Model.Industries
                 ingredientAmounts[i] += count;
             }
         }
-
 
     }
 }

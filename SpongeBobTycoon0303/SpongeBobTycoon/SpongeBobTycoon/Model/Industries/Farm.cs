@@ -4,13 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SpongeBobTycoon.Model.Products;
+using SpongeBobTycoon.Persistence;
 
 namespace SpongeBobTycoon.Model.Industries
 {
     public class Farm : Industry
     {
-        public Farm(Product product) : base(product)
+        public Farm(Product product) : base()
         {
+            this.product = product;
+            productionTime = random.Next(minProductionTime, maxProductionTime + 1);
+            productionTimeLeft = productionTime;
+            productAmount = 0;
+
             switch (product)
             {
                 case Algae:
@@ -44,6 +50,48 @@ namespace SpongeBobTycoon.Model.Industries
                     break;
             }
         }
+
+        public Farm(IndustryData industryData)
+        {
+            this.productionTime = industryData.productionTime;
+            this.productionTimeLeft = industryData.productionTimeLeft;
+            this.productAmount = industryData.ProductAmount;
+            product = ProductEnumToProduct(industryData.product);
+
+            switch (product)
+            {
+                case Algae:
+                    productCapacity = 50;
+                    productPerProduce = 5;
+                    break;
+
+                case Citizen:
+                    productCapacity = 100;
+                    productPerProduce = 5;
+                    break;
+
+                case Meat:
+                    productCapacity = 20;
+                    productPerProduce = 4;
+                    break;
+
+                case Net:
+                    productCapacity = 10;
+                    productPerProduce = 1;
+                    break;
+
+                case Spatula:
+                    productCapacity = 10;
+                    productPerProduce = 1;
+                    break;
+
+                case Wood:
+                    productCapacity = 50;
+                    productPerProduce = 5;
+                    break;
+            }
+        }
+
         public void Produce()
         {
 

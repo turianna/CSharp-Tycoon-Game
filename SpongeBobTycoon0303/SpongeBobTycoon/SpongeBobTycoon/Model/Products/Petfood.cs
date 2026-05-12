@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 namespace SpongeBobTycoon.Model.Products
 {
     public class Petfood : Product
-    { 
+    {
+        public Petfood()
+        {
+            value = 300;
+        }
     }
 }

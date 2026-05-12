@@ -8,5 +8,9 @@ namespace SpongeBobTycoon.Model.Products
 {
     public class Burger : Product
     {
+        public Burger()
+        {
+            value = 400;
+        }
     }
 }
