@@ -596,7 +596,7 @@ namespace SpongeBobTycoonWPF.ViewModel
         
         #region Model event handlers
 
-        public void Model_CarStepped(object sender, (int x, int y, int v) coord)
+        public void Model_CarStepped(object? sender, (int x, int y, int v) coord)
         {
             // Your board is a 1D array representing a 2D grid (x * 100 + y)
             int index = coord.x * 100 + coord.y;
@@ -734,14 +734,7 @@ namespace SpongeBobTycoonWPF.ViewModel
                     break;
             }
         }
-        private void UpdateField(FieldChangedEventArgs e)
-        {
-           
-            int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry!, model.Board(e.x, e.y).Z, model.Board(e.x,e.y).id);
-            Board[e.x * 100 + e.y].Color = color_int;
-            int roadPicture = DecideRoadPicture(model.Board(e.x, e.y).fieldType);
-            Board[e.x * 100 + e.y].RoadPicture = roadPicture;
-        }
+        
 
         private void Model_Refresh(object? sender, EventArgs e)
         {
@@ -765,7 +758,7 @@ namespace SpongeBobTycoonWPF.ViewModel
         private void UpdateField(FieldChangedEventArgs e)
         {
 
-            int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry, model.Board(e.x, e.y).Z, model.Board(e.x, e.y).id);
+            int color_int = DecideColor_int(model.Board(e.x, e.y).fieldType, model.Board(e.x, e.y).industry!, model.Board(e.x, e.y).Z, model.Board(e.x, e.y).id);
             Board[e.x * 100 + e.y].Color = color_int;
             int roadPicture = DecideRoadPicture(model.Board(e.x, e.y).fieldType);
             Board[e.x * 100 + e.y].RoadPicture = roadPicture;
@@ -871,23 +864,7 @@ namespace SpongeBobTycoonWPF.ViewModel
         }*/
         #endregion
 
-        public void Model_CarStepped(object? sender, (int x, int y, int v) coord)
-        {
-            // Your board is a 1D array representing a 2D grid (x * 100 + y)
-            int index = coord.x * 100 + coord.y;
-
-            // Check the model to see if a vehicle is currently on this specific tile
-            if (model.board[coord.x, coord.y].isVehicle)
-            {
-                // Draw the vehicle
-                Board[index].VehiclePicture = DecideVehiclePicture(coord.v);
-            }
-            else
-            {
-                // Clear the vehicle from the tile (0 = empty)
-                Board[index].VehiclePicture = 0;
-            }
-        }
+        
 
         #region Decision methods for pictures
         private int DecideVehiclePicture(int v)
