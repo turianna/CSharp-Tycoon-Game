@@ -11,15 +11,27 @@ namespace SpongeBobTycoon.Persistence
     //fat DTO - stores factory and farm data at the same time
     public class IndustryData
     {
+        public bool isFactory { get; set; }
         public int ProductAmount { get; set; }
-        public int ProductValue { get; set; }
+        public ProductEnum product { get; set; }
         public List<ProductEnum> ingredients { get; set; }
         public int productionTimeLeft { get; set; }
+        public int productionTime { get; set; }
         public List<int> ingredientAmounts { get; set; }
         public List<int> ingredientsForProduction { get; set; }
+        public bool producing { get; set; }
+
+        public IndustryData()
+        {
+            ingredientAmounts = new List<int>();
+            ingredientsForProduction = new List<int>();
+            ingredients = new List<ProductEnum>();
+        }
 
         public IndustryData(Industry industry)
         {
+            isFactory = false;
+
             ingredientAmounts = new List<int>();
             ingredientsForProduction = new List<int>();
             ingredients = new List<ProductEnum>();
@@ -27,11 +39,13 @@ namespace SpongeBobTycoon.Persistence
             if(industry is null) return;
 
             this.ProductAmount = industry.productAmount;
-            this.ProductValue = industry.product.value;
+            this.productionTime = industry.getProductionTime;
             this.productionTimeLeft = industry.getProductionTimeLeft;
 
             if (industry is Factory)
             {
+                isFactory = true;
+
                 Factory factory = (Factory)industry;
 
                 this.ingredientAmounts = factory.getIngredientAmounts;
@@ -40,7 +54,9 @@ namespace SpongeBobTycoon.Persistence
                 {
                     this.ingredients.Add(productToEnum(p));
                 }
+                this.producing = factory.producing;
             }
+            product = productToEnum(industry.product);
 
         }
 

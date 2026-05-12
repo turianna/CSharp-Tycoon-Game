@@ -8,5 +8,9 @@ namespace SpongeBobTycoon.Model.Products
 {
     public class Wood : Product
     {
+        public Wood()
+        {
+            value = 50;
+        }
     }
 }

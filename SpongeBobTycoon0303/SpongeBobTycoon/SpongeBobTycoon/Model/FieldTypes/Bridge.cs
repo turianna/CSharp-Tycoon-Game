@@ -8,8 +8,6 @@ namespace SpongeBobTycoon.Model.FieldTypes
 {
     public class Bridge : FieldType
     {
-        public int cost { get; set; }
-        public int speed { get; set; }
         public bool isRiver { get; set; }
         public RoadType roadType;
 

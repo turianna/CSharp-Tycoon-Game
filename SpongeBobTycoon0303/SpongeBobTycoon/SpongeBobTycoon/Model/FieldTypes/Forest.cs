@@ -9,10 +9,8 @@ namespace SpongeBobTycoon.Model.FieldTypes
     public class Forest : FieldType
     {
         public int treeCount;
-        private int timeUntilNewTree;
-        private int timeUntilSpread;
-        public int getTimeUntilSpread() { return timeUntilSpread; }
-        public int getTimeUntilNewTree() { return timeUntilNewTree; }
+        public int timeUntilNewTree;
+        public int timeUntilSpread;
         public bool readyToSpread = false;
         private Random random = new Random();
 

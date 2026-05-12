@@ -1,4 +1,5 @@
 using SpongeBobTycoon.Model.Products;
+using SpongeBobTycoon.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace SpongeBobTycoon.Model
 {
     public class SlowCar : Vehicle
     {
+        public SlowCar(VehicleData vd) : base(vd) { }
         public SlowCar(Product product) : base(product)
         {
             this.product = product;

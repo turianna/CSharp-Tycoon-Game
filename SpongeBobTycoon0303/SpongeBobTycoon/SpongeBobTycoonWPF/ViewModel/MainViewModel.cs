@@ -50,6 +50,8 @@ namespace SpongeBobTycoonWPF.ViewModel
         private string? woodFactoryInfo;
 
         private bool route_ison;
+
+        #region Properties
         public int Money
         {
             get => money;
@@ -172,7 +174,9 @@ namespace SpongeBobTycoonWPF.ViewModel
         {
             get { return $"Wood factory - Available wood: {NetFactoryInfo}"; }
         }
+        #endregion
 
+        #region Commands
         public DelegateCommand StartCommand { get; private set; }
         public DelegateCommand NewGameCommand { get; private set; }
         public DelegateCommand SaveCommand { get; private set; }
@@ -202,7 +206,8 @@ namespace SpongeBobTycoonWPF.ViewModel
         public DelegateCommand BuyLakeFastBridgeCommand { get; private set; }
         public DelegateCommand BuyLakeSlowBridgeCommand { get; private set; }
 
-        
+        #endregion
+
         public BuildMode structure;
 
         public ObservableCollection<GameField> Board { get; private set; }
@@ -237,8 +242,8 @@ namespace SpongeBobTycoonWPF.ViewModel
         {
             Vehicle fastvehicle = new FastCar(new Wood());
             Vehicle slowvehicle = new SlowCar(new Wood());
-            Bridge slowbridge = new SlowBridge(true);
-            Bridge fastbridge = new FastBridge(true);
+            SlowBridge slowbridge = new SlowBridge(true);
+            FastBridge fastbridge = new FastBridge(true);
 
             this.model = model;
             Money = model.money;
@@ -288,6 +293,7 @@ namespace SpongeBobTycoonWPF.ViewModel
             BuyLakeSlowBridgeCommand = new DelegateCommand(param => structure = BuildMode.SLOWLAKEBRIDGE);
             TerraformUpCommand = new DelegateCommand(param => structure = BuildMode.TERRAFORM_UP);
             TerraformDownCommand = new DelegateCommand(param => structure = BuildMode.TERRAFORM_DOWN);
+            //SaveCommand = new DelegateCommand(param => SaveGame());
 
             //ExitBuildCommand = new DelegateCommand(param => structure = BuildMode.NONE);
 
@@ -299,7 +305,9 @@ namespace SpongeBobTycoonWPF.ViewModel
             Board = new ObservableCollection<GameField>();
             Create();
         }
-           
+
+        
+
         private void Create()
         {
             for (int i = 0; i < 50; i++) //i = y
@@ -334,6 +342,11 @@ namespace SpongeBobTycoonWPF.ViewModel
                 }
 
             }
+        }
+
+        public void SaveGame(string path)
+        {
+            model.SaveGame(path);
         }
 
         private void StopTime()

@@ -8,5 +8,9 @@ namespace SpongeBobTycoon.Model.Products
 {
     public class Net : Product
     {
+        public Net() : base()
+        {
+            value = 200;
+        }
     }
 }

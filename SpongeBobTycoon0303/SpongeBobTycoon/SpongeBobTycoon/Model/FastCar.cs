@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SpongeBobTycoon.Persistence;
 
 namespace SpongeBobTycoon.Model
 {
     public class FastCar : Vehicle
     {
+        public FastCar(VehicleData vd) : base(vd) { }
         public FastCar(Product product) : base(product)
         {
             this.product = product;

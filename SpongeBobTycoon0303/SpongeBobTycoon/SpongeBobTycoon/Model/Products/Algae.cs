@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace SpongeBobTycoon.Model.Products
 {
     public class Algae : Product
-    { 
+    {
+
     }
 }
