@@ -13,11 +13,15 @@ namespace SpongeBobTycoon.Persistence
 {
     public class GameData
     {
-        public FieldData[][] board { get; set; }
+        public int gameTimer { get; set; }
         public int gameTime { get; set; }
         public int money { get; set; }
+
+        public FieldData[][] board { get; set; }
+        
         public List<FieldData> forests { get; set; }
         public List<IndustryData> industries { get; set; }
+        public List<StopData> stops { get; set; }
         public List<VehicleData> parkingVehicles { get; set; }
         public List<VehicleData> movingVehicles { get; set; }
         public int[] news { get; set; }
@@ -29,6 +33,7 @@ namespace SpongeBobTycoon.Persistence
             industries = new List<IndustryData>();
             parkingVehicles = new List<VehicleData>();
             movingVehicles = new List<VehicleData>();
+            stops = new List<StopData>();
             news = new int[4];
         }
         public GameData(GameModel model)
@@ -37,7 +42,9 @@ namespace SpongeBobTycoon.Persistence
             industries = new List<IndustryData>();
             parkingVehicles = new List<VehicleData>();
             movingVehicles = new List<VehicleData>();
+            stops = new List<StopData>();
 
+            this.gameTimer = model.gameTimer;
             this.gameTime = model.gameTime;
             this.money = model.money;
             this.news = model.getNews;
@@ -66,8 +73,6 @@ namespace SpongeBobTycoon.Persistence
                 }
             }
 
-
-
             //vehicle
             foreach (Vehicle parkingVehicle in model.parkingVehicles)
             {
@@ -80,6 +85,13 @@ namespace SpongeBobTycoon.Persistence
                 VehicleData vehicleData = new VehicleData(movingVehicle);
                 movingVehicles.Add(vehicleData);
 
+            }
+
+            //stops
+            foreach(Stop stop in model.stops)
+            {
+                int industryIndex = getIndustryIndex(stop.industry, model.GetIndustries());
+                stops.Add(new StopData(stop.X, stop.Y, industryIndex));
             }
         }
 

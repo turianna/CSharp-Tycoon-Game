@@ -74,22 +74,27 @@ namespace SpongeBobTycoon.Model
         public List<Field> GetForests() => forests;
         public List<Industry> GetIndustries() => industries;
 
-        public GameModel(Field[,] board, int gameTime, int money, List<Field> forests, List<Industry> industries, List<Vehicle> parkingVehicles, List<Vehicle> movingVehicles, int[] news)
+        public GameModel(Field[,] board, int gameTime, int gameTimer, int money, List<Field> forests, List<Stop> stops, List<Industry> industries, List<Vehicle> parkingVehicles, List<Vehicle> movingVehicles, int[] news)
         {
             this.board = board;
             this.gameTime = gameTime;
+            this.gameTimer = gameTimer;
             this.money = money;
             this.forests = forests;
+            this.stops = stops;
             this.industries = industries;
             this.parkingVehicles = parkingVehicles;
             this.movingVehicles = movingVehicles;
             this.news = news;
 
+            /*
             stops = new List<Stop>();
             foreach (Field f in board)
             {
                 if (f.fieldType is Stop) stops.Add((Stop)f.fieldType);
             }
+            this.stops = stops;
+            */
 
             StopsForRoute = new List<Stop>();
             DataAccess = new DataAccess();
@@ -486,7 +491,6 @@ namespace SpongeBobTycoon.Model
         }
         #endregion
 
-        public async Task LoadGame(String path) { }
         public void SaveGame(string path)
         {
             GameData gameData = new GameData(this);

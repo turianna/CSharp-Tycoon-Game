@@ -49,6 +49,9 @@ namespace SpongeBobTycoon.Model
             this.id = fieldData.id;
 
 
+            if (fieldData.industryIndex == -1) industry = new EmptyIndustry();
+            else industry = industries[fieldData.industryIndex];
+
             fieldType = new FieldType();
             FieldTypeData ftd = fieldData.FieldTypeData;
             switch (ftd.fieldType)
@@ -71,6 +74,7 @@ namespace SpongeBobTycoon.Model
                     road.direction = ftd.direction;
                     road.vehicle_dir = ftd.vehicle_dir;
                     road.roadType = ftd.roadType;
+                    this.fieldType = road;
                     break;
                 
                 case FieldTypeEnum.Forest:
@@ -78,6 +82,7 @@ namespace SpongeBobTycoon.Model
                     forest.treeCount = ftd.treeCount;
                     forest.timeUntilNewTree = ftd.timeUntilNewTree;
                     forest.timeUntilSpread = ftd.timeUntilSpread;
+                    this.fieldType = forest;
                     break;
                 
                 case FieldTypeEnum.Lava:
@@ -99,8 +104,6 @@ namespace SpongeBobTycoon.Model
                     break;
             }
 
-            if (fieldData.industryIndex == -1) industry = new Industry();
-            else industry = industries[fieldData.industryIndex];
         }
     }
 }

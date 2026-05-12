@@ -70,6 +70,7 @@ namespace SpongeBobTycoon.Persistence
                     Road road = (Road)fieldType;
                     this.direction = road.direction;
                     this.vehicle_dir = road.vehicle_dir;
+                    this.roadType = road.roadType;
                     break;
                 case Forest:
                     this.fieldType = FieldTypeEnum.Forest;

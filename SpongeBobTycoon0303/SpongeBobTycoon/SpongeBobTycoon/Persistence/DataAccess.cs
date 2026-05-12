@@ -34,6 +34,16 @@ namespace SpongeBobTycoon.Persistence
             File.WriteAllText(filePath, jsonString);
         }
 
+        public static (string, int, int) GetSaveFileData(string file)
+        {
+            string jsonString = File.ReadAllText(file);
+            GameData? gameData = System.Text.Json.JsonSerializer.Deserialize<GameData>(jsonString);
+            if (gameData is null) throw new Exception("Failed to deserialize game data.");
+            
+            string fileName = Path.GetFileNameWithoutExtension(file);
+            return (fileName, gameData.gameTimer, gameData.money);
+        }
+
         public GameModel LoadGameFromJson(string filePath)
         {
             string jsonString = File.ReadAllText(filePath);
@@ -41,10 +51,12 @@ namespace SpongeBobTycoon.Persistence
             if (gameData is null) throw new Exception("Failed to deserialize game data.");
 
             Field[,] board = new Field[50, 100];
+            int gameTimer = gameData.gameTimer;
             int gameTime = gameData.gameTime;
             int money = gameData.money;
             int[] news = gameData.news;
             List<Field> forests = new List<Field>();
+            List<Stop> stops = new List<Stop>();
             List<Industry> industries = new List<Industry>();
             List<Vehicle> parkingVehicles = new List<Vehicle>();
             List<Vehicle> movingVehicles = new List<Vehicle>();
@@ -71,8 +83,14 @@ namespace SpongeBobTycoon.Persistence
                 if (field.fieldType is Forest) forests.Add(field);
             }
 
+            //stops
+            foreach (StopData stop in gameData.stops)
+            {
+                stops.Add(new Stop(stop.x, stop.y, industries[stop.industryIndex]));
+            }
+
             //parking vehicles
-            foreach(VehicleData vehicleData in gameData.parkingVehicles)
+            foreach (VehicleData vehicleData in gameData.parkingVehicles)
             {
                 if (vehicleData.isFastCar) parkingVehicles.Add(new FastCar(vehicleData));
                 else parkingVehicles.Add(new SlowCar(vehicleData));
@@ -85,7 +103,7 @@ namespace SpongeBobTycoon.Persistence
                 else movingVehicles.Add(new SlowCar(vehicleData));
             }
 
-            return new GameModel(board, gameTime, money, forests, industries, parkingVehicles, movingVehicles, news);
+            return new GameModel(board, gameTime, gameTimer, money, forests, stops, industries, parkingVehicles, movingVehicles, news);
 
         }
 
