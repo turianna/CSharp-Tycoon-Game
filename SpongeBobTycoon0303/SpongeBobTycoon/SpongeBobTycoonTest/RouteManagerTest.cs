@@ -9,15 +9,11 @@ namespace SpongeBobTycoonTest;
 [TestClass]
 public class RouteManagerTest
 {
-    private DataAccess dataAccess;
-    private GameModel model;
     private RouteManager routeManager;
     private Vehicle vehicleWood;
 
     public RouteManagerTest()
     {
-        dataAccess = new DataAccess();
-        model = new GameModel(dataAccess);
         vehicleWood = new Vehicle(new Wood());
         routeManager = new RouteManager(vehicleWood);
     }

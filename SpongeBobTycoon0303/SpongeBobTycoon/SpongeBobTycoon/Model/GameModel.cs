@@ -139,6 +139,11 @@ namespace SpongeBobTycoon.Model
 
 
         #region Initialization
+        /// <summary>
+        /// StartNewGame
+        /// Elindít egy új játékot: leállítja az időzítőt, biztonságosan törli a meglévő mozgó és parkoló járműveket valamint a megállókat. Újratölti a pályát (50x100) és az erdőket a DataAccess segítségével, frissíti a nézetet, visszaállítja a játékidőt alaphelyzetbe, 10 000-re állítja az egyenleget, majd újraindítja a fő időzítőt.
+        /// </summary>
+
         public void StartNewGame()
         {
             timer.Stop();
@@ -172,6 +177,10 @@ namespace SpongeBobTycoon.Model
 
             timer.Start();
         }
+        /// <summary>
+        /// InitializeBoard
+        /// Egy 50x100-as ciklussal végighalad a pályán, és minden cellát alaphelyzetbe állít egy teljesen üres, kezdőértékekkel (Direction.NONE, üres Industry) rendelkező Field objektummal, előkészítve a táblát a játékra.
+        /// </summary>
 
         public void InitializeBoard()
         {
@@ -186,6 +195,10 @@ namespace SpongeBobTycoon.Model
         #endregion
 
         #region Buying and Building
+        /// <summary>
+        /// BuyRoad
+        /// Új utat épít a megadott x (sor) és y (oszlop) koordinátákon, ha az adott mező fű vagy erdő, nincs rajta lakos (Citizen) és csatlakozik meglévő úthoz. Fű esetén az alapértelmezett útépítési költséget (RoadPrice) vonja le, erdő esetén annak a háromszorosát (ilyenkor a fát is törli a listából). Sikeres építés után beállítja az út irányát a szomszédok alapján, levonja a pénzt és frissíti a képernyőt.
+        /// </summary>
         public void BuyRoad(int x, int y) {
 
             if (board[x,y].fieldType is Grass && board[x,y].industry!.product is not Citizen && AdjacentRoad(x, y))
@@ -214,6 +227,10 @@ namespace SpongeBobTycoon.Model
             }
 
         }
+        /// <summary>
+        /// BuyVehicle
+        /// Vásárol egy új járművet a megadott típus (FastCar vagy SlowCar) és a hozzá tartozó termék (Product) alapján. A metódus növeli a globális járműazonosítót, példányosítja a járművet és beállítja az ID-ját (ismeretlen típus esetén kivételt dob). Ezután levonja a jármű árát az egyenlegből, beleteszi a parkoló járművek (parkingVehicles) listájába, debug információkat ír ki a konzolra a járműről és annak összetevőiről (Ingredients), majd kiváltja a nézetet frissítő OnVehicleBought eseményt.
+        /// </summary>
         public void BuyVehicle(VehicleType vehicleType, Product product) 
         {
             Vehicle vehicle;
@@ -253,9 +270,12 @@ namespace SpongeBobTycoon.Model
         {
             VehicleForRoute = v;
         }
-        
-        
 
+
+        /// <summary>
+        /// AdjacentRoad
+        /// Megvizsgálja a megadott x és y koordináták 4 irányú (észak, dél, kelet, nyugat) szomszédságát, és visszaadja, hogy van-e velük határos út. A metódus először lenullázza a szomszédokat nyilvántartó 'news' tömböt, majd ha a pályán belül talál szomszédos utat (Road) vagy hidat (Bridge), beállítja a tömb megfelelő elemét 1-re. Csak akkor tér vissza igaz (true) értékkel, ha létezik legalább egy szomszédos közlekedési elem, és az összes megtalált szomszéd magasságkülönbsége (Z érték) az adott mezőhöz képest szigorúan kisebb, mint 2.
+        /// </summary>
         public bool AdjacentRoad(int x, int y)
         {
             bool AnyRoad = false;
@@ -293,6 +313,11 @@ namespace SpongeBobTycoon.Model
             
             return (AnyRoad && RightHeight);
         }
+
+        /// <summary>
+        /// BuyBridge
+        /// Új hidat épít a megadott x és y koordinátákon, ha az adott mező Láva (Lava), nincs rajta lakos (Citizen), csatlakozik egy meglévő úthoz, és a mező folyó státusza megegyezik az isRiver paraméterrel. Az isFast logikai értéktől függően egy gyors (FastBridge) vagy lassú (SlowBridge) hidat példányosít. Sikeres építés esetén a szomszédos mezők alapján beállítja a híd irányát (Észak-Dél vagy Kelet-Nyugat), levonja az adott híd típusához tartozó költséget a játékos egyenlegéből, majd az OnFieldChanged eseménnyel frissíti a felhasználói felületet.
+        /// </summary>
         public void BuyBridge(int x, int y, bool isFast, bool isRiver) {
 
             if (board[x, y].fieldType is Lava lavaField && board[x, y].industry!.product is not Citizen)
@@ -347,6 +372,10 @@ namespace SpongeBobTycoon.Model
         #endregion
 
         #region Routes & Stops
+        /// <summary>
+        /// PutStop
+        /// A megadott x és y koordinátákon elhelyez egy megállót, miután az IsStopValid metódus segítségével ellenőrizte annak érvényességét és lekérte a hozzá tartozó ipart (Industry). Ha az elhelyezés érvényes, a játéktábla adott mezőjének isStop tulajdonságát igazra állítja, létrehoz egy új Stop objektumot, debug információkat ír ki róla a konzolra (pozíció, termék típusa és mennyisége), majd hozzáadja az új megállót a belső megállókat nyilvántartó (stops) listához.
+        /// </summary>
         public void PutStop(int x, int y) {
 
             bool isValid;
@@ -366,8 +395,11 @@ namespace SpongeBobTycoon.Model
             }
             
         }
-        
 
+        /// <summary>
+        /// SelectStop
+        /// Megvizsgálja, hogy a játéktábla megadott x és y koordinátáján található mező megállóként (isStop) van-e megjelölve. Ha igen, végigiterál a globális megállók (stops) listáján, megkeresi az adott koordinátákkal rendelkező Stop objektumot, és hozzáadja azt a tervezett útvonal megállóit gyűjtő (StopsForRoute) listához.
+        /// </summary>
         public void SelectStop(int x, int y)
         {
             if (board[x,y].isStop == true)
@@ -381,7 +413,10 @@ namespace SpongeBobTycoon.Model
                 }
             }
         }
-
+        /// <summary>
+        /// IsStopValid
+        /// Megvizsgálja, hogy a megadott x és y koordinátákon érvényes-e egy megálló elhelyezése, és visszatér egy logikai értékből és egy iparból (Industry) álló párral. A metódus azonnal hamis értékkel tér vissza, ha az adott mező nem út (Road), vagy ha az ott lévő termék lakos (Citizen). Ha ezek a feltételek teljesülnek, végigiterál a mező mind a 8 (vízszintes, függőleges és átlós) szomszédján: ha a pályán belül talál olyan szomszédot, amelynek az ipara nem üres (EmptyIndustry), akkor igaz (true) értékkel és a megtalált ipar objektumával tér vissza, ellenkező esetben pedig hamis értékkel és egy új, alapértelmezett iparral zárul.
+        /// </summary>
         public (bool, Industry?) IsStopValid(int x, int y)
         {
             if (board[x, y].fieldType is not Road || board[x, y].industry!.product is Citizen) return (false, new Industry());
@@ -410,8 +445,11 @@ namespace SpongeBobTycoon.Model
             return (false, new Industry());
         }
 
-        
 
+        /// <summary>
+        /// CreateRoute
+        /// Létrehoz egy új útvonalat a kiválasztott jármű (VehicleForRoute) számára. Ha nincs kiválasztott jármű, a metódus azonnal visszatér. Ellenkező esetben példányosít egy RouteManager-t, hozzáadja az útvonalhoz kijelölt összes megállót (StopsForRoute), majd kiüríti ezt a gyűjtőlistát. Ezután megkísérli megtervezni az útvonalat a DesignRoute segítségével: ha sikeres, kikeresi és eltávolítja a járművet a parkoló járművek (parkingVehicles) listájából, áthelyezi a mozgó járművek (movingVehicles) közé, beállítja a játéktábla érintett celláján az isVehicle státuszt, majd kiváltja a sikeres induláshoz tartozó eseményeket (OnAddMovingVehicle, OnCarStepped). Ha az útvonaltervezés nem lehetséges, az OnCreateRouteFailed eseményt hívja meg.
+        /// </summary>
         public void CreateRoute()
         {
             if (VehicleForRoute is null) return;
@@ -443,6 +481,11 @@ namespace SpongeBobTycoon.Model
                 OnCreateRouteFailed();
             }
         }
+
+        /// <summary>
+        /// RemoveVehicle
+        /// Eltávolítja a megadott járművet az aktív útvonaláról és a mozgó járművek listájából. A metódus megkeresi a járművet a mozgó járművek (movingVehicles) között az azonosítója (ID) alapján, és ha megtalálja, eltávolítja onnan. Ezután a játéktábla (board) aktuális pozícióján hamisra állítja az isVehicle jelzőt, meghívja az OnCarStepped eseményt a nézet frissítéséhez, lenullázza a jármű útvonal-indexét, teljesen törli a járműhöz rendelt útvonalat (ClearRoute), végül pedig visszateszi a járművet a parkoló járművek (parkingVehicles) listájába.
+        /// </summary>
         public void RemoveVehicleFromRoute(Vehicle vehicle)
         {
             int j = -1;
@@ -461,7 +504,10 @@ namespace SpongeBobTycoon.Model
             parkingVehicles.Add(vehicle);
 
         }
-
+        /// <summary>
+        /// Terradorm
+        /// Módosítja a megadott x és y koordinátájú mező magasságát (tereprendezés), az isUp paramétertől függően emelve vagy süllyesztve azt. A metódus a TerraformManager segítségével kísérli meg végrehajtani a módosítást a játéktáblán. Ha a művelet sikertelen (például érvénytelen szintkülönbség miatt), csak egy debug üzenetet ír ki és megszakítja a futást. Sikeres tereprendezés esetén rögzíti az új magasságot (Z érték) a konzolon, levonja a művelet költségét (TerraformPrice) a játékos egyenlegéből, végül pedig az OnFieldChanged eseménnyel frissíti a megváltozott mező grafikus megjelenítését.
+        /// </summary>
         public void Terraform(int x, int y, bool isUp)
         {
             bool successfulTerraform = TerraformManager.Terraform(board, x, y, isUp);
@@ -479,6 +525,10 @@ namespace SpongeBobTycoon.Model
         #endregion
 
         #region Money handling
+        /// <summary>
+        /// ChangeBalance
+        /// Megváltoztatja a játékos egyenlegét a megadott összeggel (amount). Ha a módosítás hatására a pénz (money) 0 alá csökkenne, a metódus leállítja a fő időzítőt, az összes aktív mozgó járművet biztonságosan eltávolítja az útvonaláról, és meghívja a játék végét jelző OnGameOver eseményt. Ha a játékos nem megy csődbe, egyszerűen hozzáadja az összeget a jelenlegi egyenleghez, majd az OnMoneyChanged eseménnyel frissíti a felhasználói felületet.
+        /// </summary>
         public void ChangeBalance(int amount)
         {
             if (money + amount < 0)
@@ -585,7 +635,10 @@ namespace SpongeBobTycoon.Model
             timer.Start();
         }
 
-
+        /// <summary>
+        /// Timer_Elapsed
+        /// A fő időzítő eseménykezelője, amely minden lefutáskor csökkenti a belső gameTime számlálót. Amikor ez a számláló eléri a nullát, megtörténik egy játékbeli léptetés (tick): a rendszer megnöveli a globális játékidőt (gameTimer), kiváltja az OnTimerTick eseményt a felület frissítéséhez, majd frissíti az erdők (GameModelTickForest) és a mozgó járművek (GameModelTickVehicles) állapotát. Végül a játék aktuális sebességbeállításától (timeStatus) függően (alap, gyors vagy leggyorsabb) újraindítja a belső számlálót a megfelelő konstans értékkel, így szabályozva a játék futási sebességét.
+        /// </summary>
         private void Timer_Elapsed(Object? sender, EventArgs e)
         {
 
@@ -621,6 +674,10 @@ namespace SpongeBobTycoon.Model
             }
         }
 
+        /// <summary>
+        /// GameModelTickForest
+        /// A metódus kezeli a játéktér időbeli frissítését (tick) az erdők növekedése és az ipari termelés tekintetében. Először végigiterál az összes erdőn, meghívja rajtuk a növekedési logikát (GrowthTick), és ha egy erdő készen áll a terjedésre, egy biztonságos átmeneti lista használatával (elkerülve az iteráció közbeni módosítást) új erdőmezőket generál. Miután hozzáfűzte az újonnan kinőtt erdőket a fő listához, a metódus végigmegy a regisztrált ipari épületeken is: a farmok (Farm) és gyárak (Factory) esetében lefuttatja a termelési ciklust (Produce), majd az OnProduce eseménnyel jelzi az új termékek létrejöttét a felhasználói felület számára.
+        /// </summary>
         private void GameModelTickForest()
         {
             //forest growth
@@ -669,6 +726,10 @@ namespace SpongeBobTycoon.Model
             }
         }
 
+        /// <summary>
+        /// ForestSpread
+        /// Kezeli egy meglévő erdőmező (f) terjedését a megadott irányba (dir). Ha az irány paraméter nem null, a metódus az iránynak (fel, le, balra, jobbra) megfelelő szomszédos cellára egy új erdőt (Forest) jelez a grafikus felület felé az OnFieldChanged esemény meghívásával, majd az érintett mezőt a játéktábláról (board) hozzáadja a paraméterként kapott átmeneti erdőlistához (forests), végül visszatér ezzel a kibővített listával.
+        /// </summary>
         private List<Field> ForestSpread(Direction? dir, Field f, List<Field> forests)
         {
             if (dir is not null)
@@ -702,6 +763,10 @@ namespace SpongeBobTycoon.Model
         }
         #endregion
 
+        /// <summary>
+        /// CarStep
+        /// Végrehajt egy mozgási lépést a megadott járművel (v) az előre megtervezett útvonalán. A metódus először kezeli a régi pozíció elhagyását (frissíti a játéktáblát és feloldja az esetleges "két jármű egy mezőn" állapotot), majd frissíti a jármű x és y koordinátáit az útvonal következő elemére. Ezután megvizsgálja a rákövetkező lépést: ha az emelkedő (nagyobb Z érték), lelassítja a járművet (timeUntilMoves növelése). Kiszámítja és beállítja a jármű új irányát (dir), és kezeli a lehetséges ütközéseket (areTwoVehicles). Ha a jármű egy megállóra (isStop) ér, lebonyolítja a fel/lerakodási tranzakciót, és lakosok (Citizen) szállítása esetén kiszámítja és jóváírja a megkeresett pénzt. Végül frissíti a nézetet (OnCarStepped), csökkenti a jármű állapotát (brokness), és ellenőrzi a lehetséges meghibásodást (CheckVehicleBrokness).
+        /// </summary>
         public void CarStep(Vehicle v)
         {
 
@@ -854,6 +919,10 @@ namespace SpongeBobTycoon.Model
             }
             */
         }
+        /// <summary>
+        /// findStopAt
+        /// Végigiterál a megállók (stops) belső listáján, és megkeresi a megadott x és y koordinátákon található megállót. Ha megtalálja, egy debug üzenet kiírása után (amely tartalmazza a pozíciót és az ottani ipar termékének típusát) visszatér az adott Stop objektummal. Ha a lista végére érve sem talál megállót a keresett helyen, kivételt (Exception) dob.
+        /// </summary>
         private Stop findStopAt(int x, int y)
         {
             foreach (Stop stop in stops)
@@ -868,6 +937,10 @@ namespace SpongeBobTycoon.Model
             throw new Exception($"No stop found at ({x}, {y})");
         }
 
+        /// <summary>
+        /// CheckVehicleBrokness
+        /// Megvizsgálja a paraméterként kapott jármű elhasználódási szintjét (brokness). Ha ez az érték eléri a nullát (vagyis a jármű elromlott), a metódus automatikusan megjavítja azt: visszaállítja a számlálót a járműhöz tartozó maximális lépésszámra (stepsUntilBroken), és a ChangeBalance metódus segítségével levonja a specifikus javítási költséget (repairCost) a játékos egyenlegéből.
+        /// </summary>
         private void CheckVehicleBrokness(Vehicle vehicle)
         {
             if(vehicle.brokness == 0)

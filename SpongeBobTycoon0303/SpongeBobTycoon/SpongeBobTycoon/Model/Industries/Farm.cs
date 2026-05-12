@@ -91,7 +91,9 @@ namespace SpongeBobTycoon.Model.Industries
                     break;
             }
         }
-
+        /// <summary>
+        /// Kezeli az ipari egység folyamatos termelési ciklusát: minden híváskor csökkenti a hátralévő gyártási időt, majd az idő lejártakor növeli a késztermék mennyiségét a tárolókapacitás (productCapacity) felső határáig. A sikeres gyártási fázis után a következő ciklus alapidejét véletlenszerűen módosítja (-1, 0 vagy +1 értékkel), ügyelve arra, hogy az a megadott minimum és maximum határok között maradjon, végül pedig újraindítja a visszaszámlálót az újonnan kalkulált időértékre.
+        /// </summary>
         public void Produce()
         {
 

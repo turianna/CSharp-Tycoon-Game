@@ -409,8 +409,11 @@ namespace SpongeBobTycoonWPF.ViewModel
             Create();
         }
 
-        
 
+        /// <summary>
+        /// Create
+        /// Inicializálja a grafikus játéktáblát egy 50x100-as rács létrehozásával. A metódus végigiterál a modell összes mezőjén, és minden cellához kiszámítja a megjelenítendő színt, az út típusát és az esetleges megállókat jelző grafikákat. Minden egyes mezőhöz létrehoz egy GameField objektumot, amely tartalmazza a koordinátákat, a vizuális állapotot, valamint egy kattintáskezelő parancsot (ClickCommand), amely a HandleClick metódust hívja meg. Erdő típusú mezők esetén a cella tartalmát (Content) a fákat jelző számmal is kitölti, majd a kész mezőket hozzáadja a nézetmodell által kezelt Board gyűjteményhez.
+        /// </summary>
         private void Create()
         {
             for (int i = 0; i < 50; i++) 
@@ -552,6 +555,10 @@ namespace SpongeBobTycoonWPF.ViewModel
  
         }
 
+        /// <summary>
+        /// VehicleFromRoute
+        /// Eltávolítja a megadott járművet az aktív forgalomból, és visszahelyezi azt a parkoló járművek listájába. A metódus megkeresi a járművet az egyedi azonosítója (ID) alapján a MovingVehicleList gyűjteményben, törli onnan, majd a modell szintjén is megszünteti az útvonalhoz rendelését. Ezt követően a jármű konkrét típusa alapján (FastCar esetén "Van", egyébként "Truck") meghatározza a megjelenítendő megnevezést, és létrehoz egy új VehicleButton objektumot a ParkingVehicleList számára, amely tartalmazza a jármű adatait és egy újraaktiválást lehetővé tevő parancsot.
+        /// </summary>
         private void VehicleFromRoute(object v)
         {
             Vehicle vehicle = (Vehicle)v;
@@ -613,6 +620,10 @@ namespace SpongeBobTycoonWPF.ViewModel
                 Board[index].VehiclePicture = 0;
             }
         }
+        /// <summary>
+        /// Model_AddMovingVehicle
+        /// Eseménykezelő metódus, amely egy jármű forgalomba állításakor fut le. A metódus megkeresi az adott járművet az egyedi azonosítója (ID) alapján a várakozó járművek listájában (ParkingVehicleList), és ha megtalálja, eltávolítja onnan. Meghatározza a jármű típusát (FastCar esetén "Van", egyébként "Truck"), majd létrehoz és hozzáad egy új VehicleButton objektumot a MovingVehicleList gyűjteményhez. Az újonnan létrehozott gombhoz egy parancsot is rendel, amely lehetővé teszi, hogy a felhasználó a későbbiekben – a VehicleFromRoute metóduson keresztül – visszahívja a járművet az útvonaláról.
+        /// </summary>
         private void Model_AddMovingVehicle(object? sender, Vehicle e)
         {
             string VMvehicleType;
@@ -653,6 +664,10 @@ namespace SpongeBobTycoonWPF.ViewModel
                 })
             });
         }
+        /// <summary>
+        /// Model_VehicleBought
+        /// Eseménykezelő metódus, amely egy új jármű megvásárlásakor fut le. A metódus a jármű konkrét típusa alapján meghatározza annak kategóriáját (FastCar esetén "Van", minden más esetben "Truck"), majd létrehoz egy új VehicleButton objektumot. Ezt az objektumot hozzáadja a várakozó járművek listájához (ParkingVehicleList), rögzítve a jármű adatait és a szállított termék megnevezését. A gombhoz egy parancsot is rendel, amely lehetővé teszi a felhasználó számára, hogy a jármű kiválasztásával megkezdje annak útvonaltervezését a VehicleForRoute metódus segítségével.
+        /// </summary>
         private void Model_VehicleBought(object? sender, Vehicle e)
         {
             string VMvehicleType;

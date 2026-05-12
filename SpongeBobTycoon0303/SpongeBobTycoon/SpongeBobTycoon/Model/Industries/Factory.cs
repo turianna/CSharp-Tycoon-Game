@@ -96,6 +96,10 @@ namespace SpongeBobTycoon.Model.Industries
 
         }
 
+        /// <summary>
+        /// Produce
+        /// Kezeli az ipari épület termelési ciklusát: ha folyik a munka, csökkenti a hátralévő időt, ha pedig áll a termelés, ellenőrzi, hogy rendelkezésre áll-e minden szükséges alapanyag (ingredients). Megfelelő alapanyagmennyiség esetén levonja azokat és elindítja a gyártást. A termelési idő lejártakor növeli a késztermék mennyiségét a tárolókapacitás erejéig, véletlenszerűen módosítja a következő ciklus hosszát a megadott minimum és maximum határok között, majd debug üzenetet küld az aktuális készletről.
+        /// </summary>
         public void Produce()
         {
 
@@ -140,6 +144,10 @@ namespace SpongeBobTycoon.Model.Industries
 
         }
 
+        /// <summary>
+        /// ReceiveIngredient
+        /// Fogadja és elraktározza a megadott típusú és mennyiségű alapanyagot az ipari épület számára. Ha a darabszám nulla, a metódus azonnal visszatér. Ellenkező esetben végigiterál az épület által használt alapanyagok (ingredients) listáján, és ha talál a kapott termékkel (product) megegyező típust, megnöveli annak raktárkészletét a megadott mennyiséggel, majd egy debug üzenetben naplózza az alapanyag beérkezését.
+        /// </summary>
         public void ReceiveIngredient(Product product, int count) 
         {
             if(count == 0 ) return;
