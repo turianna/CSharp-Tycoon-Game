@@ -27,7 +27,7 @@ namespace SpongeBobTycoonTest
         }*/
 
         [TestMethod]
-        public void FieldConstructor() 
+        public void TestFieldConstructor() 
         {
             model.BuyRoad(3, 10);
 
@@ -95,6 +95,42 @@ namespace SpongeBobTycoonTest
             Assert.IsTrue(model.GetForests().Count > initialForestCount);
             bool newForestGrew = model.board[33, 2].fieldType is Forest || model.board[32, 3].fieldType is Forest;
             Assert.IsTrue(newForestGrew);
+
+        }
+
+        [TestMethod]
+        public void TestVehicleConstructor()
+        {
+            FastCar fastCarWood = new FastCar(new Wood());
+            FastCar fastCarMeat;
+            Assert.ThrowsException<Exception>(() => fastCarMeat = new FastCar(new Meat()));
+            FastCar fastCarNet = new FastCar(new Net());
+            SlowCar slowCarAlgae;
+            Assert.ThrowsException<Exception>(() => slowCarAlgae = new SlowCar(new Algae()));
+            SlowCar slowCarCitizen = new SlowCar(new Citizen());
+            SlowCar slowCarSpatula = new SlowCar(new Burger());
+
+            VehicleData fastCarWoodData = new VehicleData(fastCarWood);
+            VehicleData fastCarNetData = new VehicleData(fastCarNet);
+
+            VehicleData slowCarCitizenData = new VehicleData(slowCarCitizen);
+            VehicleData slowCarSpatulaData = new VehicleData(slowCarSpatula);
+
+            FastCar newFastCarWood = new FastCar(fastCarWoodData);
+            FastCar newFastCarNet = new FastCar(fastCarNetData);
+
+            SlowCar newSlowCarCitizen = new SlowCar(slowCarCitizenData);
+            SlowCar newSlowCarSpatula = new SlowCar(slowCarSpatulaData);
+
+            Assert.AreEqual(fastCarWood.product.GetType(), newFastCarWood.product.GetType());
+            Assert.AreEqual(fastCarNet.product.GetType(), newFastCarNet.product.GetType());
+            Assert.AreEqual(slowCarCitizen.product.GetType(), newSlowCarCitizen.product.GetType());
+            Assert.AreEqual(slowCarSpatula.product.GetType(), newSlowCarSpatula.product.GetType());
+
+            Assert.AreEqual(fastCarWood.productAmount, newFastCarWood.productAmount);
+            Assert.AreEqual(fastCarNet.productAmount, newFastCarNet.productAmount);
+            Assert.AreEqual(slowCarCitizen.productAmount, newSlowCarCitizen.productAmount);
+            Assert.AreEqual(slowCarSpatula.productAmount, newSlowCarSpatula.productAmount);
 
         }
 
