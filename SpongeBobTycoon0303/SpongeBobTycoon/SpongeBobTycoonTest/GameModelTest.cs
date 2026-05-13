@@ -27,6 +27,40 @@ namespace SpongeBobTycoonTest
         }*/
 
         [TestMethod]
+        public void FieldConstructor() 
+        {
+            model.BuyRoad(3, 10);
+
+            Field bridge = new Field(1, 1, 0, new EmptyIndustry(), new FastBridge(true), false, false, false, 1, Direction.UP);
+
+            Field road = model.Board(3, 10);
+
+            Field forest = model.GetForests()[0];
+
+
+            FieldData bridgeData = new FieldData(bridge, -1);
+            FieldData roadData = new FieldData(road, -1);
+            FieldData forestData = new FieldData(forest, -1);
+
+            Field newBridge = new Field(bridgeData, model.GetIndustries());
+            Field newRoad = new Field(roadData, model.GetIndustries());
+            Field newForest = new Field(forestData, model.GetIndustries());
+
+            Assert.AreEqual(road.X, newRoad.X);
+            Assert.AreEqual(road.Y, newRoad.Y);
+            Assert.AreEqual(road.Z, newRoad.Z);
+            Assert.IsInstanceOfType(newRoad.fieldType, typeof(Road));
+            Assert.AreEqual(forest.X, newForest.X);
+            Assert.AreEqual(forest.Y, newForest.Y);
+            Assert.AreEqual(forest.Z, newForest.Z);
+            Assert.IsInstanceOfType(newForest.fieldType, typeof(Forest));
+            Assert.AreEqual(((Forest)forest.fieldType).treeCount, ((Forest)newForest.fieldType).treeCount);
+
+            Assert.IsTrue(((Bridge)bridge.fieldType).isRiver == ((Bridge)newBridge.fieldType).isRiver);
+
+        }
+
+        [TestMethod]
         public void TestTreeGrow()
         {
             model.timer.Stop();
@@ -65,32 +99,82 @@ namespace SpongeBobTycoonTest
         }
 
         [TestMethod]
+        public void TestDecideDirection()
+        {
+            Vehicle v = new Vehicle(new Wood());
+
+            Assert.AreEqual(Direction.UP, v.DecideDirection(1, 2, 2, 2));
+            Assert.AreEqual(Direction.DOWN, v.DecideDirection(2, 2, 1, 2));
+            Assert.AreEqual(Direction.RIGHT, v.DecideDirection(2, 2, 2, 1));
+            Assert.AreEqual(Direction.LEFT, v.DecideDirection(2, 1, 2, 2));
+        }
+
+        [TestMethod]
+        public void IndustriesConstructor()
+        {
+            Farm farm = new Farm(new Algae());
+            Factory factory = new Factory(new Burger());
+
+            IndustryData farmData = new IndustryData(farm);
+            IndustryData factoryData = new IndustryData(factory);
+
+            Farm newFarm = new Farm(farmData);
+            Factory newFactory = new Factory(factoryData);
+
+            Assert.AreEqual(farm.product.GetType(), newFarm.product.GetType());
+            Assert.AreEqual(factory.product.GetType(), newFactory.product.GetType());
+
+            Assert.AreEqual(farm.getProductionTime, newFarm.getProductionTime);
+            Assert.AreEqual(factory.getProductionTime, newFactory.getProductionTime);
+
+            Assert.AreEqual(farm.productAmount, newFarm.productAmount);
+            Assert.AreEqual(factory.productAmount, newFactory.productAmount);
+
+        }   
+
+        [TestMethod]
 
         public void TestFarms()
         {
             Farm woodFarm = new Farm(new Wood());
             Farm algaeFarm = new Farm(new Algae());
             Farm meatFarm = new Farm(new Meat());
+            Farm city = new Farm(new Citizen());
+            Farm netFarm = new Farm(new Net());
+            Farm spatulaFarm = new Farm(new Spatula());
+
             int oldProductionTime = woodFarm.getProductionTime;
 
             Assert.IsTrue(woodFarm.product is Wood);
             Assert.IsTrue(algaeFarm.product is Algae);
             Assert.IsTrue(meatFarm.product is Meat);
+            Assert.IsTrue(city.product is Citizen);
+            Assert.IsTrue(netFarm.product is Net);
+            Assert.IsTrue(spatulaFarm.product is Spatula);
 
             Assert.IsTrue(woodFarm.productAmount == 0);
             Assert.IsTrue(algaeFarm.productAmount == 0);
             Assert.IsTrue(meatFarm.productAmount == 0);
+            Assert.IsTrue(city.productAmount == 0);
+            Assert.IsTrue(netFarm.productAmount == 0);
+            Assert.IsTrue(spatulaFarm.productAmount == 0);
 
-            for(int i = 0; i < 26; i++)
+            for (int i = 0; i < 26; i++)
             {
                 woodFarm.Produce();
                 algaeFarm.Produce();
                 meatFarm.Produce();
+                city.Produce();
+                netFarm.Produce();
+                spatulaFarm.Produce();
             }
 
             Assert.IsTrue(woodFarm.productAmount == 5);
             Assert.IsTrue(algaeFarm.productAmount == 5);
             Assert.IsTrue(meatFarm.productAmount == 4);
+            Assert.IsTrue(city.productAmount == 5);
+            Assert.IsTrue(netFarm.productAmount == 1);
+            Assert.IsTrue(spatulaFarm.productAmount == 1);
             int newProductionTime = woodFarm.getProductionTime;
 
             Assert.IsTrue(Math.Abs(oldProductionTime - newProductionTime) <= 1);
